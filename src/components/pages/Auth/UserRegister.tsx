@@ -44,7 +44,7 @@ export const UserRegister: React.FC = () => {
 
   const handleRegistrationSuccess = (token: string) => {
     localStorage.setItem('token', token);
-    navigate('/usermypage');
+    navigate('/all_my_dishes');
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

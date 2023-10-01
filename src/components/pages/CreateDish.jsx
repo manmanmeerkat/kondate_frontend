@@ -11,7 +11,11 @@ import {
   Flex,
   Select,
   Textarea,
-  useToast, // useToast フックを追加
+  useToast,
+  VStack,
+  HStack,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react';
 
 export const CreateDish = () => {
@@ -23,11 +27,14 @@ export const CreateDish = () => {
     image_file: null,
     reference_url: '',
     user_id: null,
+    ingredients: [],
+    genre_id: null,
+    category_id: null,
   });
 
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState('');
-  const toast = useToast(); // useToast フックを初期化
+  const toast = useToast();
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -53,6 +60,9 @@ export const CreateDish = () => {
       image_file: null,
       reference_url: '',
       user_id: null,
+      ingredients: [],
+      genre_id: null,
+      category_id: null,
     });
   }, []);
 
@@ -63,11 +73,52 @@ export const CreateDish = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (name === 'genre') {
+      if (value === '和食') {
+        setFormData({ ...formData, [name]: value, genre_id: 1 });
+      } else if (value === '洋食') {
+        setFormData({ ...formData, [name]: value, genre_id: 2 });
+      } else if (value === '中華') {
+        setFormData({ ...formData, [name]: value, genre_id: 3 });
+      } else if (value === 'その他') {
+        setFormData({ ...formData, [name]: value, genre_id: 4 });
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
+    } else if (name === 'category') {
+      if (value === '主菜') {
+        setFormData({ ...formData, [name]: value, category_id: 1 });
+      } else if (value === '副菜') {
+        setFormData({ ...formData, [name]: value, category_id: 2 });
+      } else if (value === '汁物') {
+        setFormData({ ...formData, [name]: value, category_id: 3 });
+      } else if (value === 'その他') {
+        setFormData({ ...formData, [name]: value, category_id: 4 });
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleAddIngredient = () => {
+    setFormData({
+      ...formData,
+      ingredients: [...formData.ingredients, ''],
+    });
+  };
+
+  const handleRemoveIngredient = (index) => {
+    const updatedIngredients = [...formData.ingredients];
+    updatedIngredients.splice(index, 1);
+    setFormData({ ...formData, ingredients: updatedIngredients });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);
     formDataToSend.append('description', formData.description);
@@ -76,6 +127,11 @@ export const CreateDish = () => {
     formDataToSend.append('image_file', formData.image_file);
     formDataToSend.append('reference_url', formData.reference_url);
     formDataToSend.append('user_id', formData.user_id);
+    formDataToSend.append('genre_id', formData.genre_id);
+    formDataToSend.append('category_id', formData.category_id);
+
+    const ingredientsData = formData.ingredients;
+    formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
 
     try {
       const response = await axios.post('http://localhost:8000/api/submitform', formDataToSend, {
@@ -83,33 +139,29 @@ export const CreateDish = () => {
           'Content-Type': 'multipart/form-data',
           'X-CSRF-TOKEN': csrfToken,
         },
+        withCredentials: true,
       });
 
       if (response.status === 201) {
         console.log('フォームの送信が成功しました');
-        // 成功時のトーストメッセージを表示
         toast({
           title: '登録が完了しました',
           status: 'success',
           duration: 5000,
           isClosable: true,
         });
-        navigate(-1); 
-        // 成功時の処理を追加
+        navigate(-1);
       } else {
         console.error('フォームの送信が失敗しました');
-        // 失敗時のトーストメッセージを表示
         toast({
           title: '登録失敗しました',
           status: 'error',
           duration: 5000,
           isClosable: true,
         });
-        // 失敗時の処理を追加
       }
     } catch (error) {
       console.error('エラー:', error);
-      // エラー時のトーストメッセージを表示
       toast({
         title: 'エラーが発生しました',
         description: 'フォームの送信中にエラーが発生しました。',
@@ -117,19 +169,18 @@ export const CreateDish = () => {
         duration: 5000,
         isClosable: true,
       });
-      // エラー時の処理を追加
     }
   };
 
   return (
-    <div>
-      <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white">
+    <VStack spacing={4} align="center" justify="center" minHeight="100vh">
+      <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white" width="90%">
         <Heading size="lg" textAlign="center" mb="4">
           レシピを作成
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
-            <FormControl isRequired>
+            <FormControl isRequired mb={4}>
               <FormLabel>画像アップロード</FormLabel>
               <Input
                 type="file"
@@ -139,7 +190,7 @@ export const CreateDish = () => {
               />
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired mb={4}>
               <FormLabel>料理名</FormLabel>
               <Input
                 type="text"
@@ -149,7 +200,7 @@ export const CreateDish = () => {
               />
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired mb={4}>
               <FormLabel>説明</FormLabel>
               <Textarea
                 name="description"
@@ -158,7 +209,7 @@ export const CreateDish = () => {
               />
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired mb={4}>
               <FormLabel>ジャンル</FormLabel>
               <Select
                 name="genre"
@@ -173,7 +224,7 @@ export const CreateDish = () => {
               </Select>
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired mb={4}>
               <FormLabel>カテゴリー</FormLabel>
               <Select
                 name="category"
@@ -188,7 +239,43 @@ export const CreateDish = () => {
               </Select>
             </FormControl>
 
-            <FormControl>
+            <Wrap spacing={2} mb={4}>
+              {formData.ingredients.map((ingredient, index) => (
+                <WrapItem key={index} width="19.4%">
+                  <Flex>
+                    <Input
+                      type="text"
+                      name={`ingredients[${index}]`}
+                      value={ingredient}
+                      onChange={(e) => {
+                        const updatedIngredients = [...formData.ingredients];
+                        updatedIngredients[index] = e.target.value;
+                        setFormData({ ...formData, ingredients: updatedIngredients });
+                      }}
+                      size="sm"
+                      width="100%"
+                    />
+                    <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
+                      削除
+                    </Button>
+                  </Flex>
+                </WrapItem>
+              ))}
+            </Wrap>
+            <Button
+              type="button"
+              colorScheme="blue"
+              width="100%"
+              fontSize="18px"
+              letterSpacing="1px"
+              borderRadius="base"
+              mt={4}
+              onClick={handleAddIngredient}
+            >
+              材料を追加
+            </Button>
+
+            <FormControl mb={4}>
               <FormLabel>参考URL</FormLabel>
               <Input
                 type="text"
@@ -210,20 +297,8 @@ export const CreateDish = () => {
               作成
             </Button>
           </Flex>
-          <Button
-            type="button" // ページ遷移を行わないためtype="button"を指定
-            colorScheme="teal"
-            width="100%"
-            fontSize="18px"
-            letterSpacing="1px"
-            borderRadius="base"
-            mt={4}
-            onClick={() => navigate(-1)} // ボタンがクリックされたときの処理でページを戻る
-          >
-            前のページに戻る
-          </Button>
         </form>
       </Box>
-    </div>
+    </VStack>
   );
 };
