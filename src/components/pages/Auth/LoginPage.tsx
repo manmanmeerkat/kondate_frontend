@@ -9,6 +9,7 @@ import {
   Input,
   Button,
   Flex,
+  useToast,
 } from '@chakra-ui/react';
 
 interface FormData {
@@ -24,13 +25,20 @@ export const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState<string>('');
+  const toast = useToast();
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get<{ csrfToken: string }>('http://localhost:8000/api/csrf-cookie');
+        // Laravel Sanctumの/csrf-cookieエンドポイントを使用
+        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
+        
+        
+
+        // コンソールにCSRFトークンを表示
+        console.log('CSRFトークン:', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
       }
@@ -51,8 +59,14 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     axios
-      .post<{ token: string; userId: string }>('http://localhost:8000/api/login', formData)
+      .post<{ token: string; userId: string }>('http://localhost:8000/api/login', formData, {
+        withCredentials: true, // クッキーを送信するために必要
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
+      })
       .then((response) => {
         console.log('ログイン成功:', response.data);
 
@@ -62,13 +76,26 @@ export const LoginPage: React.FC = () => {
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
 
-        console.log(token);
-        console.log(response.data);
+        toast({
+          title: 'ログインしました',
+          description: 'ようこそ！',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
 
         navigate('/all_my_dishes');
       })
       .catch((error) => {
         console.error('ログインエラー:', error.response?.data);
+
+        toast({
+          title: 'ログインエラー',
+          description: 'ログインに失敗しました。',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       });
   };
 
@@ -83,6 +110,7 @@ export const LoginPage: React.FC = () => {
           ログイン
         </Heading>
         <form onSubmit={handleSubmit}>
+          {/* CSRFトークンをメタタグから取得 */}
           <meta name="csrf-token" content={csrfToken} />
 
           <FormControl mt="4">

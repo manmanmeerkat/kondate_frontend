@@ -9,6 +9,7 @@ import {
   Input,
   Button,
   Flex,
+  useToast,
 } from '@chakra-ui/react';
 
 interface FormData {
@@ -27,6 +28,7 @@ export const UserRegister: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const toast = useToast(); // useToast を初期化
 
   useEffect(() => {
     setFormData({
@@ -44,6 +46,16 @@ export const UserRegister: React.FC = () => {
 
   const handleRegistrationSuccess = (token: string) => {
     localStorage.setItem('token', token);
+
+    // 登録成功のトーストを表示
+    toast({
+      title: 'ユーザー登録が完了しました',
+      description: 'ようこそ！',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+
     navigate('/all_my_dishes');
   };
 
@@ -55,7 +67,6 @@ export const UserRegister: React.FC = () => {
         console.log('ユーザーが登録されました:', response.data);
         const token = response.data.token;
         const userId = response.data.userId;
-        localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
         handleRegistrationSuccess(token);
       })
