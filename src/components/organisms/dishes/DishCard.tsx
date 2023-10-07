@@ -7,7 +7,7 @@ interface DishCardProps {
   imageUrl: string;
   menuType: string;
   dishName: string;
-  onClick: (id: string) => void;
+  onClick: (id: number) => void;
 }
 
 export const DishCard = memo((props: DishCardProps) => {
@@ -22,7 +22,7 @@ export const DishCard = memo((props: DishCardProps) => {
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
-      onClick={() => onClick(id.toString())}
+      onClick={() => onClick(id)}
       display="flex"
       flexDirection="column"
       alignItems="center"

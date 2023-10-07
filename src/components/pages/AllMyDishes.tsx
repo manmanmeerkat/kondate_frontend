@@ -21,12 +21,13 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     getDish();
   }, []);
 
-  const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
+  const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
 
-  const onClickDish = useCallback((id: string) => {
+  const onClickDish = useCallback((id: number) => {
     onSelectDish({ id, dishes, onOpen });
-    setSelectedDishId(id);
+    setSelectedDishId(id);console.log(dishes);
   }, [dishes, onSelectDish, onOpen]);
+  
 
   return (
     <div>
@@ -56,7 +57,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         </Wrap>
       )}
       <DishDetailModal
-      dish={selectedDish as { id: string; name: string; genre: string; reference_url: string } | null}
+      dish={selectedDish as { id: number; name: string; genre: string; reference_url: string } | null}
       isOpen={isOpen}
       onClose={onClose}
       id={selectedDishId}

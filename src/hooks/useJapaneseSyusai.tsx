@@ -13,7 +13,6 @@ export const useJapaneseSyusai = () => { // ここを変更
     if (token) {
       // ログインユーザーのユーザーID (userId) を取得
       const userId = localStorage.getItem('userId'); // またはセッションから取得
-      console.log(userId);
 
       axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-syusai`, { // ここを変更
         headers: {

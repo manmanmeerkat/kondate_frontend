@@ -13,13 +13,25 @@ import {
   Textarea,
   useToast,
   VStack,
-  HStack,
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
 
+interface FormData {
+  name: string;
+  description: string;
+  genre: string;
+  category: string;
+  image_file: File | null;
+  reference_url: string;
+  user_id: string | null;
+  ingredients: string[];
+  genre_id: number | null;
+  category_id: number | null;
+}
+
 export const CreateDish = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     description: '',
     genre: '',
@@ -44,7 +56,7 @@ export const CreateDish = () => {
         setCsrfToken(csrfToken);
 
         const userId = localStorage.getItem('userId');
-        setFormData({ ...formData, user_id: userId });
+        setFormData((prevData) => ({ ...prevData, user_id: userId }));
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
       }
@@ -66,57 +78,44 @@ export const CreateDish = () => {
     });
   }, []);
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFormData({ ...formData, image_file: selectedFile });
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    setFormData((prevData) => ({ ...prevData, image_file: selectedFile || null }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
     if (name === 'genre') {
-      if (value === '和食') {
-        setFormData({ ...formData, [name]: value, genre_id: 1 });
-      } else if (value === '洋食') {
-        setFormData({ ...formData, [name]: value, genre_id: 2 });
-      } else if (value === '中華') {
-        setFormData({ ...formData, [name]: value, genre_id: 3 });
-      } else if (value === 'その他') {
-        setFormData({ ...formData, [name]: value, genre_id: 4 });
-      } else {
-        setFormData({ ...formData, [name]: value });
-      }
+      setFormData((prevData) => ({
+        ...prevData,
+        genre: value,
+        genre_id: value === '和食' ? 1 : value === '洋食' ? 2 : value === '中華' ? 3 : value === 'その他' ? 4 : null,
+      }));
     } else if (name === 'category') {
-      if (value === '主菜') {
-        setFormData({ ...formData, [name]: value, category_id: 1 });
-      } else if (value === '副菜') {
-        setFormData({ ...formData, [name]: value, category_id: 2 });
-      } else if (value === '汁物') {
-        setFormData({ ...formData, [name]: value, category_id: 3 });
-      } else if (value === 'その他') {
-        setFormData({ ...formData, [name]: value, category_id: 4 });
-      } else {
-        setFormData({ ...formData, [name]: value });
-      }
+      setFormData((prevData) => ({
+        ...prevData,
+        category: value,
+        category_id: value === '主菜' ? 1 : value === '副菜' ? 2 : value === '汁物' ? 3 : value === 'その他' ? 4 : null,
+      }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
 
   const handleAddIngredient = () => {
-    setFormData({
-      ...formData,
-      ingredients: [...formData.ingredients, ''],
+    setFormData((prevData) => ({ ...prevData, ingredients: [...prevData.ingredients, ''] }));
+  };
+
+  const handleRemoveIngredient = (index: number) => {
+    setFormData((prevData) => {
+      const updatedIngredients = [...prevData.ingredients];
+      updatedIngredients.splice(index, 1);
+      return { ...prevData, ingredients: updatedIngredients };
     });
   };
 
-  const handleRemoveIngredient = (index) => {
-    const updatedIngredients = [...formData.ingredients];
-    updatedIngredients.splice(index, 1);
-    setFormData({ ...formData, ingredients: updatedIngredients });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
@@ -124,11 +123,11 @@ export const CreateDish = () => {
     formDataToSend.append('description', formData.description);
     formDataToSend.append('genre', formData.genre);
     formDataToSend.append('category', formData.category);
-    formDataToSend.append('image_file', formData.image_file);
+    formDataToSend.append('image_file', formData.image_file || '');
     formDataToSend.append('reference_url', formData.reference_url);
-    formDataToSend.append('user_id', formData.user_id);
-    formDataToSend.append('genre_id', formData.genre_id);
-    formDataToSend.append('category_id', formData.category_id);
+    formDataToSend.append('user_id', formData.user_id || '');
+    formDataToSend.append('genre_id', formData.genre_id?.toString() || '');
+    formDataToSend.append('category_id', formData.category_id?.toString() || '');
 
     const ingredientsData = formData.ingredients;
     formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
@@ -213,7 +212,7 @@ export const CreateDish = () => {
               <FormLabel>ジャンル</FormLabel>
               <Select
                 name="genre"
-                value={formData.genre || ""}
+                value={formData.genre}
                 onChange={handleChange}
               >
                 <option value="">ジャンルを選択してください</option>
@@ -228,7 +227,7 @@ export const CreateDish = () => {
               <FormLabel>カテゴリー</FormLabel>
               <Select
                 name="category"
-                value={formData.category || ""}
+                value={formData.category}
                 onChange={handleChange}
               >
                 <option value="">カテゴリを選択してください</option>
@@ -250,7 +249,7 @@ export const CreateDish = () => {
                       onChange={(e) => {
                         const updatedIngredients = [...formData.ingredients];
                         updatedIngredients[index] = e.target.value;
-                        setFormData({ ...formData, ingredients: updatedIngredients });
+                        setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
                       }}
                       size="sm"
                       width="100%"

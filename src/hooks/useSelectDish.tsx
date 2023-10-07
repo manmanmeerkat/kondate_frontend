@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 
 interface Dish {
-  id: string;
+  id: number;
   // 他のDishに関するプロパティを追加
 }
 
 interface UseSelectDishProps {
-  id: string;
+  id: number;
   dishes: Dish[];
   onOpen: () => void;
 }

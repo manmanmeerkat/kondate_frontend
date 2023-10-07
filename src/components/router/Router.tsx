@@ -17,6 +17,7 @@ import { Chinese } from "../pages/ChineseFood/Chinese";
 import { ChineseSyusai } from "../pages/ChineseFood/ChineseSyusai";
 import { ChineseFukusai } from "../pages/ChineseFood/ChineseFukusai";
 import { ChineseShirumono } from "../pages/ChineseFood/ChineseShirumono";
+import { EditDish } from "../pages/EditDish";
 
 export const Router = memo(() => {
     return (
@@ -26,6 +27,7 @@ export const Router = memo(() => {
             <Route path="/register" element={<UserRegister />}/>
             <Route path="/all_my_dishes" element={<AllMyDishes />}/>
             <Route path="/create" element={<CreateDish />}/>
+            <Route path="/edit/:dishId" element={<EditDish />} />
             <Route path="/all_my_japanese" element={<Japanese />}/>
             <Route path="all_my_japanese_syusai" element={<JapaneseSyusai />}/>
             <Route path="/all_my_japanese_fukusai" element={<JapaneseFukusai />}/>

@@ -24,8 +24,7 @@ export const Header: React.FC<HeaderProps> = () => {
         
         
 
-        // コンソールにCSRFトークンを表示
-        console.log('CSRFトークン:', csrfToken);
+      
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
       }

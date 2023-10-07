@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 
 // レシピの型を定義
 interface Recipe {
-  id: string;
+  id: number;
   name: string;
   // 他にも必要なプロパティがあれば追加
 }

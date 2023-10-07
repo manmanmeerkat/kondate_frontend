@@ -16,35 +16,40 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { useMessage } from '../../../hooks/useMessage';
+import { useNavigate } from 'react-router-dom';
 
 interface DishDetailModalProps {
   dish: {
-    id: string;
+    id: number;
     name: string;
     genre: string;
     reference_url: string;
   } | null;
   isOpen: boolean;
-  id: string | null;
+  id: number | null;
   onClose: () => void;
 }
 
 export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const { dish, isOpen, id, onClose } = props;
   const { showMessage } = useMessage();
-
   const [name, setName] = useState<string>("");
   const [genre, setGenre] = useState<string>("");
   const [url, setUrl] = useState<string>("");
-  const [ingredients, setIngredients] = useState<{ id: string; name: string }[]>([]);
+  const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const navigate = useNavigate();
 
   const fetchIngredients = async () => {
     if (id) {
       try {
-        const response = await axios.get<{ ingredients: { id: string; name: string }[] }>(`http://localhost:8000/api/recipes/${id}/ingredients`);
+        const response = await axios.get<{ ingredients: { id: number; name: string }[] }>(
+          `http://localhost:8000/api/recipes/${id}/ingredients`
+        );
         setIngredients(response.data.ingredients);
         setLoading(false);
       } catch (error) {
@@ -62,16 +67,14 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
 
   useEffect(() => {
     if (isOpen) {
-      // モーダルが開かれたときに材料を取得
       fetchIngredients();
     } else {
-      // モーダルが閉じられたときに材料をクリア
       setIngredients([]);
-      setLoading(true); // ローディング状態をリセット
+      setLoading(true);
     }
   }, [isOpen, id]);
 
-  const deleteUser = (id: string) => {
+  const deleteUser = (id: number) => {
     axios
       .delete(`http://localhost:8000/api/menu/${id}`)
       .then((response) => {
@@ -91,6 +94,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
       const response = await axios.put(`http://localhost:8000/api/menu/${id}`, {
         name: name,
         genre: genre,
+        // 他のプロパティも必要に応じて追加
       });
       console.log("Updated post:", response.data);
       showMessage({ title: "更新しました", status: "success" });
@@ -104,13 +108,12 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     }
   };
 
+  const handleEdit = () => {
+    navigate(`/edit/${id}`);
+  };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      autoFocus={false}
-      motionPreset="slideInBottom"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} motionPreset="slideInBottom">
       <ModalOverlay />
       <ModalContent pb={6}>
         <ModalHeader>詳細</ModalHeader>
@@ -122,7 +125,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
             </Box>
           ) : (
             <Stack spacing={4}>
-               <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <FormControl>
                   <FormLabel>料理名</FormLabel>
                   <Input value={name} readOnly />
@@ -146,10 +149,15 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
                     />
                   )}
                 </FormControl>
-                <Button colorScheme="red" size="xs" onClick={() => deleteUser(dish!.id)}>
-                  削除
-                </Button>
-                <Button type="submit">更新</Button>
+                <Stack direction="row" spacing={4} justify="space-between" align="center">
+                  <Button colorScheme="red" size="xs" onClick={() => deleteUser(dish!.id)}>
+                    削除
+                  </Button>
+                  <Button leftIcon={<EditIcon />} onClick={handleEdit}>
+                    編集
+                  </Button>
+                  <Button type="submit">更新</Button>
+                </Stack>
               </form>
             </Stack>
           )}

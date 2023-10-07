@@ -42,9 +42,9 @@ export const JapaneseShirumono: React.FC<JapaneseProps> = memo(() => {
     getJapanese();
   }, []);
 
-  const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
+  const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
 
-  const onClickDish = useCallback((id: string) => {
+  const onClickDish = useCallback((id: number) => {
     onSelectDish({ id, dishes, onOpen });
     setSelectedDishId(id); // ユーザーIDを保持
   }, [dishes, onSelectDish, onOpen]);
@@ -91,7 +91,7 @@ export const JapaneseShirumono: React.FC<JapaneseProps> = memo(() => {
         </Wrap>
       )}
       <DishDetailModal
-        dish={selectedDish as { id: string; name: string; genre: string; reference_url: string } | null}
+        dish={selectedDish as { id: number; name: string; genre: string; reference_url: string } | null}
         isOpen={isOpen}
         onClose={onClose}
         id={selectedDishId}

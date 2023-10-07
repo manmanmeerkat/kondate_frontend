@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 
 // レシピの材料の型を定義
 interface Ingredient {
-  id: string;
+  id: number;
   name: string;
   // 他にも必要なプロパティがあれば追加
 }
@@ -19,7 +19,7 @@ interface UseRecipeIngredients {
   loading: boolean;
 }
 
-const useRecipeIngredients = (recipeId: string | null): UseRecipeIngredients => {
+const useRecipeIngredients = (recipeId: number | null): UseRecipeIngredients => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [loading, setLoading] = useState(true);
 
