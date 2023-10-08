@@ -92,19 +92,17 @@ interface DishParams {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-  
-    if (name === 'genre') {
-      // ジャンルごとの処理...
-    } else if (name === 'category') {
-      // カテゴリーごとの処理...
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value ?? '' }));
-    }
-  };
-  
-  
-
+      const { name, value } = e.target;
+    
+      if (name === 'genre') {
+        // ジャンルごとの処理...
+      } else if (name === 'category') {
+        // カテゴリーごとの処理...
+      } else {
+        setFormData((prevData) => ({ ...prevData, [name]: value || '' }));
+      }
+    };
+    
   const handleAddIngredient = () => {
     setFormData((prevData) => ({
       ...prevData,
@@ -195,7 +193,7 @@ interface DishParams {
               <Input
                 type="text"
                 name="name"
-                value={formData.name}
+                value={formData.name || ''} 
                 onChange={handleChange}
               />
             </FormControl>
@@ -204,7 +202,7 @@ interface DishParams {
               <FormLabel>説明</FormLabel>
               <Textarea
                 name="description"
-                value={formData.description}
+                value={formData.description || ''}
                 onChange={handleChange}
               />
             </FormControl>
@@ -213,50 +211,46 @@ interface DishParams {
               <FormLabel>ジャンル</FormLabel>
               <Select
                 name="genre"
-                value={formData.genre_id || ""}
+                value={formData.genre_id !== null ? String(formData.genre_id) : ""}
                 onChange={handleChange}
               >
                 <option value="">ジャンルを選択してください</option>
-                <option value="和食">和食</option>
-                <option value="洋食">洋食</option>
-                <option value="中華">中華</option>
-                <option value="その他">その他</option>
+                <option value="1">和食</option>
+                <option value="2">洋食</option>
+                <option value="3">中華</option>
+                <option value="4">その他</option>
               </Select>
             </FormControl>
-
             <FormControl isRequired mb={4}>
               <FormLabel>カテゴリー</FormLabel>
               <Select
                 name="category"
-                value={formData.category_id || ""}
+                value={formData.category_id !== null ? String(formData.category_id) : ""}
                 onChange={handleChange}
               >
                 <option value="">カテゴリを選択してください</option>
-                <option value="主菜">主菜</option>
-                <option value="副菜">副菜</option>
-                <option value="汁物">汁物</option>
-                <option value="その他">その他</option>
+                <option value="1">主菜</option>
+                <option value="2">副菜</option>
+                <option value="3">汁物</option>
+                <option value="4">その他</option>
               </Select>
             </FormControl>
-
             <Wrap spacing={2} mb={4}>
               {formData.ingredients.map((ingredient, index) => (
                 <WrapItem key={index} width="19.4%">
                   <Flex>
                   <Input
-  type="text"
-  name={`ingredients[${index}]`}
-  value={String(ingredient)}  
-  onChange={(e) => {
-    const updatedIngredients = [...formData.ingredients];
-    updatedIngredients[index] = e.target.value;
-    setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
-  }}
-  size="sm"
-  width="100%"
-/>
-
-
+                    type="text"
+                    name={`ingredients[${index}]`}
+                    value={String(ingredient) || ''}  
+                    onChange={(e) => {
+                      const updatedIngredients = [...formData.ingredients];
+                      updatedIngredients[index] = e.target.value;
+                      setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
+                    }}
+                    size="sm"
+                    width="100%"
+                  />
                     <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
                       削除
                     </Button>
@@ -282,7 +276,7 @@ interface DishParams {
               <Input
                 type="text"
                 name="reference_url"
-                value={formData.reference_url}
+                value={formData.reference_url || ''}
                 onChange={handleChange}
               />
             </FormControl>
