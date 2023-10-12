@@ -18,91 +18,94 @@ import {
 } from '@chakra-ui/react';
 
 interface DishParams {
-    dishId: string;
-    [key: string]: string | undefined;
-  }
-  
-  interface Ingredient {
-    id: number;
-    name: string;
-    // 他のプロパティがあれば追加
-  }
-  
-  interface DishData {
-    name: string;
-    description: string;
-    image_file: File | undefined;
-    reference_url: string;
-    user_id: string | null;
-    ingredients: string[]; // ここを string[] に変更
-    genre_id: number | null;
-    category_id: number | null;
-  }
-  
-  export const EditDish: React.FC = () => {
-    const { dishId } = useParams<DishParams>();
-    const [formData, setFormData] = useState<DishData>({
-      name: '',
-      description: '',
-      image_file: undefined,
-      reference_url: '',
-      user_id: null,
-      ingredients: [],
-      genre_id: null,
-      category_id: null,
-    });
-    const navigate = useNavigate();
-    const [csrfToken, setCsrfToken] = useState('');
-    const toast = useToast();
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          // CSRFトークンの取得
-          const csrfResponse = await axios.get('http://localhost:8000/api/csrf-cookie');
-          const csrfToken = csrfResponse.data.csrfToken;
-          setCsrfToken(csrfToken);
-  
-          // レシピデータの取得
-          const dishResponse = await axios.get(`http://localhost:8000/api/edit/${dishId}`);
-          const dishData = dishResponse.data;
-  
-          // 材料データの取得
-          const ingredientsResponse = await axios.get(`http://localhost:8000/api/recipes/${dishId}/ingredients`);
-          const ingredientsData: Ingredient[] = ingredientsResponse.data.ingredients;
-  
-          // フォームデータのセット
-          setFormData({
-            ...dishData,
-            ingredients: ingredientsData.map((ingredient) => ingredient.name),
-          });
-  
-          console.log(formData); // setFormDataが完了した後にログを出力
-        } catch (error) {
-          console.error('データの取得エラー:', error);
-        }
-      };
-  
-      fetchData();
-    }, [dishId]);
+  dishId: string;
+  [key: string]: string | undefined;
+}
+
+interface Ingredient {
+  id: number;
+  name: string;
+}
+
+interface DishData {
+  name: string;
+  description: string;
+  image_file: File | undefined;
+  image_path: string | null; // 追加: 画像のパス
+  reference_url: string;
+  user_id: string | null;
+  ingredients: string[];
+  genre_id: number | null;
+  category_id: number | null;
+}
+
+export const EditDish: React.FC = () => {
+  const { dishId } = useParams<DishParams>();
+  const [formData, setFormData] = useState<DishData>({
+    name: '',
+    description: '',
+    image_file: undefined,
+    image_path: null, // 追加: 画像のパス
+    reference_url: '',
+    user_id: null,
+    ingredients: [],
+    genre_id: null,
+    category_id: null,
+  });
+  const navigate = useNavigate();
+  const [csrfToken, setCsrfToken] = useState('');
+  const toast = useToast();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const csrfResponse = await axios.get('http://localhost:8000/api/csrf-cookie');
+        const csrfToken = csrfResponse.data.csrfToken;
+        setCsrfToken(csrfToken);
+
+        const [dishResponse, ingredientsResponse] = await Promise.all([
+          axios.get(`http://localhost:8000/api/edit/${dishId}`),
+          axios.get(`http://localhost:8000/api/recipes/${dishId}/ingredients`),
+        ]);
+
+        const dishData = dishResponse.data;
+        const ingredientsData: Ingredient[] = ingredientsResponse.data.ingredients;
+
+        setFormData({
+          ...dishData,
+          ingredients: ingredientsData.map((ingredient) => ingredient.name),
+        });
+      } catch (error) {
+        console.error('データの取得エラー:', error);
+      }
+    };
+
+    fetchData();
+  }, [dishId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    setFormData((prevData) => ({ ...prevData, image_file: selectedFile }));
+    if (selectedFile) {
+      setFormData((prevData) => ({ ...prevData, image_file: selectedFile }));
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-      const { name, value } = e.target;
-    
-      if (name === 'genre') {
-        // ジャンルごとの処理...
-      } else if (name === 'category') {
-        // カテゴリーごとの処理...
-      } else {
-        setFormData((prevData) => ({ ...prevData, [name]: value || '' }));
-      }
-    };
-    
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    if (name === 'genre_id' || name === 'category_id') {
+      setFormData((prevData) => ({ ...prevData, [name]: value ? parseInt(value, 10) : null }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value || '' }));
+    }
+  };
+
+  useEffect(() => {
+    console.log('Updated FormData:', formData);
+  }, [formData]);
+
   const handleAddIngredient = () => {
     setFormData((prevData) => ({
       ...prevData,
@@ -119,26 +122,59 @@ interface DishParams {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('description', formData.description);
-    formDataToSend.append('image_file', formData.image_file as File);
-    formDataToSend.append('reference_url', formData.reference_url);
-    formDataToSend.append('user_id', formData.user_id as string);
-    formDataToSend.append('genre_id', formData.genre_id?.toString() || '');
-    formDataToSend.append('category_id', formData.category_id?.toString() || '');
-
-    const ingredientsData = formData.ingredients;
-    formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
-
     try {
-      const response = await axios.put(`http://localhost:8000/api/edit/${dishId}`, formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-CSRF-TOKEN': csrfToken,
-        },
-        withCredentials: true,
-      });
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      const xsrfToken = getCookie('XSRF-TOKEN');
+      console.log('XSRF Token:', xsrfToken);
+
+      let imagePath = formData.image_path;
+
+      if (formData.image_file) {
+        const imageFormData = new FormData();
+        imageFormData.append('image_file', formData.image_file);
+
+        const imageUploadResponse = await axios.post(
+          'http://localhost:8000/api/upload-image',
+          imageFormData,
+          {
+            headers: {
+              'X-XSRF-TOKEN': xsrfToken,
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          }
+        );
+
+        imagePath = imageUploadResponse.data.image_path;
+      }
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('image_path', imagePath || '');
+      formDataToSend.append('reference_url', formData.reference_url);
+      formDataToSend.append('user_id', formData.user_id as string);
+      formDataToSend.append('genre_id', formData.genre_id !== null ? String(formData.genre_id) : '');
+      formDataToSend.append(
+        'category_id',
+        formData.category_id !== null ? String(formData.category_id) : ''
+      );
+
+      const ingredientsData = formData.ingredients;
+      formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
+
+      const response = await axios.put(
+        `http://localhost:8000/api/update/${dishId}`,
+        formDataToSend,
+        {
+          headers: {
+            'X-XSRF-TOKEN': xsrfToken,
+            'Content-Type': 'application/json',  // Content-Type を設定
+
+          },
+          withCredentials: true,
+        }
+      );
 
       if (response.status === 200) {
         console.log('フォームの更新が成功しました');
@@ -160,6 +196,7 @@ interface DishParams {
       }
     } catch (error) {
       console.error('エラー:', error);
+
       toast({
         title: 'エラーが発生しました',
         description: 'フォームの更新中にエラーが発生しました。',
@@ -169,6 +206,12 @@ interface DishParams {
       });
     }
   };
+
+  function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+  }
 
   return (
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
@@ -187,17 +230,17 @@ interface DishParams {
                 onChange={handleFileChange}
               />
             </FormControl>
-
+  
             <FormControl isRequired mb={4}>
               <FormLabel>料理名</FormLabel>
               <Input
                 type="text"
                 name="name"
-                value={formData.name || ''} 
+                value={formData.name || ''}
                 onChange={handleChange}
               />
             </FormControl>
-
+  
             <FormControl isRequired mb={4}>
               <FormLabel>説明</FormLabel>
               <Textarea
@@ -206,12 +249,12 @@ interface DishParams {
                 onChange={handleChange}
               />
             </FormControl>
-
+  
             <FormControl isRequired mb={4}>
               <FormLabel>ジャンル</FormLabel>
               <Select
-                name="genre"
-                value={formData.genre_id !== null ? String(formData.genre_id) : ""}
+                name="genre_id"
+                value={formData.genre_id !== null ? formData.genre_id : ''}
                 onChange={handleChange}
               >
                 <option value="">ジャンルを選択してください</option>
@@ -220,12 +263,15 @@ interface DishParams {
                 <option value="3">中華</option>
                 <option value="4">その他</option>
               </Select>
+
+
             </FormControl>
+  
             <FormControl isRequired mb={4}>
               <FormLabel>カテゴリー</FormLabel>
               <Select
-                name="category"
-                value={formData.category_id !== null ? String(formData.category_id) : ""}
+                name="category_id"
+                value={formData.category_id !== null ? String(formData.category_id) : ''}
                 onChange={handleChange}
               >
                 <option value="">カテゴリを選択してください</option>
@@ -234,23 +280,25 @@ interface DishParams {
                 <option value="3">汁物</option>
                 <option value="4">その他</option>
               </Select>
+
             </FormControl>
+  
             <Wrap spacing={2} mb={4}>
               {formData.ingredients.map((ingredient, index) => (
                 <WrapItem key={index} width="19.4%">
                   <Flex>
-                  <Input
-                    type="text"
-                    name={`ingredients[${index}]`}
-                    value={String(ingredient) || ''}  
-                    onChange={(e) => {
-                      const updatedIngredients = [...formData.ingredients];
-                      updatedIngredients[index] = e.target.value;
-                      setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
-                    }}
-                    size="sm"
-                    width="100%"
-                  />
+                    <Input
+                      type="text"
+                      name={`ingredients[${index}]`}
+                      value={String(ingredient) || ''}
+                      onChange={(e) => {
+                        const updatedIngredients = [...formData.ingredients];
+                        updatedIngredients[index] = e.target.value;
+                        setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
+                      }}
+                      size="sm"
+                      width="100%"
+                    />
                     <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
                       削除
                     </Button>
@@ -258,6 +306,7 @@ interface DishParams {
                 </WrapItem>
               ))}
             </Wrap>
+  
             <Button
               type="button"
               colorScheme="blue"
@@ -270,7 +319,7 @@ interface DishParams {
             >
               材料を追加
             </Button>
-
+  
             <FormControl mb={4}>
               <FormLabel>参考URL</FormLabel>
               <Input
@@ -280,7 +329,7 @@ interface DishParams {
                 onChange={handleChange}
               />
             </FormControl>
-
+  
             <Button
               type="submit"
               colorScheme="teal"
@@ -297,4 +346,5 @@ interface DishParams {
       </Box>
     </VStack>
   );
+  
 };
