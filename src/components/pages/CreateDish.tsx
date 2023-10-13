@@ -22,7 +22,8 @@ interface FormData {
   description: string;
   genre: string;
   category: string;
-  image_file: File | null;
+  image_file: File | undefined;
+  image_path: string | null;
   reference_url: string;
   user_id: string | null;
   ingredients: string[];
@@ -36,7 +37,8 @@ export const CreateDish = () => {
     description: '',
     genre: '',
     category: '',
-    image_file: null,
+    image_file: undefined,
+    image_path: null,
     reference_url: '',
     user_id: null,
     ingredients: [],
@@ -51,7 +53,7 @@ export const CreateDish = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get('http://localhost:8000/api/csrf-cookie');
+        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie');
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
 
@@ -69,7 +71,8 @@ export const CreateDish = () => {
       description: '',
       genre: '',
       category: '',
-      image_file: null,
+      image_file: undefined,
+      image_path: null,
       reference_url: '',
       user_id: null,
       ingredients: [],
@@ -80,7 +83,9 @@ export const CreateDish = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    setFormData((prevData) => ({ ...prevData, image_file: selectedFile || null }));
+    if (selectedFile) {
+      setFormData((prevData) => ({ ...prevData, image_file: selectedFile }));
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -118,31 +123,62 @@ export const CreateDish = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('description', formData.description);
-    formDataToSend.append('genre', formData.genre);
-    formDataToSend.append('category', formData.category);
-    formDataToSend.append('image_file', formData.image_file || '');
-    formDataToSend.append('reference_url', formData.reference_url);
-    formDataToSend.append('user_id', formData.user_id || '');
-    formDataToSend.append('genre_id', formData.genre_id?.toString() || '');
-    formDataToSend.append('category_id', formData.category_id?.toString() || '');
-
-    const ingredientsData = formData.ingredients;
-    formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
-
     try {
-      const response = await axios.post('http://localhost:8000/api/submitform', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-CSRF-TOKEN': csrfToken,
-        },
-        withCredentials: true,
-      });
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      const xsrfToken = getCookie('XSRF-TOKEN');
+      console.log('XSRF Token:', xsrfToken);
+
+      let imagePath = formData.image_path;
+
+      if (formData.image_file) {
+        const imageFormData = new FormData();
+        imageFormData.append('image_file', formData.image_file);
+
+        const imageUploadResponse = await axios.post(
+          'http://localhost:8000/api/upload-image',
+          imageFormData,
+          {
+            headers: {
+              'X-XSRF-TOKEN': xsrfToken,
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          }
+        );
+
+        imagePath = imageUploadResponse.data.image_path;
+      }
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('image_path', imagePath || '');
+      formDataToSend.append('reference_url', formData.reference_url);
+      formDataToSend.append('user_id', formData.user_id as string);
+      formDataToSend.append('genre_id', formData.genre_id !== null ? String(formData.genre_id) : '');
+      formDataToSend.append(
+        'category_id',
+        formData.category_id !== null ? String(formData.category_id) : ''
+      );
+
+      const ingredientsData = formData.ingredients;
+      formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
+
+      const response = await axios.post(
+        `http://localhost:8000/api/submitform`,
+        formDataToSend,
+        {
+          headers: {
+            'X-XSRF-TOKEN': xsrfToken,
+            'Content-Type': 'application/json',  // Content-Type を設定
+
+          },
+          withCredentials: true,
+        }
+      );
 
       if (response.status === 201) {
-        console.log('フォームの送信が成功しました');
+        console.log('フォームのが登録が成功しました');
         toast({
           title: '登録が完了しました',
           status: 'success',
@@ -151,9 +187,9 @@ export const CreateDish = () => {
         });
         navigate(-1);
       } else {
-        console.error('フォームの送信が失敗しました');
+        console.error('フォームの登録が失敗しました');
         toast({
-          title: '登録失敗しました',
+          title: '更新失敗しました',
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -161,9 +197,10 @@ export const CreateDish = () => {
       }
     } catch (error) {
       console.error('エラー:', error);
+
       toast({
         title: 'エラーが発生しました',
-        description: 'フォームの送信中にエラーが発生しました。',
+        description: 'フォームの更新中にエラーが発生しました。',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -171,6 +208,11 @@ export const CreateDish = () => {
     }
   };
 
+  function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+  }
   return (
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
       <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white" width="90%">

@@ -184,7 +184,7 @@ export const EditDish: React.FC = () => {
           duration: 5000,
           isClosable: true,
         });
-        navigate(`/dish/${dishId}`);
+        navigate(-1);
       } else {
         console.error('フォームの更新が失敗しました');
         toast({
