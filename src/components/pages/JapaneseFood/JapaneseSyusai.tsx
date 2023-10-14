@@ -62,7 +62,6 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
   return (
     <div>
       <Header />
-      <button onClick={handleLogout}>ログアウト</button>
       <GenreButton />
       {/* <Pagination
         currentPage={currentPage}
