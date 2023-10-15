@@ -221,7 +221,7 @@ export const CreateDish = () => {
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
-            <FormControl isRequired mb={4}>
+            <FormControl  mb={4}>
               <FormLabel>画像アップロード</FormLabel>
               <Input
                 type="file"
@@ -241,8 +241,8 @@ export const CreateDish = () => {
               />
             </FormControl>
 
-            <FormControl isRequired mb={4}>
-              <FormLabel>説明</FormLabel>
+            <FormControl mb={4}>
+              <FormLabel>メモ</FormLabel>
               <Textarea
                 name="description"
                 value={formData.description}

@@ -99,13 +99,13 @@ export const Header: React.FC<HeaderProps> = () => {
 
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
           <Box pr={4} onClick={onClickAllMyDishes}>
-            <Link>料理一覧</Link>
+            <Link>すべての料理</Link>
           </Box>
           <Box pr={4} onClick={onClickRandomPage}>
             <Link>ランダムページ</Link>
           </Box>
           <Box pr={4} onClick={onClickCreate}>
-            <Link>新規作成</Link>
+            <Link>新規登録</Link>
           </Box>
         </Flex>
 

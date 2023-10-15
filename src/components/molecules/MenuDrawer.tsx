@@ -20,13 +20,13 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
               TOP
             </Button>
             <Button w="100%" >
-              ユーザー一覧
+              すべての料理
             </Button>
             <Button w="100%" >
               設定
             </Button>
             <Button w="100%" onClick={onClickCreate}>
-              作成
+              新規作成
             </Button>
           </DrawerBody>
         </DrawerContent>
