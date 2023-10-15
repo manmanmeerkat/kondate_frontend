@@ -55,9 +55,9 @@ export const useAllMyDishes = () => {
         });
     }, []);
 
-    const getJapaneseSoup = useCallback(() => {
+    const getJapaneseShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/japanese_soup/")
+        axios.get("http://localhost:8000/api/japanese_shirumono/")
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -100,9 +100,9 @@ export const useAllMyDishes = () => {
         });
     }, []);
 
-    const getWesternSoup = useCallback(() => {
+    const getWesternShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/western_soup/")
+        axios.get("http://localhost:8000/api/western_shirumono/")
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -145,9 +145,9 @@ export const useAllMyDishes = () => {
         });
     }, []);
 
-    const getChineseSoup = useCallback(() => {
+    const getChineseShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/chinese_soup/")
+        axios.get("http://localhost:8000/api/chinese_shirumono/")
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -156,7 +156,7 @@ export const useAllMyDishes = () => {
         });
     }, []);
 
-    return { getDishes, getJapanese, getJapaneseSyusai, getJapaneseFukusai, getJapaneseSoup,
-        getWestern, getWesternSyusai, getWesternFukusai, getWesternSoup, 
-        getChinese, getChineseSoup, getChineseSyusai, getChineseFukusai, loading, dishes }
+    return { getDishes, getJapanese, getJapaneseSyusai, getJapaneseFukusai, getJapaneseShirumono,
+        getWestern, getWesternSyusai, getWesternFukusai, getWesternShirumono, 
+        getChinese, getChineseShirumono, getChineseSyusai, getChineseFukusai, loading, dishes }
 }

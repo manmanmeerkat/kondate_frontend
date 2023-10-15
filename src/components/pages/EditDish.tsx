@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -15,6 +15,12 @@ import {
   VStack,
   Wrap,
   WrapItem,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react';
 
 interface DishParams {
@@ -54,6 +60,8 @@ export const EditDish: React.FC = () => {
   });
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState('');
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+  const leastDestructiveRef = useRef<HTMLButtonElement | null>(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -105,6 +113,12 @@ export const EditDish: React.FC = () => {
   useEffect(() => {
     console.log('Updated FormData:', formData);
   }, [formData]);
+
+  useEffect(() => {
+    if (leastDestructiveRef.current) {
+      leastDestructiveRef.current.focus();
+    }
+  }, [isDeleteAlertOpen]);
 
   const handleAddIngredient = () => {
     setFormData((prevData) => ({
@@ -212,6 +226,57 @@ export const EditDish: React.FC = () => {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(';').shift();
   }
+
+  const handleConfirmDelete = () => {
+    setIsDeleteAlertOpen(true);
+  };
+
+  const handleDelete = async () => {
+    setIsDeleteAlertOpen(false);
+      try {
+        // 以下は削除の処理（サーバーサイドへのリクエスト）です
+        await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+        const xsrfToken = getCookie('XSRF-TOKEN');
+        console.log('XSRF Token:', xsrfToken);
+    
+        const response = await axios.delete(`http://localhost:8000/api/delete/${dishId}`, {
+          headers: {
+            'X-XSRF-TOKEN': xsrfToken,
+          },
+          withCredentials: true,
+        });
+    
+        if (response.status === 200) {
+          console.log('削除が成功しました');
+          toast({
+            title: '削除が完了しました',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          });
+          // 削除成功後、適切なリダイレクトや処理を行う
+          navigate(-1);
+        } else {
+          console.error('削除が失敗しました');
+          toast({
+            title: '削除失敗しました',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        console.error('削除エラー:', error);
+        toast({
+          title: 'エラーが発生しました',
+          description: '削除中にエラーが発生しました。',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    
+  };
 
   return (
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
@@ -341,6 +406,47 @@ export const EditDish: React.FC = () => {
             >
               更新
             </Button>
+            <Button
+        type="button"
+        colorScheme="red"
+        width="100%"
+        fontSize="18px"
+        letterSpacing="1px"
+        borderRadius="base"
+        mt={4}
+        onClick={handleConfirmDelete}
+      >
+        削除
+      </Button>
+
+      {/* 確認のアラート */}
+      <AlertDialog
+  isOpen={isDeleteAlertOpen}
+  leastDestructiveRef={leastDestructiveRef}
+  onClose={() => setIsDeleteAlertOpen(false)}
+>
+  <AlertDialogOverlay>
+    <AlertDialogContent>
+      <AlertDialogHeader fontSize="lg" fontWeight="bold">
+        削除の確認
+      </AlertDialogHeader>
+
+      <AlertDialogBody>
+        本当に削除しますか？
+      </AlertDialogBody>
+
+      <AlertDialogFooter>
+          <Button onClick={() => setIsDeleteAlertOpen(false)}>
+            キャンセル
+          </Button>
+          <Button ref={leastDestructiveRef} colorScheme="red" onClick={handleDelete} ml={3}>
+            削除
+          </Button>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialogOverlay>
+</AlertDialog>
+
           </Flex>
         </form>
       </Box>

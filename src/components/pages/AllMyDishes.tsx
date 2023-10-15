@@ -29,7 +29,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { getDishes, dishes, loading } = useAllMyDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { getDish, dishData } = useDishData();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch();
+  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish");
 
   useEffect(() => {
     getDish();

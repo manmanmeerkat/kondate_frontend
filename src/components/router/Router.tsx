@@ -11,13 +11,13 @@ import { JapaneseSyusai } from "../pages/JapaneseFood/JapaneseSyusai";
 import { JapaneseShirumono } from "../pages/JapaneseFood/JapaneseShirumono";
 import { Western } from "../pages/WesternFood/Western";
 import { WesternSyusai } from "../pages/WesternFood/WesternSyusai";
-import { WesternFukusai } from "../pages/WesternFood/WesternFukusai";
 import { WesternShirumono } from "../pages/WesternFood/WesternShirumono";
 import { Chinese } from "../pages/ChineseFood/Chinese";
 import { ChineseSyusai } from "../pages/ChineseFood/ChineseSyusai";
 import { ChineseFukusai } from "../pages/ChineseFood/ChineseFukusai";
 import { ChineseShirumono } from "../pages/ChineseFood/ChineseShirumono";
 import { EditDish } from "../pages/EditDish";
+import { WesternFukusai } from "../pages/WesternFood/WesternFukusai";
 
 export const Router = memo(() => {
     return (
@@ -28,7 +28,7 @@ export const Router = memo(() => {
             <Route path="/all_my_dishes" element={<AllMyDishes />}/>
             <Route path="/create" element={<CreateDish />}/>
             <Route path="/edit/:dishId" element={<EditDish />} />
-            <Route path="/all_my_japanese" element={<Japanese />}/>
+            <Route path="/all_my_japanese_recipes" element={<Japanese />}/>
             <Route path="all_my_japanese_syusai" element={<JapaneseSyusai />}/>
             <Route path="/all_my_japanese_fukusai" element={<JapaneseFukusai />}/>
             <Route path="/all_my_japanese_shirumono" element={<JapaneseShirumono />}/>

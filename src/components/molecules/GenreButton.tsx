@@ -22,7 +22,7 @@ export const GenreButton = memo(() => {
           和食
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => onGenreClick("all_my_japanese")}>全ての和食</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_japanese_recipes")}>全ての和食</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_japanese_syusai")}>主菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_japanese_fukusai")}>副菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_japanese_shirumono")}>汁物</MenuItem>

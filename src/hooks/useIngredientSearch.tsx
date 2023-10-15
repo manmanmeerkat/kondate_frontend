@@ -1,8 +1,8 @@
-// useIngredientSearch.js
+// useIngredientSearch.tsx
 import { useState } from 'react';
 import { Dish } from '../types/Dish';
 
-export const useIngredientSearch = () => {
+export const useIngredientSearch = (endpoint: string) => {
   const [searchedRecipes, setSearchedRecipes] = useState<Dish[]>([]);
 
   const handleIngredientSearch = async (searchIngredient: string): Promise<Dish[]> => {
@@ -12,12 +12,12 @@ export const useIngredientSearch = () => {
         setSearchedRecipes([]);
         return [];
       } else {
-        const response = await fetch(`http://localhost:8000/api/recipes/search?ingredient=${searchIngredient}`);
+        const response = await fetch(`http://localhost:8000/api/${endpoint}/search?ingredient=${searchIngredient}`);
         const data = await response.json();
   
         if (response.ok) {
           setSearchedRecipes(data.recipes);
-          return data.recipes; // dataが直接配列の場合
+          return data.recipes;
         } else {
           console.error("検索に失敗しました。");
           return [];

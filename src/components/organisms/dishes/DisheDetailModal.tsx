@@ -25,7 +25,9 @@ interface DishDetailModalProps {
   dish: {
     id: number;
     name: string;
-    genre: string;
+    genre_id: number;
+    category_id: number;
+    memo: string;
     reference_url: string;
   } | null;
   isOpen: boolean;
@@ -37,7 +39,9 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const { dish, isOpen, id, onClose } = props;
   const { showMessage } = useMessage();
   const [name, setName] = useState<string>("");
-  const [genre, setGenre] = useState<string>("");
+  const [genre, setGenre] = useState<number>();
+  const [category, setCategory] = useState<number>();
+  const [memo, setMemo] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -59,10 +63,43 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     }
   };
 
+  const convertGenreToString = (genre_id:number) => {
+    switch (genre_id) {
+      case 1:
+        return '和食';
+      case 2:
+        return '洋食';
+      case 3:
+        return '中華';
+      default:
+        return 'その他';
+    }
+  };
+
+  const convertCategoryToString = (category: number | undefined): string => {
+    if (category === undefined) {
+      return '';
+    }
+  
+    switch (category) {
+      case 1:
+        return '主菜';
+      case 2:
+        return '副菜';
+      case 3:
+        return '汁物';
+      default:
+        return '';
+    }
+  };
+  
   useEffect(() => {
     setName(dish?.name || "");
-    setGenre(dish?.genre || "");
+    setGenre(dish?.genre_id || undefined);
+    setCategory(dish?.category_id || undefined);
+    setMemo(dish?.memo || "");
     setUrl(dish?.reference_url || "");
+    console.log(dish);
   }, [dish]);
 
   useEffect(() => {
@@ -73,20 +110,6 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
       setLoading(true);
     }
   }, [isOpen, id]);
-
-  const deleteUser = (id: number) => {
-    axios
-      .delete(`http://localhost:8000/api/menu/${id}`)
-      .then((response) => {
-        console.log(response);
-        showMessage({ title: "削除しました", status: "error" });
-        onClose();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      })
-      .catch((error) => console.error(error));
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -132,7 +155,15 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
                 </FormControl>
                 <FormControl>
                   <FormLabel>ジャンル</FormLabel>
-                  <Input value={genre} readOnly />
+                  <Input value={genre !== undefined ? convertGenreToString(genre) : ''} readOnly />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>カテゴリー</FormLabel>
+                  <Input value={convertCategoryToString(category)} readOnly />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>メモ</FormLabel>
+                  <Textarea value={memo} readOnly />
                 </FormControl>
                 <FormControl>
                   <FormLabel>参考URL</FormLabel>
@@ -150,13 +181,9 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
                   )}
                 </FormControl>
                 <Stack direction="row" spacing={4} justify="space-between" align="center">
-                  <Button colorScheme="red" size="xs" onClick={() => deleteUser(dish!.id)}>
-                    削除
-                  </Button>
                   <Button leftIcon={<EditIcon />} onClick={handleEdit}>
                     編集
                   </Button>
-                  <Button type="submit">更新</Button>
                 </Stack>
               </form>
             </Stack>
