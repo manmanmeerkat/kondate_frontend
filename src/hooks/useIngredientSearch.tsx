@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Dish } from '../types/Dish';
 
-export const useIngredientSearch = (endpoint: string) => {
+export const useIngredientSearch = (endpoint: string, user_id: number | undefined) => {
   const [searchedRecipes, setSearchedRecipes] = useState<Dish[]>([]);
 
   const handleIngredientSearch = async (searchIngredient: string): Promise<Dish[]> => {
@@ -12,14 +12,20 @@ export const useIngredientSearch = (endpoint: string) => {
         setSearchedRecipes([]);
         return [];
       } else {
-        const response = await fetch(`http://localhost:8000/api/${endpoint}/search?ingredient=${searchIngredient}`);
-        const data = await response.json();
-  
-        if (response.ok) {
-          setSearchedRecipes(data.recipes);
-          return data.recipes;
+        // ユーザーがログインしている場合にのみ検索を行う
+        if (user_id) {
+          const response = await fetch(`http://localhost:8000/api/${endpoint}/search?ingredient=${searchIngredient}&user_id=${user_id}`);
+          const data = await response.json();
+
+          if (response.ok) {
+            setSearchedRecipes(data.recipes);
+            return data.recipes;
+          } else {
+            console.error("検索に失敗しました。");
+            return [];
+          }
         } else {
-          console.error("検索に失敗しました。");
+          console.error("ユーザーがログインしていません。");
           return [];
         }
       }

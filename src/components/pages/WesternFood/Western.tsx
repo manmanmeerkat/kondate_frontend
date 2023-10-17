@@ -22,14 +22,18 @@ import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
-
+import useFetchUserData from "../../../hooks/useFetchUserData";
+import { useWesternRecipes } from "../../../hooks/useWesternRecipes";
 interface JapaneseProps {}
 
 export const Western: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getWestern, dishes, loading } = useAllMyDishes();
+  const { WesternRecipes } = useWesternRecipes();
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("western-food");
+  const { user} = useFetchUserData();
+
+  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("western-food", user?.id);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 1ページあたりの項目数
@@ -109,7 +113,7 @@ export const Western: React.FC<JapaneseProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? dishes : japaneseRecipes).map((recipe: JapaneseRecipe) => (
+              {(searchKeyword.trim() === "" ? WesternRecipes : japaneseRecipes).map((recipe: JapaneseRecipe) => (
                 <WrapItem key={recipe.id} mx="auto">
                   <DishCard
                     id={recipe.id}

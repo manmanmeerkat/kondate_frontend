@@ -35,5 +35,6 @@ export const useDishData = () => {
     }
   }, []);
 
+  console.log(dishData);
   return { getDish, dishData };
 };

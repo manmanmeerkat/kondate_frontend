@@ -21,6 +21,7 @@ import { Dish } from "../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 import { Header } from "../organisms/layout/Header";
+import useFetchUserData from "../../hooks/useFetchUserData";
 
 interface AllMyDishesProps {}
 
@@ -29,7 +30,8 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { getDishes, dishes, loading } = useAllMyDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { getDish, dishData } = useDishData();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish");
+  const { user} = useFetchUserData();
+  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish",user?.id);
 
   useEffect(() => {
     getDish();
@@ -118,7 +120,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         </Wrap>
       )}
       <DishDetailModal
-        dish={selectedDish as { id: number; name: string; genre: string; reference_url: string } | null}
+        dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; memo: string; reference_url: string } | null}
         isOpen={isOpen}
         onClose={onClose}
         id={selectedDishId}

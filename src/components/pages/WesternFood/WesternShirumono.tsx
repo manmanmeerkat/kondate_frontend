@@ -1,4 +1,4 @@
-// Japanese.tsx
+// AllMyDishes.tsx
 import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   Center,
@@ -13,71 +13,50 @@ import {
 } from "@chakra-ui/react";
 import { useAllMyDishes } from "../../../hooks/useAllMyDishes";
 import { useSelectDish } from "../../../hooks/useSelectDish";
+import { useDishData } from "../../../hooks/useDishData";
 import { useIngredientSearch } from "../../../hooks/useIngredientSearch";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
-import { GenreButton } from "../../molecules/GenreButton";
-import { Header } from "../../organisms/layout/Header";
-import { DishCard } from "../../organisms/dishes/DishCard";
-import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
+import { DishCard } from "../../organisms/dishes/DishCard";
+import { Header } from "../../organisms/layout/Header";
+import { GenreButton } from "../../molecules/GenreButton";
+import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
+import { useWesternSyusai } from "../../../hooks/useWesternSyusai";
+import useFetchUserData from "../../../hooks/useFetchUserData";
+import { useWesternShirumono } from "../../../hooks/useWesternShirumono";
 
-interface JapaneseProps {}
 
-export const WesternShirumono: React.FC<JapaneseProps> = memo(() => {
+interface AllMyDishesProps {}
+
+export const WesternShirumono: React.FC<AllMyDishesProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getWesternShirumono, dishes, loading } = useAllMyDishes();
+  const { dishes, loading } = useAllMyDishes();
+  const { WesternShirumono } = useWesternShirumono()
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("western-shirumono");
-  const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // 1ページあたりの項目数
-
-  const totalPages = Math.ceil(dishes.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const displayedUsers = dishes.slice(startIndex, endIndex);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  const { getDish, dishData } = useDishData();
+  const { user} = useFetchUserData();
+  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("western-shirumono",user?.id);
 
   useEffect(() => {
-    // ユーザー選択が変更された場合の処理
-  }, [selectedDish]);
-
-  useEffect(() => {
-    getWesternShirumono();
+    getDish();
   }, []);
+ 
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [japaneseRecipes, setJapaneseRecipes] = useState<JapaneseRecipe[]>([]);
+  const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
-
-  const handleSearchButtonClick = useCallback(async () => {
-    const results = await handleIngredientSearch(searchKeyword);
-    if (results.length === 0 && searchKeyword.trim() !== "") {
-      // 該当するデータがない場合の処理
-      setNoSearchResults(true);
-      console.log("該当するデータがありません");
-    } else {
-      setNoSearchResults(false);
-      setJapaneseRecipes(results);
-    }
-  }, [handleIngredientSearch, searchKeyword]);
-
+console.log(WesternShirumono);
   const onClickDish = useCallback(
     (id: number) => {
       onSelectDish({ id, dishes, onOpen });
-      setSelectedDishId(id); // ユーザーIDを保持
+      setSelectedDishId(id);
     },
     [dishes, onSelectDish, onOpen]
   );
 
-
+  const handleSearchButtonClick = useCallback(async () => {
+    const results = await handleIngredientSearch(searchIngredient);
+    setNoSearchResults(results.length === 0 && searchIngredient.trim() !== "");
+  }, [handleIngredientSearch, searchIngredient]);
 
   return (
     <div>
@@ -85,9 +64,9 @@ export const WesternShirumono: React.FC<JapaneseProps> = memo(() => {
       <GenreButton />
       <InputGroup mt={4} mx="auto" w={{ base: "80%", md: "60%" }}>
         <Input
-          placeholder="材料から検索"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
+          placeholder="材料で検索"
+          value={searchIngredient}
+          onChange={(e) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
           {/* 検索ボタン */}
@@ -98,34 +77,54 @@ export const WesternShirumono: React.FC<JapaneseProps> = memo(() => {
         </InputRightElement>
       </InputGroup>
       {loading ? (
-        <Center h="100vh">
+        <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Spinner />
         </Center>
       ) : (
-        <>
+        <Wrap p={{ base: 4, md: 10 }} justify="center">
           {noSearchResults ? (
-            <Center h="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+            <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
               <p>該当するデータがありません。</p>
             </Center>
           ) : (
-            <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? dishes : japaneseRecipes).map((recipe: JapaneseRecipe) => (
-                <WrapItem key={recipe.id} mx="auto">
-                  <DishCard
-                    id={recipe.id}
-                    imageUrl={recipe.image_path}
-                    menuType="Japanese"
-                    dishName={recipe.name}
-                    onClick={onClickDish}
-                  />
-                </WrapItem>
-              ))}
-            </Wrap>
+            <>
+              {searchedRecipes.length > 0 ? (
+                searchedRecipes.map((dish) => (
+                  <WrapItem key={dish.id} mx="auto">
+                    <DishCard
+                      id={dish.id}
+                      imageUrl={dish.image_path}
+                      menuType="Japanese"
+                      dishName={dish.name}
+                      onClick={onClickDish}
+                    />
+                  </WrapItem>
+                ))
+              ) : (
+                WesternShirumono.length > 0 ? (
+                  WesternShirumono.map((dish: any) => (
+                    <WrapItem key={dish.id} mx="auto">
+                      <DishCard
+                        id={dish.id}
+                        imageUrl={dish.image_path}
+                        menuType="Japanese"
+                        dishName={dish.name}
+                        onClick={onClickDish}
+                      />
+                    </WrapItem>
+                  ))
+                ) : (
+                  <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                    <Spinner />
+                  </Center>
+                )
+              )}
+            </>
           )}
-        </>
+        </Wrap>
       )}
       <DishDetailModal
-        dish={selectedDish as { id: number; name: string;  genre_id: number; category_id: number; memo: string; reference_url: string } | null}
+        dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; memo: string; reference_url: string } | null}
         isOpen={isOpen}
         onClose={onClose}
         id={selectedDishId}
