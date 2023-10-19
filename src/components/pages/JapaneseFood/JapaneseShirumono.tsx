@@ -32,7 +32,7 @@ export const JapaneseShirumono: React.FC<JapaneseProps> = memo(() => {
   const { getJapaneseShirumono, dishes, loading } = useAllMyDishes();
   const { JapaneseShirumono } = useJapaneseShirumono();
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { user} = useFetchUserData();
+  const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("japanese-shirumono", user?.id);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);

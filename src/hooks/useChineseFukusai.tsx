@@ -1,40 +1,45 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import useFetchUserData from './useFetchUserData';  // useFetchUserData フックをインポート
 
-export const useChineseFukusai = () => { // ここを変更
-  const [ChineseFukusai, setChineseFukusai] = useState([]); // ここを変更
+export const useChineseFukusai = () => {
+  const [ChineseFukusai, setChineseFukusai] = useState([]);
+  const { user } = useFetchUserData();  // useFetchUserData フックを使ってユーザー情報を取得
 
-  // 中国料理の副菜情報を取得
-  const getChineseFukusai = useCallback(() => { // ここを変更
-    // トークンをローカルストレージから取得
-    const token = localStorage.getItem('token');
+  // 中国料理のレシピ情報を取得
+  const getChineseFukusai = useCallback(() => {
+    // ログインユーザーのユーザーID (userId) を取得
+    const userId = user?.id;  // もしくは user?.user_id に変更するか、実際のデータ構造に合わせて変更
+    console.log(userId);
 
-    // トークンが存在するかチェック
-    if (token) {
-      // ログインユーザーのユーザーID (userId) を取得
-      const userId = localStorage.getItem('userId'); // またはセッションから取得
-      console.log(userId);
+    // ユーザーIDが存在するかチェック
+    if (userId) {
+      // トークンをローカルストレージから取得
+      const token = localStorage.getItem('token');
 
-      axios.get(`http://localhost:8000/api/user/${userId}/all-my-chinese-fukusai`, { // ここを変更
-        headers: {
-          Authorization: `Bearer ${token}` // トークンをヘッダーに追加
-        }
-      })
-      .then(response => {
-        // レスポンスのdataプロパティ内の中国料理の副菜情報を取得
-        const ChineseFukusai = response.data; // ここを変更
+      // トークンが存在するかチェック
+      if (token) {
+        axios.get(`http://localhost:8000/api/user/${userId}/all-my-chinese-fukusai`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          // レスポンスのdataプロパティ内の中国料理のレシピ情報を取得
+          const ChineseFukusai = response.data;
 
-        // 中国料理の副菜情報をステートにセット
-        setChineseFukusai(ChineseFukusai); // ここを変更
-      })
-      .catch(error => console.error('中国料理の副菜情報の取得エラー:', error));
+          // 中国料理のレシピ情報をステートにセット
+          setChineseFukusai(ChineseFukusai);
+        })
+        .catch(error => console.error('中国料理のレシピ情報の取得エラー:', error));
+      }
     }
-  }, []);
+  }, [user]);
 
-  // コンポーネントがマウントされたときに中国料理の副菜情報を取得
+  // コンポーネントがマウントされたときに中国料理のレシピ情報を取得
   useEffect(() => {
     getChineseFukusai();
   }, [getChineseFukusai]);
 
-  return { ChineseFukusai }; // ここを変更
+  return { ChineseFukusai };
 };

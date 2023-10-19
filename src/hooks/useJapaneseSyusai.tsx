@@ -1,39 +1,46 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import useFetchUserData from './useFetchUserData';
 
-export const useJapaneseSyusai = () => { // ここを変更
-  const [JapaneseSyusai, setJapaneseSyusai] = useState([]); // ここを変更
+export const useJapaneseSyusai = () => {
+  const [JapaneseSyusai, setJapaneseSyusai] = useState([]);
+  const { user } = useFetchUserData();  // useFetchUserData フックを使ってユーザー情報を取得
 
-  // 和食の主菜情報を取得
-  const getJapaneseSyusai = useCallback(() => { // ここを変更
+
+const getJapaneseSyusai = useCallback(() => {
+  // ログインユーザーのユーザーID (userId) を取得
+  const userId = user?.id;  // もしくは user?.user_id に変更するか、実際のデータ構造に合わせて変更
+  console.log(userId);
+
+  // ユーザーIDが存在するかチェック
+  if (userId) {
     // トークンをローカルストレージから取得
     const token = localStorage.getItem('token');
 
     // トークンが存在するかチェック
     if (token) {
-      // ログインユーザーのユーザーID (userId) を取得
-      const userId = localStorage.getItem('userId'); // またはセッションから取得
-
-      axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-syusai`, { // ここを変更
+      axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-syusai`, {
         headers: {
-          Authorization: `Bearer ${token}` // トークンをヘッダーに追加
+          Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        // レスポンスのdataプロパティ内の和食の主菜情報を取得
-        const JapaneseSyusai = response.data; // ここを変更
+        // レスポンスのdataプロパティ内の中国料理のレシピ情報を取得
+        const JapaneseSyusai = response.data;
 
-        // 和食の主菜情報をステートにセット
-        setJapaneseSyusai(JapaneseSyusai); // ここを変更
+        // 中国料理のレシピ情報をステートにセット
+        setJapaneseSyusai(JapaneseSyusai);
       })
-      .catch(error => console.error('和食の主菜情報の取得エラー:', error));
+      .catch(error => console.error('中国料理のレシピ情報の取得エラー:', error));
     }
-  }, []);
+  }
+}, [user]);
 
-  // コンポーネントがマウントされたときに和食の主菜情報を取得
+
+  // コンポーネントがマウントされたときに中国料理のレシピ情報を取得
   useEffect(() => {
     getJapaneseSyusai();
   }, [getJapaneseSyusai]);
 
-  return { JapaneseSyusai }; // ここを変更
+  return { JapaneseSyusai };
 };

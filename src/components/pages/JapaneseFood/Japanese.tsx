@@ -30,8 +30,8 @@ interface AllMyDishesProps {}
 export const Japanese: React.FC<AllMyDishesProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { dishes, loading } = useAllMyDishes();
-  const { japaneseRecipes } = useJapaneseRecipes()
-  const { user} = useFetchUserData();
+  const { JapaneseRecipes } = useJapaneseRecipes()
+  const { user } = useFetchUserData();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { getDish, dishData } = useDishData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("Japanese-food",user?.id);
@@ -43,7 +43,7 @@ export const Japanese: React.FC<AllMyDishesProps> = memo(() => {
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
-console.log(japaneseRecipes);
+console.log(JapaneseRecipes);
   const onClickDish = useCallback(
     (id: number) => {
       onSelectDish({ id, dishes, onOpen });
@@ -100,8 +100,8 @@ console.log(japaneseRecipes);
                   </WrapItem>
                 ))
               ) : (
-                japaneseRecipes.length > 0 ? (
-                  japaneseRecipes.map((dish: any) => (
+                JapaneseRecipes.length > 0 ? (
+                  JapaneseRecipes.map((dish: any) => (
                     <WrapItem key={dish.id} mx="auto">
                       <DishCard
                         id={dish.id}

@@ -1,40 +1,46 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import useFetchUserData from './useFetchUserData';
 
-export const useWesternFukusai = () => { // ここを変更
-  const [WesternFukusai, setWesternFukusai] = useState([]); // ここを変更
+export const useWesternFukusai = () => {
+  const [WesternFukusai, setWesternFukusai] = useState([]);
+  const { user } = useFetchUserData();  // useFetchUserData フックを使ってユーザー情報を取得
 
-  // 洋食の副菜情報を取得
-  const getWesternFukusai = useCallback(() => { // ここを変更
+
+const getWesternFukusai = useCallback(() => {
+  // ログインユーザーのユーザーID (userId) を取得
+  const userId = user?.id;  // もしくは user?.user_id に変更するか、実際のデータ構造に合わせて変更
+  console.log(userId);
+
+  // ユーザーIDが存在するかチェック
+  if (userId) {
     // トークンをローカルストレージから取得
     const token = localStorage.getItem('token');
 
     // トークンが存在するかチェック
     if (token) {
-      // ログインユーザーのユーザーID (userId) を取得
-      const userId = localStorage.getItem('userId'); // またはセッションから取得
-      console.log(userId);
-
-      axios.get(`http://localhost:8000/api/user/${userId}/all-my-western-fukusai`, { // ここを変更
+      axios.get(`http://localhost:8000/api/user/${userId}/all-my-western-fukusai`, {
         headers: {
-          Authorization: `Bearer ${token}` // トークンをヘッダーに追加
+          Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        // レスポンスのdataプロパティ内の洋食の副菜情報を取得
-        const WesternFukusai = response.data; // ここを変更
+        // レスポンスのdataプロパティ内の中国料理のレシピ情報を取得
+        const WesternFukusai = response.data;
 
-        // 洋食の副菜情報をステートにセット
-        setWesternFukusai(WesternFukusai); // ここを変更
+        // 中国料理のレシピ情報をステートにセット
+        setWesternFukusai(WesternFukusai);
       })
-      .catch(error => console.error('洋食の副菜情報の取得エラー:', error));
+      .catch(error => console.error('中国料理のレシピ情報の取得エラー:', error));
     }
-  }, []);
+  }
+}, [user]);
 
-  // コンポーネントがマウントされたときに洋食の副菜情報を取得
+
+  // コンポーネントがマウントされたときに中国料理のレシピ情報を取得
   useEffect(() => {
     getWesternFukusai();
   }, [getWesternFukusai]);
 
-  return { WesternFukusai }; // ここを変更
+  return { WesternFukusai };
 };

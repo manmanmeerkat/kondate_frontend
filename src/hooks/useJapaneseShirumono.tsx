@@ -1,40 +1,46 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import useFetchUserData from './useFetchUserData';
 
-export const useJapaneseShirumono = () => { // ここを変更
-  const [JapaneseShirumono, setJapaneseShirumono] = useState([]); // ここを変更
+export const useJapaneseShirumono = () => {
+  const [JapaneseShirumono, setJapaneseShirumono] = useState([]);
+  const { user } = useFetchUserData();  // useFetchUserData フックを使ってユーザー情報を取得
 
-  // 和食の汁物情報を取得
-  const getJapaneseShirumono = useCallback(() => { // ここを変更
+
+const getJapaneseShirumono = useCallback(() => {
+  // ログインユーザーのユーザーID (userId) を取得
+  const userId = user?.id;  // もしくは user?.user_id に変更するか、実際のデータ構造に合わせて変更
+  console.log(userId);
+
+  // ユーザーIDが存在するかチェック
+  if (userId) {
     // トークンをローカルストレージから取得
     const token = localStorage.getItem('token');
 
     // トークンが存在するかチェック
     if (token) {
-      // ログインユーザーのユーザーID (userId) を取得
-      const userId = localStorage.getItem('userId'); // またはセッションから取得
-      console.log(userId);
-
-      axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-shirumono`, { // ここを変更
+      axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-shirumono`, {
         headers: {
-          Authorization: `Bearer ${token}` // トークンをヘッダーに追加
+          Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        // レスポンスのdataプロパティ内の和食の汁物情報を取得
-        const JapaneseShirumono = response.data; // ここを変更
+        // レスポンスのdataプロパティ内の中国料理のレシピ情報を取得
+        const JapaneseShirumono = response.data;
 
-        // 和食の汁物情報をステートにセット
-        setJapaneseShirumono(JapaneseShirumono); // ここを変更
+        // 中国料理のレシピ情報をステートにセット
+        setJapaneseShirumono(JapaneseShirumono);
       })
-      .catch(error => console.error('和食の汁物情報の取得エラー:', error));
+      .catch(error => console.error('中国料理のレシピ情報の取得エラー:', error));
     }
-  }, []);
+  }
+}, [user]);
 
-  // コンポーネントがマウントされたときに和食の汁物情報を取得
+
+  // コンポーネントがマウントされたときに中国料理のレシピ情報を取得
   useEffect(() => {
     getJapaneseShirumono();
   }, [getJapaneseShirumono]);
 
-  return { JapaneseShirumono }; // ここを変更
+  return { JapaneseShirumono };
 };

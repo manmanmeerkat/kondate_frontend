@@ -1,40 +1,46 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import useFetchUserData from './useFetchUserData';
 
-export const useJapaneseFukusai = () => { // ここを変更
-  const [JapaneseFukusai, setJapaneseFukusai] = useState([]); // ここを変更
+export const useJapaneseFukusai = () => {
+  const [JapaneseFukusai, setJapaneseFukusai] = useState([]);
+  const { user } = useFetchUserData();  // useFetchUserData フックを使ってユーザー情報を取得
 
-  // 和食の副菜情報を取得
-  const getJapaneseFukusai = useCallback(() => { // ここを変更
+
+const getJapaneseFukusai = useCallback(() => {
+  // ログインユーザーのユーザーID (userId) を取得
+  const userId = user?.id;  // もしくは user?.user_id に変更するか、実際のデータ構造に合わせて変更
+  console.log(userId);
+
+  // ユーザーIDが存在するかチェック
+  if (userId) {
     // トークンをローカルストレージから取得
     const token = localStorage.getItem('token');
 
     // トークンが存在するかチェック
     if (token) {
-      // ログインユーザーのユーザーID (userId) を取得
-      const userId = localStorage.getItem('userId'); // またはセッションから取得
-      console.log(userId);
-
-      axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-fukusai`, { // ここを変更
+      axios.get(`http://localhost:8000/api/user/${userId}/all-my-japanese-fukusai`, {
         headers: {
-          Authorization: `Bearer ${token}` // トークンをヘッダーに追加
+          Authorization: `Bearer ${token}`
         }
       })
       .then(response => {
-        // レスポンスのdataプロパティ内の和食の副菜情報を取得
-        const JapaneseFukusai = response.data; // ここを変更
+        // レスポンスのdataプロパティ内の中国料理のレシピ情報を取得
+        const JapaneseFukusai = response.data;
 
-        // 和食の副菜情報をステートにセット
-        setJapaneseFukusai(JapaneseFukusai); // ここを変更
+        // 中国料理のレシピ情報をステートにセット
+        setJapaneseFukusai(JapaneseFukusai);
       })
-      .catch(error => console.error('和食の副菜情報の取得エラー:', error));
+      .catch(error => console.error('中国料理のレシピ情報の取得エラー:', error));
     }
-  }, []);
+  }
+}, [user]);
 
-  // コンポーネントがマウントされたときに和食の副菜情報を取得
+
+  // コンポーネントがマウントされたときに中国料理のレシピ情報を取得
   useEffect(() => {
     getJapaneseFukusai();
   }, [getJapaneseFukusai]);
 
-  return { JapaneseFukusai }; // ここを変更
+  return { JapaneseFukusai };
 };

@@ -32,7 +32,7 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
   const { getJapaneseSyusai, dishes, loading } = useAllMyDishes();
   const { JapaneseSyusai } = useJapaneseSyusai();
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { user} = useFetchUserData();
+  const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("japanese-syusai",user?.id);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);

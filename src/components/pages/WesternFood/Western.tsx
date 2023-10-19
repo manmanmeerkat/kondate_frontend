@@ -31,7 +31,7 @@ export const Western: React.FC<JapaneseProps> = memo(() => {
   const { getWestern, dishes, loading } = useAllMyDishes();
   const { WesternRecipes } = useWesternRecipes();
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { user} = useFetchUserData();
+  const { user } = useFetchUserData();
 
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("western-food", user?.id);
   const navigate = useNavigate();
