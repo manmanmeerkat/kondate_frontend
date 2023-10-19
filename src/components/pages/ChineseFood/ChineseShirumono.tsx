@@ -23,14 +23,14 @@ import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
 import useFetchUserData from "../../../hooks/useFetchUserData";
-import { useChineseShirumono } from "../../../hooks/useChineseShirumono";
+import { useChineseShirumono } from "../../../hooks/useFetchChineseData";
 
 interface JapaneseProps {}
 
 export const ChineseShirumono: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getChineseShirumono, dishes, loading } = useAllMyDishes();
-  const { ChineseShirumono } = useChineseShirumono()
+  const { data } = useChineseShirumono()
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("chinese-shirumono", user?.id);
@@ -113,7 +113,7 @@ export const ChineseShirumono: React.FC<JapaneseProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? ChineseShirumono : japaneseRecipes).map((recipe: JapaneseRecipe) => (
+              {(searchKeyword.trim() === "" ? data : japaneseRecipes).map((recipe: JapaneseRecipe) => (
                 <WrapItem key={recipe.id} mx="auto">
                   <DishCard
                     id={recipe.id}

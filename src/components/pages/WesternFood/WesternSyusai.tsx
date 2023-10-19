@@ -23,7 +23,6 @@ import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
 import useFetchUserData from "../../../hooks/useFetchUserData";
-import { useWesternRecipes } from "../../../hooks/useWesternRecipes";
 import { useWesternSyusai } from "../../../hooks/useFetchWesternData";
 interface JapaneseProps {}
 

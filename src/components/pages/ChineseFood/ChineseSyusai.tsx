@@ -23,14 +23,14 @@ import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
 import useFetchUserData from "../../../hooks/useFetchUserData";
-import { useChineseSyusai } from "../../../hooks/useChineseSyusai";
+import { useChineseSyusai } from "../../../hooks/useFetchChineseData";
 
 interface JapaneseProps {}
 
 export const ChineseSyusai: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getChineseSyusai, dishes, loading } = useAllMyDishes();
-  const { ChineseSyusai } = useChineseSyusai()
+  const { data } = useChineseSyusai()
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("chinese-syusai",user?.id);
@@ -113,7 +113,7 @@ export const ChineseSyusai: React.FC<JapaneseProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? ChineseSyusai : japaneseRecipes).map((recipe: JapaneseRecipe) => (
+              {(searchKeyword.trim() === "" ? data : japaneseRecipes).map((recipe: JapaneseRecipe) => (
                 <WrapItem key={recipe.id} mx="auto">
                   <DishCard
                     id={recipe.id}

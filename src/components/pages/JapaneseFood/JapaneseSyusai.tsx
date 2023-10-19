@@ -22,15 +22,15 @@ import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
-import { useJapaneseSyusai } from "../../../hooks/useJapaneseSyusai";
 import useFetchUserData from "../../../hooks/useFetchUserData";
+import { useJapaneseSyusai } from "../../../hooks/useFetchJapaneseData";
 
 interface JapaneseProps {}
 
 export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getJapaneseSyusai, dishes, loading } = useAllMyDishes();
-  const { JapaneseSyusai } = useJapaneseSyusai();
+  const { data } = useJapaneseSyusai();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("japanese-syusai",user?.id);
@@ -113,7 +113,7 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? JapaneseSyusai : japaneseRecipes).map((recipe: JapaneseRecipe) => (
+              {(searchKeyword.trim() === "" ? data : japaneseRecipes).map((recipe: JapaneseRecipe) => (
                 <WrapItem key={recipe.id} mx="auto">
                   <DishCard
                     id={recipe.id}
