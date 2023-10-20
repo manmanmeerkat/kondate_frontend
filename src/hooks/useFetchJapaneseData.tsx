@@ -2,27 +2,25 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import useFetchUserData from './useFetchUserData';
 
-const useFetchJapaneseData = (endpoint:string) => {
-  const [data, setData] = useState([]);
+const useFetchJapaneseData = (endpoint: string) => {
   const { user } = useFetchUserData();
+  const [data, setData] = useState([]);
 
-  const fetchData = useCallback(() => {
-    const userId = user?.id;
-    
-    if (userId) {
+  const fetchData = useCallback(async () => {
+    try {
+      const userId = user?.id;
+      if (!userId) return;
+
       const token = localStorage.getItem('token');
-      if (token) {
-        axios.get(`http://localhost:8000/api/user/${userId}/${endpoint}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(response => {
-          const fetchedData = response.data;
-          setData(fetchedData);
-        })
-        .catch(error => console.error('データの取得エラー:', error));
-      }
+      if (!token) return;
+
+      const response = await axios.get(`http://localhost:8000/api/user/${userId}/${endpoint}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setData(response.data);
+    } catch (error) {
+      console.error('データの取得エラー:', error);
     }
   }, [user, endpoint]);
 
@@ -33,18 +31,9 @@ const useFetchJapaneseData = (endpoint:string) => {
   return { data };
 };
 
-export const useJapaneseSyusai = () => {
-  return useFetchJapaneseData('all-my-japanese-syusai');
-};
+const createFetchHook = (endpoint: string) => () => useFetchJapaneseData(endpoint);
 
-export const useJapaneseShirumono = () => {
-  return useFetchJapaneseData('all-my-japanese-shirumono');
-};
-
-export const useJapaneseFukusai = () => {
-  return useFetchJapaneseData('all-my-japanese-fukusai');
-};
-
-export const useJapaneseRecipes = () => {
-  return useFetchJapaneseData('all-my-japanese-recipes');
-};
+export const useJapaneseSyusai = createFetchHook('all-my-japanese-syusai');
+export const useJapaneseShirumono = createFetchHook('all-my-japanese-shirumono');
+export const useJapaneseFukusai = createFetchHook('all-my-japanese-fukusai');
+export const useJapaneseRecipes = createFetchHook('all-my-japanese-recipes');

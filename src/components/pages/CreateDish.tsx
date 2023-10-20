@@ -47,8 +47,8 @@ export const CreateDish = () => {
   });
 
   const navigate = useNavigate();
-  const [csrfToken, setCsrfToken] = useState('');
   const toast = useToast();
+  const [csrfToken, setCsrfToken] = useState('');
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -66,6 +66,7 @@ export const CreateDish = () => {
 
     fetchCsrfToken();
 
+    // 初期化はここで行う
     setFormData({
       name: '',
       description: '',
@@ -91,20 +92,41 @@ export const CreateDish = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
-    if (name === 'genre') {
-      setFormData((prevData) => ({
-        ...prevData,
-        genre: value,
-        genre_id: value === '和食' ? 1 : value === '洋食' ? 2 : value === '中華' ? 3 : value === 'その他' ? 4 : null,
-      }));
-    } else if (name === 'category') {
-      setFormData((prevData) => ({
-        ...prevData,
-        category: value,
-        category_id: value === '主菜' ? 1 : value === '副菜' ? 2 : value === '汁物' ? 3 : value === 'その他' ? 4 : null,
-      }));
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      genre_id: name === 'genre' ? mapGenreToId(value) : prevData.genre_id,
+      category_id: name === 'category' ? mapCategoryToId(value) : prevData.category_id,
+    }));
+  };
+
+  const mapGenreToId = (genre: string): number | null => {
+    switch (genre) {
+      case '和食':
+        return 1;
+      case '洋食':
+        return 2;
+      case '中華':
+        return 3;
+      case 'その他':
+        return 4;
+      default:
+        return null;
+    }
+  };
+
+  const mapCategoryToId = (category: string): number | null => {
+    switch (category) {
+      case '主菜':
+        return 1;
+      case '副菜':
+        return 2;
+      case '汁物':
+        return 3;
+      case 'その他':
+        return 4;
+      default:
+        return null;
     }
   };
 
@@ -170,8 +192,7 @@ export const CreateDish = () => {
         {
           headers: {
             'X-XSRF-TOKEN': xsrfToken,
-            'Content-Type': 'application/json',  // Content-Type を設定
-
+            'Content-Type': 'application/json',
           },
           withCredentials: true,
         }
@@ -208,11 +229,13 @@ export const CreateDish = () => {
     }
   };
 
-  function getCookie(name: string) {
+  const getCookie = (name: string): string | undefined => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(';').shift();
-  }
+    return undefined;
+  };
+
   return (
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
       <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white" width="90%">
@@ -221,7 +244,7 @@ export const CreateDish = () => {
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
-            <FormControl  mb={4}>
+            <FormControl mb={4}>
               <FormLabel>画像アップロード</FormLabel>
               <Input
                 type="file"
@@ -336,6 +359,17 @@ export const CreateDish = () => {
               mt={4}
             >
               作成
+            </Button>
+            <Button
+              colorScheme="teal"
+              width="100%"
+              fontSize="18px"
+              letterSpacing="1px"
+              borderRadius="base"
+              mt={4}
+              onClick={() => navigate(-1)}
+            >
+              戻る
             </Button>
           </Flex>
         </form>

@@ -101,9 +101,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <Box pr={4} onClick={onClickAllMyDishes}>
             <Link>すべての料理</Link>
           </Box>
-          <Box pr={4} onClick={onClickRandomPage}>
-            <Link>ランダムページ</Link>
-          </Box>
+          
           <Box pr={4} onClick={onClickCreate}>
             <Link>新規登録</Link>
           </Box>

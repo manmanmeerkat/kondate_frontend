@@ -2,27 +2,24 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import useFetchUserData from './useFetchUserData';
 
-const useFetchWesternData = (endpoint:string) => {
-  const [data, setData] = useState([]);
+const useFetchWesternData = (endpoint: string) => {
   const { user } = useFetchUserData();
+  const [data, setData] = useState([]);
 
-  const fetchData = useCallback(() => {
-    const userId = user?.id;
-    
-    if (userId) {
+  const fetchData = useCallback(async () => {
+    try {
+      if (!user?.id) return;
+
       const token = localStorage.getItem('token');
-      if (token) {
-        axios.get(`http://localhost:8000/api/user/${userId}/${endpoint}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(response => {
-          const fetchedData = response.data;
-          setData(fetchedData);
-        })
-        .catch(error => console.error('データの取得エラー:', error));
-      }
+      if (!token) return;
+
+      const response = await axios.get(`http://localhost:8000/api/user/${user.id}/${endpoint}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setData(response.data);
+    } catch (error) {
+      console.error('データの取得エラー:', error);
     }
   }, [user, endpoint]);
 
@@ -33,18 +30,9 @@ const useFetchWesternData = (endpoint:string) => {
   return { data };
 };
 
-export const useWesternSyusai = () => {
-  return useFetchWesternData('all-my-western-syusai');
-};
+const createFetchHook = (endpoint: string) => () => useFetchWesternData(endpoint);
 
-export const useWesternShirumono = () => {
-  return useFetchWesternData('all-my-western-shirumono');
-};
-
-export const useWesternFukusai = () => {
-  return useFetchWesternData('all-my-western-fukusai');
-};
-
-export const useWesternRecipes = () => {
-  return useFetchWesternData('all-my-western-recipes');
-};
+export const useWesternSyusai = createFetchHook('all-my-western-syusai');
+export const useWesternShirumono = createFetchHook('all-my-western-shirumono');
+export const useWesternFukusai = createFetchHook('all-my-western-fukusai');
+export const useWesternRecipes = createFetchHook('all-my-western-recipes');

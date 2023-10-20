@@ -40,7 +40,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
-
+console.log(selectedDish);
   const onClickDish = useCallback(
     (id: number) => {
       onSelectDish({ id, dishes, onOpen });

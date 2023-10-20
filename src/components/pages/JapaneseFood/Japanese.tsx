@@ -14,7 +14,6 @@ import {
 import { useAllMyDishes } from "../../../hooks/useAllMyDishes";
 import { useSelectDish } from "../../../hooks/useSelectDish";
 import { useIngredientSearch } from "../../../hooks/useIngredientSearch";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../../molecules/GenreButton";
@@ -28,13 +27,12 @@ interface JapaneseProps {}
 
 export const Japanese: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getWestern, dishes, loading } = useAllMyDishes();
+  const { getJapanese, dishes, loading } = useAllMyDishes();
   const { data } = useJapaneseRecipes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
 
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("japanese-food", user?.id);
-  const navigate = useNavigate();
+  const { handleIngredientSearch } = useIngredientSearch("japanese-food", user?.id);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 1ページあたりの項目数
 
@@ -53,7 +51,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
   }, [selectedDish]);
 
   useEffect(() => {
-    getWestern();
+    getJapanese();
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);

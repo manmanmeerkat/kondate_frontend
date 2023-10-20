@@ -99,7 +99,6 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     setCategory(dish?.category_id || undefined);
     setMemo(dish?.memo || "");
     setUrl(dish?.reference_url || "");
-    console.log(dish);
   }, [dish]);
 
   useEffect(() => {

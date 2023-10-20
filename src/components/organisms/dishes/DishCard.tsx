@@ -12,7 +12,6 @@ interface DishCardProps {
 
 export const DishCard = memo((props: DishCardProps) => {
   const { id, imageUrl, menuType, dishName, onClick } = props;
-console.log(imageUrl);
   return (
     <Box
       w="260px"
