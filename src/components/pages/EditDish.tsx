@@ -133,6 +133,17 @@ export const EditDish: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
   };
 
+  const Image: React.FC = () => {
+    if (formData.image_path) {
+      return (
+        <Box mb={4}>
+          <img src={`http://localhost:8000/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
+        </Box>
+      );
+    }
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -165,7 +176,7 @@ export const EditDish: React.FC = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('description', formData.description);
-      formDataToSend.append('image_path', imagePath || '');
+      formDataToSend.append('image_path', imagePath || ''); // ここで元の画像パスを設定
       formDataToSend.append('reference_url', formData.reference_url);
       formDataToSend.append('user_id', formData.user_id as string);
       formDataToSend.append('genre_id', formData.genre_id !== null ? String(formData.genre_id) : '');
@@ -183,8 +194,7 @@ export const EditDish: React.FC = () => {
         {
           headers: {
             'X-XSRF-TOKEN': xsrfToken,
-            'Content-Type': 'application/json',  // Content-Type を設定
-
+            'Content-Type': 'application/json',
           },
           withCredentials: true,
         }
@@ -286,8 +296,11 @@ export const EditDish: React.FC = () => {
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
-            <FormControl isRequired mb={4}>
-              <FormLabel>画像アップロード</FormLabel>
+            {/* 画像表示部分の追加 */}
+            <Image />
+  
+            <FormControl mb={4}>
+              <FormLabel>画像を変更する</FormLabel>
               <Input
                 type="file"
                 name="image_file"
@@ -328,8 +341,6 @@ export const EditDish: React.FC = () => {
                 <option value="3">中華</option>
                 <option value="4">その他</option>
               </Select>
-
-
             </FormControl>
   
             <FormControl isRequired mb={4}>
@@ -345,7 +356,6 @@ export const EditDish: React.FC = () => {
                 <option value="3">汁物</option>
                 <option value="4">その他</option>
               </Select>
-
             </FormControl>
   
             <Wrap spacing={2} mb={4}>
@@ -407,50 +417,48 @@ export const EditDish: React.FC = () => {
               更新
             </Button>
             <Button
-        type="button"
-        colorScheme="red"
-        width="100%"
-        fontSize="18px"
-        letterSpacing="1px"
-        borderRadius="base"
-        mt={4}
-        onClick={handleConfirmDelete}
-      >
-        削除
-      </Button>
-
-      {/* 確認のアラート */}
-      <AlertDialog
-  isOpen={isDeleteAlertOpen}
-  leastDestructiveRef={leastDestructiveRef}
-  onClose={() => setIsDeleteAlertOpen(false)}
->
-  <AlertDialogOverlay>
-    <AlertDialogContent>
-      <AlertDialogHeader fontSize="lg" fontWeight="bold">
-        削除の確認
-      </AlertDialogHeader>
-
-      <AlertDialogBody>
-        本当に削除しますか？
-      </AlertDialogBody>
-
-      <AlertDialogFooter>
-          <Button onClick={() => setIsDeleteAlertOpen(false)}>
-            キャンセル
-          </Button>
-          <Button ref={leastDestructiveRef} colorScheme="red" onClick={handleDelete} ml={3}>
-            削除
-          </Button>
-        </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialogOverlay>
-</AlertDialog>
-
+              type="button"
+              colorScheme="red"
+              width="100%"
+              fontSize="18px"
+              letterSpacing="1px"
+              borderRadius="base"
+              mt={4}
+              onClick={handleConfirmDelete}
+            >
+              削除
+            </Button>
+  
+            {/* 確認のアラート */}
+            <AlertDialog
+              isOpen={isDeleteAlertOpen}
+              leastDestructiveRef={leastDestructiveRef}
+              onClose={() => setIsDeleteAlertOpen(false)}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                    削除の確認
+                  </AlertDialogHeader>
+  
+                  <AlertDialogBody>
+                    本当に削除しますか？
+                  </AlertDialogBody>
+  
+                  <AlertDialogFooter>
+                    <Button onClick={() => setIsDeleteAlertOpen(false)}>
+                      キャンセル
+                    </Button>
+                    <Button ref={leastDestructiveRef} colorScheme="red" onClick={handleDelete} ml={3}>
+                      削除
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
           </Flex>
         </form>
       </Box>
     </VStack>
   );
-  
 };

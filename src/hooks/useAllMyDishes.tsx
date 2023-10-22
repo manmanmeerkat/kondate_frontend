@@ -9,16 +9,20 @@ export const useAllMyDishes = () => {
     const [dishes, setDishes] = useState([]);
 
     //全てのメニューを取得
-    const getDishes = useCallback(() => {
-        setLoading(true)
-        axios.get("http://localhost:8000/api/menu")
-        .then((res) => setDishes(res.data))
-        .catch(() => {
-            showMessage({ title: "データ取得に失敗しました", status:"error" })
-        }).finally(() => {
-            setLoading(false)
-        });
+    const getDishes = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get("http://localhost:8000/api/all-my-dish", {
+                withCredentials: true,
+            });
+            setDishes(response.data.recipes);
+        } catch (error) {
+            showMessage({ title: "データ取得に失敗しました", status: "error" });
+        } finally {
+            setLoading(false);
+        }
     }, []);
+    
 
 
     //ジャンルが"和食"のデータを全て取得

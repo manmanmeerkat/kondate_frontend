@@ -30,21 +30,23 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { getDishes, dishes, loading } = useAllMyDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { getDish, dishData } = useDishData();
-  const { user} = useFetchUserData();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish",user?.id);
+  const { user } = useFetchUserData();
+  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
 
   useEffect(() => {
-    getDish();
+    getDishes();
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
-console.log(selectedDish);
+
   const onClickDish = useCallback(
     (id: number) => {
-      onSelectDish({ id, dishes, onOpen });
-      setSelectedDishId(id);
+      if (dishes !== null) {
+        onSelectDish({ id, dishes, onOpen });
+        setSelectedDishId(id);
+      }
     },
     [dishes, onSelectDish, onOpen]
   );
@@ -120,7 +122,7 @@ console.log(selectedDish);
         </Wrap>
       )}
       <DishDetailModal
-        dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; memo: string; reference_url: string } | null}
+        dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; description: string; reference_url: string } | null}
         isOpen={isOpen}
         onClose={onClose}
         id={selectedDishId}

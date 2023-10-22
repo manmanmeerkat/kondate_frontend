@@ -27,7 +27,7 @@ interface DishDetailModalProps {
     name: string;
     genre_id: number;
     category_id: number;
-    memo: string;
+    description: string;
     reference_url: string;
   } | null;
   isOpen: boolean;
@@ -92,12 +92,12 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
         return '';
     }
   };
-  
+  console.log(dish)
   useEffect(() => {
     setName(dish?.name || "");
     setGenre(dish?.genre_id || undefined);
     setCategory(dish?.category_id || undefined);
-    setMemo(dish?.memo || "");
+    setMemo(dish?.description || "");
     setUrl(dish?.reference_url || "");
   }, [dish]);
 
