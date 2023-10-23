@@ -127,7 +127,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
         </>
       )}
       <DishDetailModal
-        dish={selectedDish as { id: number; name: string;  genre_id: number; category_id: number; memo: string; reference_url: string } | null}
+        dish={selectedDish as { id: number; name: string;  genre_id: number; category_id: number; description: string; reference_url: string } | null}
         isOpen={isOpen}
         onClose={onClose}
         id={selectedDishId}

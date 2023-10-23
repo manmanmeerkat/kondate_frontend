@@ -70,6 +70,17 @@ export const useAllMyDishes = () => {
         });
     }, []);
 
+    const getJapaneseOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/japanese_others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
     //ジャンルが"洋食"のデータを全て取得
     const getWestern = useCallback(() => {
         setLoading(true)
@@ -107,6 +118,17 @@ export const useAllMyDishes = () => {
     const getWesternShirumono = useCallback(() => {
         setLoading(true)
         axios.get("http://localhost:8000/api/western_shirumono/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getWesternOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/western_others/")
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -160,7 +182,18 @@ export const useAllMyDishes = () => {
         });
     }, []);
 
-    return { getDishes, getJapanese, getJapaneseSyusai, getJapaneseFukusai, getJapaneseShirumono,
-        getWestern, getWesternSyusai, getWesternFukusai, getWesternShirumono, 
-        getChinese, getChineseShirumono, getChineseSyusai, getChineseFukusai, loading, dishes }
+    const getChineseOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/chinese_others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    return { getDishes, getJapanese, getJapaneseSyusai, getJapaneseFukusai, getJapaneseShirumono,getJapaneseOthers,
+        getWestern, getWesternSyusai, getWesternFukusai, getWesternShirumono, getWesternOthers,
+        getChinese, getChineseShirumono, getChineseSyusai, getChineseFukusai,getChineseOthers, loading, dishes }
 }

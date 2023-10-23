@@ -25,19 +25,16 @@ export const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false); // 追加: ログイン処理中を管理
   const toast = useToast();
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        // Laravel Sanctumの/csrf-cookieエンドポイントを使用
         const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
-        
-        
 
-        // コンソールにCSRFトークンを表示
         console.log('CSRFトークン:', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
@@ -60,16 +57,16 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setIsLoading(true); // ログイン処理中はisLoadingをtrueに設定
+
     axios
       .post<{ token: string; userId: string }>('http://localhost:8000/api/login', formData, {
-        withCredentials: true, // クッキーを送信するために必要
+        withCredentials: true,
         headers: {
           'X-CSRF-TOKEN': csrfToken,
         },
       })
       .then((response) => {
-        console.log('ログイン成功:', response.data);
-
         const token = response.data.token;
         const userId = response.data.userId;
 
@@ -96,6 +93,9 @@ export const LoginPage: React.FC = () => {
           duration: 5000,
           isClosable: true,
         });
+      })
+      .finally(() => {
+        setIsLoading(false); // ログイン処理が終了したらisLoadingをfalseに設定
       });
   };
 
@@ -110,7 +110,6 @@ export const LoginPage: React.FC = () => {
           ログイン
         </Heading>
         <form onSubmit={handleSubmit}>
-          {/* CSRFトークンをメタタグから取得 */}
           <meta name="csrf-token" content={csrfToken} />
 
           <FormControl mt="4">
@@ -135,6 +134,7 @@ export const LoginPage: React.FC = () => {
             fontSize="18px"
             letterSpacing="1px"
             borderRadius="base"
+            isLoading={isLoading} // ログイン処理中はボタンが無効になる
           >
             ログイン
           </Button>

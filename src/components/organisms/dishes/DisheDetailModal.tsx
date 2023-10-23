@@ -88,6 +88,8 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
         return '副菜';
       case 3:
         return '汁物';
+      case 4:
+        return 'その他';
       default:
         return '';
     }

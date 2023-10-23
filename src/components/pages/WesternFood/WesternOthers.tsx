@@ -23,17 +23,17 @@ import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
 import useFetchUserData from "../../../hooks/useFetchUserData";
-import { useJapaneseSyusai } from "../../../hooks/useFetchJapaneseData";
+import { useWesternOthers } from "../../../hooks/useFetchWesternData";
 
 interface JapaneseProps {}
 
-export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
+export const WesternOthers: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getJapaneseSyusai, dishes, loading } = useAllMyDishes();
-  const { data } = useJapaneseSyusai();
+  const { getWesternOthers, dishes, loading } = useAllMyDishes();
+  const { data } = useWesternOthers();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("japanese-syusai",user?.id);
+  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("western-others",user?.id);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 1ページあたりの項目数
@@ -53,7 +53,7 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
   }, [selectedDish]);
 
   useEffect(() => {
-    getJapaneseSyusai();
+    getWesternOthers();
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);

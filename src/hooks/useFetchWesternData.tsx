@@ -36,3 +36,5 @@ export const useWesternSyusai = createFetchHook('all-my-western-syusai');
 export const useWesternShirumono = createFetchHook('all-my-western-shirumono');
 export const useWesternFukusai = createFetchHook('all-my-western-fukusai');
 export const useWesternRecipes = createFetchHook('all-my-western-recipes');
+export const useWesternOthers = createFetchHook('all-my-western-others');
+

@@ -37,3 +37,5 @@ export const useChineseSyusai = createFetchHook('all-my-chinese-syusai');
 export const useChineseShirumono = createFetchHook('all-my-chinese-shirumono');
 export const useChineseFukusai = createFetchHook('all-my-chinese-fukusai');
 export const useChineseRecipes = createFetchHook('all-my-chinese-recipes');
+export const useChineseOthers = createFetchHook('all-my-chinese-others');
+

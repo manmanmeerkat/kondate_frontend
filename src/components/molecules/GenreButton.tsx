@@ -26,7 +26,7 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_japanese_syusai")}>主菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_japanese_fukusai")}>副菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_japanese_shirumono")}>汁物</MenuItem>
-          <MenuItem>その他</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_japanese_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
 
@@ -44,7 +44,7 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_western_syusai")}>主菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_western_fukusai")}>副菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_western_shirumono")}>汁物</MenuItem>
-          <MenuItem>その他</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_western_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
 
@@ -62,7 +62,7 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_chinese_syusai")}>主菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_chinese_fukusai")}>副菜</MenuItem>
           <MenuItem onClick={() => onGenreClick("all_my_chinese_shirumono")}>汁物</MenuItem>
-          <MenuItem>その他</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_chinese_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
     </Box>
