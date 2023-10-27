@@ -21,6 +21,11 @@ import { WesternFukusai } from "../pages/WesternFood/WesternFukusai";
 import { JapaneseOthers } from "../pages/JapaneseFood/JapaneseOthers";
 import { WesternOthers } from "../pages/WesternFood/WesternOthers";
 import { ChineseOthers } from "../pages/ChineseFood/ChineseOthers";
+import { Others } from "../pages/OthersFood/Others";
+import { OthersSyusai } from "../pages/OthersFood/OthersSyusai";
+import { OthersFukusai } from "../pages/OthersFood/OthersFukusai";
+import { OthersShirumono } from "../pages/OthersFood/OthersShirumono";
+import { OthersOthers } from "../pages/OthersFood/OthersOthers";
 
 export const Router = memo(() => {
     return (
@@ -46,6 +51,11 @@ export const Router = memo(() => {
             <Route path="/all_my_chinese_fukusai" element={<ChineseFukusai />}/>
             <Route path="/all_my_chinese_shirumono" element={<ChineseShirumono />}/>
             <Route path="/all_my_chinese_others" element={<ChineseOthers />}/>
+            <Route path="/all_my_others_recipes" element={<Others />}/>
+            <Route path="/all_my_others_syusai" element={<OthersSyusai />}/>
+            <Route path="/all_my_others_fukusai" element={<OthersFukusai />}/>
+            <Route path="/all_my_others_shirumono" element={<OthersShirumono />}/>
+            <Route path="/all_my_others_others" element={<OthersOthers />}/>
         </Routes>
 
         );

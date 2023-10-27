@@ -28,7 +28,8 @@ export const UserRegister: React.FC = () => {
   });
 
   const navigate = useNavigate();
-  const toast = useToast(); // useToast を初期化
+  const toast = useToast();
+  const [csrfToken, setCsrfToken] = useState<string>('');
 
   useEffect(() => {
     setFormData({
@@ -37,6 +38,26 @@ export const UserRegister: React.FC = () => {
       password: '',
       password_confirmation: '',
     });
+  }, []);
+
+  useEffect(() => {
+    // CSRFトークンを取得
+    const fetchCsrfToken = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', {
+          withCredentials: true,
+        });
+        const csrfToken = response.data.csrfToken;
+        setCsrfToken(csrfToken);
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        console.log(csrfToken);
+      } catch (error) {
+        console.error('CSRFトークンの取得に失敗しました', error);
+      }
+    };
+    
+
+    fetchCsrfToken();
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,20 +80,27 @@ export const UserRegister: React.FC = () => {
     navigate('/all_my_dishes');
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post<{ token: string; userId: string }>('http://localhost:8000/api/register', formData)
-      .then((response) => {
-        console.log('ユーザーが登録されました:', response.data);
-        const token = response.data.token;
-        const userId = response.data.userId;
-        localStorage.setItem('userId', userId);
-        handleRegistrationSuccess(token);
-      })
-      .catch((error) => {
-        console.error('ユーザー登録エラー:', error.response?.data);
-      });
+    try {
+      const response = await axios.post<{ token: string; userId: string }>(
+        'http://localhost:8000/api/register',
+        formData,
+        {
+          withCredentials: true,  // クッキーを使用する場合は必要
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+          },
+        }
+      );
+      console.log('ユーザーが登録されました:', response.data);
+      const token = response.data.token;
+      const userId = response.data.userId;
+      localStorage.setItem('userId', userId);
+      handleRegistrationSuccess(token);
+    } catch (error:any) {
+      console.error('ユーザー登録エラー:', error.response?.data);
+    }
   };
 
   const handleGoToHome = () => {

@@ -65,6 +65,24 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_chinese_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
+
+      <Menu isLazy>
+        <MenuButton
+          as={Button}
+          rightIcon={<ChevronDownIcon />}
+          colorScheme="teal"
+          variant="outline"
+        >
+          その他
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => onGenreClick("all_my_others_recipes")}>その他の料理すべて</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_others_syusai")}>主菜</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_others_fukusai")}>副菜</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_others_shirumono")}>汁物</MenuItem>
+          <MenuItem onClick={() => onGenreClick("all_my_others_others")}>その他</MenuItem>
+        </MenuList>
+      </Menu>
     </Box>
   );
 });
