@@ -14,7 +14,7 @@ export const FoodPhotography: React.FC<FoodPhotographyProps> = ({ imageFileName,
     if (imageFileName) {
       const publicUrl = `http://localhost:8000/storage/${imageFileName}`;
       setImageUrl(publicUrl);
-
+console.log(imageFileName)
       // 画像のリサイズスタイルを設定
       const imageSizeStyle: React.CSSProperties = {
         width: "160px", // 幅を100pxに設定

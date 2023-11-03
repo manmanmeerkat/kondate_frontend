@@ -28,7 +28,7 @@ export const DishCard = memo((props: DishCardProps) => {
       justifyContent="center"
     >
       <FoodPhotography  
-  imageFileName={imageUrl || "/uploads/noimage.jpg"}
+  imageFileName={imageUrl || "uploads/noimage.jpg"}
 />
 
       <Text fontSize="lg" mt="20px" fontWeight="bold" textAlign="center" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" maxWidth="100%">

@@ -1,4 +1,5 @@
 // AllMyDishes.tsx
+
 import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   Center,
@@ -19,9 +20,9 @@ import { DishDetailModal } from "../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../molecules/GenreButton";
 import { Dish } from "../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
-import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 import { Header } from "../organisms/layout/Header";
 import useFetchUserData from "../../hooks/useFetchUserData";
+import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 
 interface AllMyDishesProps {}
 
@@ -32,9 +33,10 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { getDish, dishData } = useDishData();
   const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
-
+console.log(user);
   useEffect(() => {
     getDishes();
+    
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
@@ -67,7 +69,6 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           onChange={(e) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
-          {/* 検索ボタン */}
           <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
             <SearchIcon />
             検索
@@ -113,7 +114,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
                   ))
                 ) : (
                   <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                    <Spinner />
+                    <p>登録している料理はありません。</p>
                   </Center>
                 )
               )}

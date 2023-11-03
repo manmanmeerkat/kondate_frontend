@@ -17,6 +17,13 @@ interface FormData {
   password: string;
 }
 
+interface UserData {
+  userId: string;
+  token: string;
+  message: string;
+  role: string;
+}
+
 export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -25,7 +32,7 @@ export const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false); // 追加: ログイン処理中を管理
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -57,31 +64,34 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setIsLoading(true); // ログイン処理中はisLoadingをtrueに設定
+    setIsLoading(true);
 
     axios
-      .post<{ token: string; userId: string }>('http://localhost:8000/api/login', formData, {
+      .post<UserData>('http://localhost:8000/api/login', formData, {
         withCredentials: true,
         headers: {
           'X-CSRF-TOKEN': csrfToken,
         },
       })
       .then((response) => {
-        const token = response.data.token;
-        const userId = response.data.userId;
-
+        const { token, userId, message, role } = response.data;
+console.log(response.data);
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
 
         toast({
           title: 'ログインしました',
-          description: 'ようこそ！',
+          description: message,
           status: 'success',
           duration: 5000,
           isClosable: true,
         });
 
-        navigate('/all_my_dishes');
+        if (role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/all_my_dishes');
+        }
       })
       .catch((error) => {
         console.error('ログインエラー:', error.response?.data);
@@ -95,7 +105,7 @@ export const LoginPage: React.FC = () => {
         });
       })
       .finally(() => {
-        setIsLoading(false); // ログイン処理が終了したらisLoadingをfalseに設定
+        setIsLoading(false);
       });
   };
 
@@ -134,7 +144,7 @@ export const LoginPage: React.FC = () => {
             fontSize="18px"
             letterSpacing="1px"
             borderRadius="base"
-            isLoading={isLoading} // ログイン処理中はボタンが無効になる
+            isLoading={isLoading}
           >
             ログイン
           </Button>

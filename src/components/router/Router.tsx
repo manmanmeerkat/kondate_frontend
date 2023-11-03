@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { memo } from "react";
 import { TopPage } from "../pages/TopPage";
-import { LoginPage } from "../pages/Auth/LoginPage";
 import { UserRegister } from "../pages/Auth/UserRegister";
 import { AllMyDishes } from "../pages/AllMyDishes";
 import { CreateDish } from "../pages/CreateDish";
@@ -26,11 +25,14 @@ import { OthersSyusai } from "../pages/OthersFood/OthersSyusai";
 import { OthersFukusai } from "../pages/OthersFood/OthersFukusai";
 import { OthersShirumono } from "../pages/OthersFood/OthersShirumono";
 import { OthersOthers } from "../pages/OthersFood/OthersOthers";
+import UsersList from "../pages/Admin/UserList";
+import { LoginPage } from "../pages/Auth/LoginPage";
 
 export const Router = memo(() => {
     return (
         <Routes>
             <Route path="/" element={<TopPage />}/>
+            <Route path="/admin" element={<UsersList />}/>
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/register" element={<UserRegister />}/>
             <Route path="/all_my_dishes" element={<AllMyDishes />}/>
