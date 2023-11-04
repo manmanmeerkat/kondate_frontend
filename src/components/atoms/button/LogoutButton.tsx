@@ -1,75 +1,81 @@
-import React, { useCallback } from 'react';
+// LogoutButton.tsx
+
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useToast, Flex, Heading, Box, Link, Button, useDisclosure } from '@chakra-ui/react';
-import { MenuIconButton } from './MenuIconButton';
-import { MenuDrawer } from '../../molecules/MenuDrawer';
 
-interface HeaderProps {}
+interface LogoutButtonProps {
+  csrfToken: string;
+  onLogoutSuccess?: () => void;
+}
 
-export const Header: React.FC<HeaderProps> = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+const LogoutButton: React.FC<LogoutButtonProps> = ({ csrfToken, onLogoutSuccess }) => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
 
-  const onClickHome = useCallback(() => navigate("/"), [navigate]);
-  const onClickAllMyDishes = useCallback(() => navigate("/all_my_dishes"), [navigate]);
-  const onClickRandomPage = useCallback(() => navigate("/home/random"), [navigate]);
-  const onClickCreate = useCallback(() => navigate("/create"), [navigate]);
+  const handleLogoutClick = async () => {
+    try {
+      // ログアウト処理中にボタンを不活性にする
+      setIsLoggingOut(true);
 
-  const onClickLogout = useCallback(() => {
-    // ログアウト処理を実行（例：トークンの削除など）
-    localStorage.removeItem('token');
+      // ログアウトリクエストの送信
+      const logoutResponse = await axios.post('http://localhost:8000/api/logout', null, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
+        withCredentials: true,
+      });
 
-    // ログアウト成功のトースト通知を表示
-    toast({
-      title: 'ログアウトしました',
-      description: 'またのご利用をお待ちしています。',
-      status: 'success',
-      duration: 5000,
-      isClosable: true,
-    });
+      if (logoutResponse.data.message === 'Unauthenticated.') {
+        // ログアウト成功
+        navigate('/login');
+        console.log('ログアウトしました');
 
-    // ログアウト後にホームに遷移
-    navigate('/');
-  }, [navigate, toast]);
+        // トースト表示
+        toast({
+          title: 'ログアウトしました',
+          description: 'またのご利用をお待ちしています。',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+
+        // onLogoutSuccess が渡されていれば呼び出す
+        if (onLogoutSuccess && typeof onLogoutSuccess === 'function') {
+          onLogoutSuccess();
+        }
+
+        // ローカルストレージからトークンとuserIdを削除
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+      } else {
+        // ログアウト失敗
+        throw new Error(`Logout failed: ${logoutResponse.data.message}`);
+      }
+    } catch (error) {
+      console.error('ログアウトエラー:', error);
+
+      // エラーの場合もトースト表示
+      toast({
+        title: 'ログアウトエラー',
+        description: 'ログアウト中に問題が発生しました。',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      // ログアウト処理が完了したらボタンを活性化する
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
-    <>
-      <Flex
-        as="nav"
-        bg="teal.500"
-        color="white"
-        align="center"
-        justify="space-between"
-        padding={{ base: 3, md: 5 }}
-      >
-        <Flex align="center" as="a" mr={8} _hover={{ cursor: "pointer" }} onClick={onClickHome}>
-          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
-            こんだてずかん
-          </Heading>
-        </Flex>
-        
-        <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: "none", md: "flex" }}>
-          <Box pr={4} onClick={onClickAllMyDishes}>
-            <Link>料理一覧</Link>
-          </Box>
-          <Box pr={4} onClick={onClickRandomPage}>
-            <Link>ランダムページ</Link>
-          </Box>
-          <Box pr={4} onClick={onClickCreate}>
-            <Link>新規作成</Link>
-          </Box>
-        </Flex>
-
-        {/* ログアウトボタン */}
-        <Button colorScheme="teal" onClick={onClickLogout}>
-          ログアウト
-        </Button>
-
-        <MenuIconButton onOpen={onOpen} />
-      </Flex>
-      
-      <MenuDrawer onClose={onClose} isOpen={isOpen} onClickHome={onClickHome}  onClickCreate={onClickCreate} />
-    </>
+    <button onClick={handleLogoutClick} disabled={isLoggingOut}>
+      {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
+    </button>
   );
 };
+
+export { LogoutButton };
