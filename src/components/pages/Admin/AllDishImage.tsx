@@ -12,28 +12,28 @@ import {
   InputRightElement,
   Button,
 } from "@chakra-ui/react";
-import { useDishData } from "../../hooks/useDishData";
-import { useAllMyDishes } from "../../hooks/useAllMyDishes";
-import { DishCard } from "../organisms/dishes/DishCard";
-import { useSelectDish } from "../../hooks/useSelectDish";
-import { DishDetailModal } from "../organisms/dishes/DisheDetailModal";
-import { GenreButton } from "../molecules/GenreButton";
-import { Dish } from "../../types/Dish";
+import { useAllMyDishes } from "../../../hooks/useAllMyDishes";
+import { useSelectDish } from "../../../hooks/useSelectDish";
+import { useDishData } from "../../../hooks/useDishData";
+import { useFetchUserData } from "../../../hooks/useFetchUserData";
+import { Header } from "../../organisms/layout/Header";
+import { GenreButton } from "../../molecules/GenreButton";
 import { SearchIcon } from "@chakra-ui/icons";
-import { Header } from "../organisms/layout/Header";
-import { useIngredientSearch } from "../../hooks/useIngredientSearch";
-import { useFetchUserData } from "../../hooks/useFetchUserData";
+import { DishCard } from "../../organisms/dishes/DishCard";
+import { useIngredientSearch } from "../../../hooks/useIngredientSearch";
+import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
+import { useGetAllDishes } from "../../../hooks/useGetAllDishes";
 
 interface AllMyDishesProps {}
 
-export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
+export const AllDishImage: React.FC<AllMyDishesProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getDishes, dishes, loading } = useAllMyDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { getDish, dishData } = useDishData();
+  const { dishData } = useGetAllDishes();
   const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
-console.log(user);
+
   useEffect(() => {
     getDishes();
     
@@ -52,7 +52,7 @@ console.log(user);
     },
     [dishes, onSelectDish, onOpen]
   );
-
+console.log("ヂュエル"  ,dishes);
   const handleSearchButtonClick = useCallback(async () => {
     const results = await handleIngredientSearch(searchIngredient);
     setNoSearchResults(results.length === 0 && searchIngredient.trim() !== "");
@@ -69,11 +69,10 @@ console.log(user);
           onChange={(e) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
-        <Button onClick={handleSearchButtonClick} size="sm" style={{ backgroundColor: 'black', color: 'white' }}>
-  <SearchIcon />
-  検索
-</Button>
-
+          <Button colorScheme="orange" onClick={handleSearchButtonClick} size="sm">
+            <SearchIcon />
+            検索
+          </Button>
         </InputRightElement>
       </InputGroup>
       {loading ? (

@@ -25,14 +25,16 @@ import { OthersSyusai } from "../pages/OthersFood/OthersSyusai";
 import { OthersFukusai } from "../pages/OthersFood/OthersFukusai";
 import { OthersShirumono } from "../pages/OthersFood/OthersShirumono";
 import { OthersOthers } from "../pages/OthersFood/OthersOthers";
-import UsersList from "../pages/Admin/UserList";
 import { LoginPage } from "../pages/Auth/LoginPage";
+import { UsersList } from "../pages/Admin/UsersList";
+import { AllDishImage } from "../pages/Admin/AllDishImage";
 
 export const Router = memo(() => {
     return (
         <Routes>
             <Route path="/" element={<TopPage />}/>
             <Route path="/admin" element={<UsersList />}/>
+            <Route path="/about" element={<AllDishImage />}/>
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/register" element={<UserRegister />}/>
             <Route path="/all_my_dishes" element={<AllMyDishes />}/>

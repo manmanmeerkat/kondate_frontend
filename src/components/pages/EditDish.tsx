@@ -37,7 +37,7 @@ interface DishData {
   name: string;
   description: string;
   image_file: File | undefined;
-  image_path: string | null; // 追加: 画像のパス
+  image_path: string | null;
   reference_url: string;
   user_id: string | null;
   ingredients: string[];
@@ -51,7 +51,7 @@ export const EditDish: React.FC = () => {
     name: '',
     description: '',
     image_file: undefined,
-    image_path: null, // 追加: 画像のパス
+    image_path: null,
     reference_url: '',
     user_id: null,
     ingredients: [],
@@ -63,6 +63,8 @@ export const EditDish: React.FC = () => {
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const leastDestructiveRef = useRef<HTMLButtonElement | null>(null);
   const toast = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,6 +150,8 @@ export const EditDish: React.FC = () => {
     e.preventDefault();
 
     try {
+      setIsSubmitting(true); // 送信中にフラグをセット
+
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
       console.log('XSRF Token:', xsrfToken);
@@ -176,7 +180,7 @@ export const EditDish: React.FC = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('description', formData.description);
-      formDataToSend.append('image_path', imagePath || ''); // ここで元の画像パスを設定
+      formDataToSend.append('image_path', imagePath || '');
       formDataToSend.append('reference_url', formData.reference_url);
       formDataToSend.append('user_id', formData.user_id as string);
       formDataToSend.append('genre_id', formData.genre_id !== null ? String(formData.genre_id) : '');
@@ -228,6 +232,8 @@ export const EditDish: React.FC = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsSubmitting(false); // 送信が完了したらフラグをリセット
     }
   };
 
@@ -243,49 +249,50 @@ export const EditDish: React.FC = () => {
 
   const handleDelete = async () => {
     setIsDeleteAlertOpen(false);
-      try {
-        // 以下は削除の処理（サーバーサイドへのリクエスト）です
-        await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
-        const xsrfToken = getCookie('XSRF-TOKEN');
-        console.log('XSRF Token:', xsrfToken);
-    
-        const response = await axios.delete(`http://localhost:8000/api/delete/${dishId}`, {
-          headers: {
-            'X-XSRF-TOKEN': xsrfToken,
-          },
-          withCredentials: true,
-        });
-    
-        if (response.status === 200) {
-          console.log('削除が成功しました');
-          toast({
-            title: '削除が完了しました',
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-          });
-          // 削除成功後、適切なリダイレクトや処理を行う
-          navigate(-1);
-        } else {
-          console.error('削除が失敗しました');
-          toast({
-            title: '削除失敗しました',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      } catch (error) {
-        console.error('削除エラー:', error);
+    try {
+      setIsSubmitting(true); // 削除中にフラグをセット
+setIsDeleting(true)
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      const xsrfToken = getCookie('XSRF-TOKEN');
+      console.log('XSRF Token:', xsrfToken);
+
+      const response = await axios.delete(`http://localhost:8000/api/delete/${dishId}`, {
+        headers: {
+          'X-XSRF-TOKEN': xsrfToken,
+        },
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        console.log('削除が成功しました');
         toast({
-          title: 'エラーが発生しました',
-          description: '削除中にエラーが発生しました。',
+          title: '削除が完了しました',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        navigate(-1);
+      } else {
+        console.error('削除が失敗しました');
+        toast({
+          title: '削除失敗しました',
           status: 'error',
           duration: 5000,
           isClosable: true,
         });
       }
-    
+    } catch (error) {
+      console.error('削除エラー:', error);
+      toast({
+        title: 'エラーが発生しました',
+        description: '削除中にエラーが発生しました。',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsDeleting(true); // 削除が完了したらフラグをリセット
+    }
   };
 
   return (
@@ -296,9 +303,8 @@ export const EditDish: React.FC = () => {
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
-            {/* 画像表示部分の追加 */}
             <Image />
-  
+
             <FormControl mb={4}>
               <FormLabel>画像を変更する</FormLabel>
               <Input
@@ -308,7 +314,7 @@ export const EditDish: React.FC = () => {
                 onChange={handleFileChange}
               />
             </FormControl>
-  
+
             <FormControl isRequired mb={4}>
               <FormLabel>料理名</FormLabel>
               <Input
@@ -318,7 +324,7 @@ export const EditDish: React.FC = () => {
                 onChange={handleChange}
               />
             </FormControl>
-  
+
             <FormControl isRequired mb={4}>
               <FormLabel>説明</FormLabel>
               <Textarea
@@ -327,7 +333,7 @@ export const EditDish: React.FC = () => {
                 onChange={handleChange}
               />
             </FormControl>
-  
+
             <FormControl isRequired mb={4}>
               <FormLabel>ジャンル</FormLabel>
               <Select
@@ -342,7 +348,7 @@ export const EditDish: React.FC = () => {
                 <option value="4">その他</option>
               </Select>
             </FormControl>
-  
+
             <FormControl isRequired mb={4}>
               <FormLabel>カテゴリー</FormLabel>
               <Select
@@ -357,7 +363,7 @@ export const EditDish: React.FC = () => {
                 <option value="4">その他</option>
               </Select>
             </FormControl>
-  
+
             <Wrap spacing={2} mb={4}>
               {formData.ingredients.map((ingredient, index) => (
                 <WrapItem key={index} width="19.4%">
@@ -381,7 +387,7 @@ export const EditDish: React.FC = () => {
                 </WrapItem>
               ))}
             </Wrap>
-  
+
             <Button
               type="button"
               colorScheme="blue"
@@ -394,7 +400,7 @@ export const EditDish: React.FC = () => {
             >
               材料を追加
             </Button>
-  
+
             <FormControl mb={4}>
               <FormLabel>参考URL</FormLabel>
               <Input
@@ -404,31 +410,35 @@ export const EditDish: React.FC = () => {
                 onChange={handleChange}
               />
             </FormControl>
-  
+
             <Button
-              type="submit"
-              colorScheme="teal"
-              width="100%"
-              fontSize="18px"
-              letterSpacing="1px"
-              borderRadius="base"
-              mt={4}
-            >
-              更新
-            </Button>
-            <Button
-              type="button"
-              colorScheme="red"
-              width="100%"
-              fontSize="18px"
-              letterSpacing="1px"
-              borderRadius="base"
-              mt={4}
-              onClick={handleConfirmDelete}
-            >
-              削除
-            </Button>
-  
+  type="submit"
+  colorScheme="teal"
+  width="100%"
+  fontSize="18px"
+  letterSpacing="1px"
+  borderRadius="base"
+  mt={4}
+  isLoading={isSubmitting}
+  isDisabled={isSubmitting}  
+>
+  更新
+</Button>
+
+<Button
+  type="button"
+  colorScheme="red"
+  width="100%"
+  fontSize="18px"
+  letterSpacing="1px"
+  borderRadius="base"
+  mt={4}
+  isLoading={isDeleting}  
+  onClick={handleConfirmDelete}
+>
+  削除
+</Button>
+
             {/* 確認のアラート */}
             <AlertDialog
               isOpen={isDeleteAlertOpen}

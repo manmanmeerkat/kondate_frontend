@@ -18,7 +18,7 @@ interface FetchUserDataHook {
   fetchUserData: () => Promise<void>;
 }
 
-const useFetchUserData = (): FetchUserDataHook => {
+export const useFetchUserData = (): FetchUserDataHook => {
   const [user, setUser] = useState<User | null>(null);
 
   const fetchUserData = async () => {
@@ -48,4 +48,4 @@ const useFetchUserData = (): FetchUserDataHook => {
   };
 };
 
-export default useFetchUserData;
+

@@ -11,12 +11,12 @@ export const GenreButton = memo(() => {
   };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center">
+    <Box display="flex" alignItems="center" justifyContent="center" mt={4}>
       <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="teal"
+          colorScheme="black"
           variant="outline"
         >
           和食
@@ -34,7 +34,7 @@ export const GenreButton = memo(() => {
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="teal"
+          colorScheme="black"
           variant="outline"
         >
           洋食
@@ -52,7 +52,7 @@ export const GenreButton = memo(() => {
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="teal"
+          colorScheme="black"
           variant="outline"
         >
           中華
@@ -70,7 +70,7 @@ export const GenreButton = memo(() => {
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="teal"
+          colorScheme="black"
           variant="outline"
         >
           その他

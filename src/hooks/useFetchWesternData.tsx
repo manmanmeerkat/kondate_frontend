@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import useFetchUserData from './useFetchUserData';
+import { useFetchUserData } from './useFetchUserData';
 
 const useFetchWesternData = (endpoint: string) => {
   const { user } = useFetchUserData();

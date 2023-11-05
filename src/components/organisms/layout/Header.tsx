@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast, Flex, Heading, Box, Link, useDisclosure } from '@chakra-ui/react';
+import { useToast, Flex, Heading, Box, Link, useDisclosure, Select } from '@chakra-ui/react';
 import { MenuIconButton } from '../../atoms/button/MenuIconButton';
 import { MenuDrawer } from '../../molecules/MenuDrawer';
 import axios from 'axios';
@@ -13,6 +13,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [csrfToken, setCsrfToken] = useState<string>(''); // CSRFトークンの状態
+  const [headerColor, setHeaderColor] = useState<string>('white'); // ヘッダーの色
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -39,9 +40,13 @@ export const Header: React.FC<HeaderProps> = () => {
     navigate('/');
   }, [navigate]);
 
+  const handleHeaderColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setHeaderColor(e.target.value);
+  };
+
   return (
     <>
-      <Flex as="nav" bg="teal.500" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
+      <Flex as="nav" bg={headerColor} color="black" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
         <Flex align="center" as="a" mr={8} _hover={{ cursor: 'pointer' }} onClick={onClickHome}>
           <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }}>
             こんだてずかん
@@ -58,12 +63,19 @@ export const Header: React.FC<HeaderProps> = () => {
           </Box>
         </Flex>
 
+        <Select value={headerColor} onChange={handleHeaderColorChange} width="100px" mr={4}>
+          <option value="white">White</option>
+          <option value="blue">Blue</option>
+          <option value="green">Green</option>
+          {/* 追加の色をここに追加できます */}
+        </Select>
+
         <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
 
         <MenuIconButton onOpen={onOpen} />
       </Flex>
 
-      <MenuDrawer onClose={onClose} isOpen={isOpen} onClickHome={onClickHome} onClickCreate={onClickCreate} />
+      <MenuDrawer onClickAllMyDishes={onClickAllMyDishes} onLogoutSuccess={onLogoutSuccess} onClose={onClose} isOpen={isOpen} onClickHome={onClickHome} onClickCreate={onClickCreate} csrfToken={csrfToken}/>
     </>
   );
 };

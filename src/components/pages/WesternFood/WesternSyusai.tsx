@@ -22,7 +22,7 @@ import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
 import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
 import { SearchIcon } from "@chakra-ui/icons";
-import useFetchUserData from "../../../hooks/useFetchUserData";
+import { useFetchUserData } from "../../../hooks/useFetchUserData";
 import { useWesternSyusai } from "../../../hooks/useFetchWesternData";
 interface JapaneseProps {}
 

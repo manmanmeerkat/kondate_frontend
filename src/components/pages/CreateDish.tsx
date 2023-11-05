@@ -49,6 +49,7 @@ export const CreateDish = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [csrfToken, setCsrfToken] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -144,6 +145,7 @@ export const CreateDish = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
@@ -357,8 +359,9 @@ export const CreateDish = () => {
               letterSpacing="1px"
               borderRadius="base"
               mt={4}
+              isLoading={isLoading}
             >
-              作成
+              {isLoading ? '作成中...' : '作成'}
             </Button>
             <Button
               colorScheme="teal"
