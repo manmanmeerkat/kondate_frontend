@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-      <Flex as="nav" bg={headerColor} color="black" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
+      <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
         <Flex align="center" as="a" mr={8} _hover={{ cursor: 'pointer' }} onClick={onClickHome}>
           <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }}>
             こんだてずかん
@@ -62,13 +62,6 @@ export const Header: React.FC<HeaderProps> = () => {
             <Link>新規登録</Link>
           </Box>
         </Flex>
-
-        <Select value={headerColor} onChange={handleHeaderColorChange} width="100px" mr={4}>
-          <option value="white">White</option>
-          <option value="blue">Blue</option>
-          <option value="green">Green</option>
-          {/* 追加の色をここに追加できます */}
-        </Select>
 
         <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
 

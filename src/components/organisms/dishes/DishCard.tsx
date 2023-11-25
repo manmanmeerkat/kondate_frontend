@@ -10,8 +10,9 @@ interface DishCardProps {
   onClick: (id: number) => void;
 }
 
+// DishCard コンポーネント
 export const DishCard = memo((props: DishCardProps) => {
-  const { id, imageUrl, menuType, dishName, onClick } = props;
+  const { id, imageUrl, dishName, onClick } = props;
   return (
     <Box
       w="260px"
@@ -28,10 +29,20 @@ export const DishCard = memo((props: DishCardProps) => {
       justifyContent="center"
     >
       <FoodPhotography  
-  imageFileName={imageUrl || "uploads/noimage.jpg"}
-/>
+        imageFileName={imageUrl || "uploads/noimage.jpg"}
+        alt={dishName} // dishNameをaltとして渡す
+      />
 
-      <Text fontSize="lg" mt="20px" fontWeight="bold" textAlign="center" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" maxWidth="100%">
+      <Text 
+        fontSize="lg" 
+        mt="20px" 
+        fontWeight="bold" 
+        textAlign="center" 
+        overflow="hidden" 
+        textOverflow="ellipsis" 
+        whiteSpace="nowrap" 
+        maxWidth="100%"
+      >
         {dishName}
       </Text>
     </Box>
