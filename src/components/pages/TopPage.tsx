@@ -46,7 +46,7 @@ export const TopPage = memo(() => {
           </Link>
           <ChakraLink
             as={Link}
-            to="/about"
+            to="/description"
             color="black"
             mt="4"
             style={{ fontWeight: 'bold' }}
