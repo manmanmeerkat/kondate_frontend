@@ -18,8 +18,8 @@ export const useIngredientSearch = (endpoint: string, user_id: number | undefine
           const data = await response.json();
 
           if (response.ok) {
-            setSearchedRecipes(data.recipes);
-            return data.recipes;
+            setSearchedRecipes(data.dishes);
+            return data.dishes;
           } else {
             console.error("検索に失敗しました。");
             return [];

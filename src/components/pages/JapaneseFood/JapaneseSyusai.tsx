@@ -25,7 +25,14 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
 import { useJapaneseSyusai } from "../../../hooks/useFetchJapaneseData";
 
-interface JapaneseProps {}
+interface JapaneseProps {
+  id?: number;
+  name?: string;
+  genre_id?: number;
+  category_id?: number;
+  description?: string;
+  reference_url?: string;
+}
 
 export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -75,7 +75,7 @@ export const EditDish: React.FC = () => {
 
         const [dishResponse, ingredientsResponse] = await Promise.all([
           axios.get(`http://localhost:8000/api/edit/${dishId}`),
-          axios.get(`http://localhost:8000/api/recipes/${dishId}/ingredients`),
+          axios.get(`http://localhost:8000/api/dishes/${dishId}/ingredients`),
         ]);
 
         const dishData = dishResponse.data;
@@ -325,7 +325,7 @@ setIsDeleting(true)
               />
             </FormControl>
 
-            <FormControl isRequired mb={4}>
+            <FormControl mb={4}>
               <FormLabel>説明</FormLabel>
               <Textarea
                 name="description"
