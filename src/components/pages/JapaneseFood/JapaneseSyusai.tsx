@@ -20,7 +20,7 @@ import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../../molecules/GenreButton";
 import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
-import { JapaneseRecipe } from "../../../types/JapaneseRecipe";
+import { Recipe } from "../../../types/Recipe";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
 import { useJapaneseSyusai } from "../../../hooks/useFetchJapaneseData";
@@ -58,7 +58,7 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [japaneseRecipes, setJapaneseRecipes] = useState<JapaneseRecipe[]>([]);
+  const [Recipes, setRecipes] = useState<Recipe[]>([]);
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
 
   const handleSearchButtonClick = useCallback(async () => {
@@ -69,7 +69,7 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
       console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
-      setJapaneseRecipes(results);
+      setRecipes(results);
     }
   }, [handleIngredientSearch, searchKeyword]);
 
@@ -113,7 +113,7 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? data : japaneseRecipes).map((recipe: JapaneseRecipe) => (
+              {(searchKeyword.trim() === "" ? data : Recipes).map((recipe: Recipe) => (
                 <WrapItem key={recipe.id} mx="auto">
                   <DishCard
                     id={recipe.id}

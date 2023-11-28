@@ -36,6 +36,6 @@ const createFetchHook = (endpoint: string) => () => useFetchOthersData(endpoint)
 export const useOthersSyusai = createFetchHook('all-my-others-syusai');
 export const useOthersShirumono = createFetchHook('all-my-others-shirumono');
 export const useOthersFukusai = createFetchHook('all-my-others-fukusai');
-export const useOthersRecipes = createFetchHook('all-my-others-recipes');
+export const useOthersRecipes = createFetchHook('all-my-others-foods');
 export const useOthersOthers = createFetchHook('all-my-others-others');
 

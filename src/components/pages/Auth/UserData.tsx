@@ -2,11 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface UserData {
-  // ユーザー情報の型定義
-  // 必要なプロパティがあれば追加してください
   id: number;
   name: string;
-  // 他のプロパティ...
 }
 
 export const GetUserData = () => {

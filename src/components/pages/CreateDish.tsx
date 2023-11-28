@@ -189,7 +189,7 @@ export const CreateDish = () => {
       formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
 
       const response = await axios.post(
-        `http://localhost:8000/api/submitform`,
+        `http://localhost:8000/api/create`,
         formDataToSend,
         {
           headers: {

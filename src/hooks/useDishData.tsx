@@ -8,7 +8,7 @@ interface Recipe {
 }
 
 interface DishDataResponse {
-  recipes: Recipe[];
+  dishes: Recipe[];
   // 他にも必要なプロパティがあれば追加
 }
 
@@ -31,8 +31,9 @@ export const useDishData = () => {
         },
       })
         .then((response: AxiosResponse<DishDataResponse>) => {
-          const recipes: Recipe[] = response.data.recipes;
-          setDishData({ recipes });
+          const dishes: Recipe[] = response.data.dishes;
+          console.log(response.data);
+          setDishData({ dishes });
         })
         .catch((error) => console.error("ユーザー情報の取得エラー:", error))
         .finally(() => setLoading(false));

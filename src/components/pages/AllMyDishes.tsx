@@ -101,8 +101,8 @@ console.log(user);
                   </WrapItem>
                 ))
               ) : (
-                dishData && dishData.recipes && dishData.recipes.length > 0 ? (
-                  dishData.recipes.map((dish: any) => (
+                dishData && dishData.dishes && dishData.dishes.length > 0 ? (
+                  dishData.dishes.map((dish: any) => (
                     <WrapItem key={dish.id} mx="auto">
                       <DishCard
                         id={dish.id}
