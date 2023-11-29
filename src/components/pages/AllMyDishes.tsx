@@ -24,7 +24,14 @@ import { Header } from "../organisms/layout/Header";
 import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 import { useFetchUserData } from "../../hooks/useFetchUserData";
 
-interface AllMyDishesProps {}
+interface AllMyDishesProps {
+  id?: number;
+  name?: string;
+  genre_id?: number;
+  category_id?: number;
+  description?: string;
+  reference_url?: string;
+}
 
 export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,7 +40,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { getDish, dishData } = useDishData();
   const { user } = useFetchUserData();
   const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
-console.log(user);
+console.log("gfdfd",dishes);
   useEffect(() => {
     getDishes();
     

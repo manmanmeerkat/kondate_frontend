@@ -82,6 +82,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
   const onClickDish = useCallback(
     (id: number) => {
       onSelectDish({ id, dishes, onOpen });
+      console.log("bbgfdg",id, dishes, onOpen);
       setSelectedDishId(id); // ユーザーIDを保持
     },
     [dishes, onSelectDish, onOpen]
