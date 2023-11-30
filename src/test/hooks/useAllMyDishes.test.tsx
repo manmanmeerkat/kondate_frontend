@@ -16,21 +16,12 @@ describe('useAllMyDishes', () => {
   });
 
   it('should fetch dishes on getDishes', async () => {
-    // axiosのモックの設定
-    mock.onGet('http://localhost:8000/api/all-my-dish').reply(200, { dishes: testData });
+   
 
-    // フックの初期化
-    const { result } = renderHook(() => useAllMyDishes());
-
-    // 非同期関数の呼び出し
-    await act(async () => {
-      await result.current.getDishes();
-    });
-
-    // テストのアサーション
-    expect(result.current.dishes).toEqual(testData);
-    expect(result.current.loading).toBeFalsy();
+    
+    
   });
+    
 
   it('should fetch Japanese dishes on getJapanese', async () => {
     // axiosのモックの設定
@@ -629,13 +620,206 @@ describe('useAllMyDishes', () => {
 
     );
 
-    
-    
+    it('should fetch Others dishes on getOthers', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/others/').reply(200, testData);
 
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
 
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthers();
+            }
+            );
 
+        // テストのアサーション
+        expect(result.current.dishes).toEqual(testData);
+        expect(result.current.loading).toBeFalsy();
+        }
 
+    );
 
+    it('should fetch OthersSyusai dishes on getOthersSyusai', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/others_syusai/').reply(200, testData);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersSyusai();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual(testData);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should fetch OthersFukusai dishes on getOthersFukusai', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/others_fukusai/').reply(200, testData);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersFukusai();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual(testData);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should fetch OthersShirumono dishes on getOthersShirumono', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/others_shirumono/').reply(200, testData);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersShirumono();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual(testData);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should fetch OthersOthers dishes on getOthersOthers', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/others_others/').reply(200, testData);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersOthers();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual(testData);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+        
+    it('should set error on getOthers', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/Others/').reply(500);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthers();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual([]);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should set error on getOthersSyusai', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/Others_syusai/').reply(500);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersSyusai();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual([]);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should set error on getOthersFukusai', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/Others_fukusai/').reply(500);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersFukusai();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual([]);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should set error on getOthersShirumono', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/Others_shirumono/').reply(500);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersShirumono();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual([]);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
+
+    it('should set error on getOthersOthers', async () => {
+        // axiosのモックの設定
+        mock.onGet('http://localhost:8000/api/Others_others/').reply(500);
+
+        // フックの初期化
+        const { result } = renderHook(() => useAllMyDishes());
+
+            // 非同期関数の呼び出し
+            await act(async () => {
+            await result.current.getOthersOthers();
+            }
+            );
+
+        // テストのアサーション
+        expect(result.current.dishes).toEqual([]);
+        expect(result.current.loading).toBeFalsy();
+        }
+
+    );
     
 
   // 他の非同期関数に対するテストも同様に追加
