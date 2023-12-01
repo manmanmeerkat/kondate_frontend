@@ -4,12 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 interface Recipe {
   id: number;
   name: string;
-  // 他にも必要なプロパティがあれば追加
+  genre_id: number;
+  category_id: number;
+  description: string;
+  reference_url: string;
 }
 
 interface DishDataResponse {
   dishes: Recipe[];
-  // 他にも必要なプロパティがあれば追加
 }
 
 const api = axios.create({
