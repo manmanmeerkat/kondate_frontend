@@ -1,14 +1,14 @@
 import axios, { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
 
-interface Recipe {
+interface Dishes {
   id: number;
   name: string;
   // 他にも必要なプロパティがあれば追加
 }
 
 interface DishDataResponse {
-  recipes: Recipe[];
+  dishes: Dishes[];
   // 他にも必要なプロパティがあれば追加
 }
 
@@ -31,8 +31,8 @@ export const useDishData = () => {
         },
       })
         .then((response: AxiosResponse<DishDataResponse>) => {
-          const recipes: Recipe[] = response.data.recipes;
-          setDishData({ recipes });
+          const dishes: Dishes[] = response.data.dishes;
+          setDishData({ dishes });
         })
         .catch((error) => console.error("ユーザー情報の取得エラー:", error))
         .finally(() => setLoading(false));

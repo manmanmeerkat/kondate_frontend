@@ -15,7 +15,7 @@ export const useAllMyDishes = () => {
             const response = await axios.get("http://localhost:8000/api/all-my-dish", {
                 withCredentials: true,
             });
-            setDishes(response.data.recipes);
+            setDishes(response.data.dishes);
         } catch (error) {
             showMessage({ title: "データ取得に失敗しました", status: "error" });
         } finally {
