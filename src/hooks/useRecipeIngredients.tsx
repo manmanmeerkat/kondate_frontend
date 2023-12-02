@@ -9,26 +9,26 @@ interface Ingredient {
 }
 
 // レシピの材料のレスポンスの型を定義
-interface RecipeIngredientsResponse {
+interface DishIngredientsResponse {
   ingredients: Ingredient[];
 }
 
-// useRecipeIngredients フックの型を定義
-interface UseRecipeIngredients {
+// useDishIngredients フックの型を定義
+interface UseDishIngredients {
   ingredients: Ingredient[];
   loading: boolean;
 }
 
-const useRecipeIngredients = (recipeId: number | null): UseRecipeIngredients => {
+const useDishIngredients = (dishId: number | null): UseDishIngredients => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // recipeId が有効な値であることを確認
-    if (recipeId) {
+    // dishId が有効な値であることを確認
+    if (dishId) {
       const fetchIngredients = async () => {
         try {
-          const response: AxiosResponse<RecipeIngredientsResponse> = await axios.get(`http://localhost:8000/api/recipes/${recipeId}/ingredients`);
+          const response: AxiosResponse<DishIngredientsResponse> = await axios.get(`http://localhost:8000/api/dishes/${dishId}/ingredients`);
           setIngredients(response.data.ingredients);
           setLoading(false);
         } catch (error) {
@@ -39,9 +39,9 @@ const useRecipeIngredients = (recipeId: number | null): UseRecipeIngredients => 
 
       fetchIngredients();
     }
-  }, [recipeId]); // recipeId が変更されたときのみ再実行
+  }, [dishId]); // dishId が変更されたときのみ再実行
 
   return { ingredients, loading };
 };
 
-export default useRecipeIngredients;
+export default useDishIngredients;

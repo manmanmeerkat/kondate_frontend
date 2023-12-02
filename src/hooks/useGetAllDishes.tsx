@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const useGetAllDishes = () => {
-  const [dishData, setDishData] = useState({ recipes: [] }); // 初期値をオブジェクトに変更
+  const [dishData, setDishData] = useState({ dishes: [] }); // 初期値をオブジェクトに変更
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

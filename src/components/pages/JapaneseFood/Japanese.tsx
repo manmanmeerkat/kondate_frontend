@@ -19,10 +19,10 @@ import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../../molecules/GenreButton";
 import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
-import { Recipe } from "../../../types/Recipe";
+import { Dish } from "../../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
-import { useJapaneseRecipes } from "../../../hooks/useFetchJapaneseData";
+import { useJapaneseDishes } from "../../../hooks/useFetchJapaneseData";
 
 interface JapaneseProps {
   id?: number;
@@ -36,7 +36,7 @@ interface JapaneseProps {
 export const Japanese: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getJapanese, dishes, loading } = useAllMyDishes();
-  const { data } = useJapaneseRecipes();
+  const { data } = useJapaneseDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
 
@@ -64,7 +64,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [Recipes, setRecipes] = useState<Recipe[]>([]);
+  const [Dishes, setDishes] = useState<Dish[]>([]);
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
 
   const handleSearchButtonClick = useCallback(async () => {
@@ -75,7 +75,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
       console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
-      setRecipes(results);
+      setDishes(results);
     }
   }, [handleIngredientSearch, searchKeyword]);
 
@@ -120,13 +120,13 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? data : Recipes).map((recipe: Recipe) => (
-                <WrapItem key={recipe.id} mx="auto">
+              {(searchKeyword.trim() === "" ? data : Dishes).map((dish: Dish) => (
+                <WrapItem key={dish.id} mx="auto">
                   <DishCard
-                    id={recipe.id}
-                    imageUrl={recipe.image_path}
+                    id={dish.id}
+                    imageUrl={dish.image_path}
                     menuType="Japanese"
-                    dishName={recipe.name}
+                    dishName={dish.name}
                     onClick={onClickDish}
                   />
                 </WrapItem>

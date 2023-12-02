@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
 
-interface Recipe {
+interface Dishes {
   id: number;
   name: string;
   genre_id: number;
@@ -11,7 +11,7 @@ interface Recipe {
 }
 
 interface DishDataResponse {
-  dishes: Recipe[];
+  dishes: Dishes[];
 }
 
 const api = axios.create({
@@ -33,7 +33,7 @@ export const useDishData = () => {
         },
       })
         .then((response: AxiosResponse<DishDataResponse>) => {
-          const dishes: Recipe[] = response.data.dishes;
+          const dishes: Dishes[] = response.data.dishes;
           console.log(response.data);
           setDishData({ dishes });
         })

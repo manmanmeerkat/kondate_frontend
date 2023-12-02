@@ -39,7 +39,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { onSelectDish, selectedDish } = useSelectDish();
   const { getDish, dishData } = useDishData();
   const { user } = useFetchUserData();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
+  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
 console.log("gfdfd",dishes);
   useEffect(() => {
     getDishes();
@@ -95,8 +95,8 @@ console.log("gfdfd",dishes);
             </Center>
           ) : (
             <>
-              {searchedRecipes.length > 0 ? (
-                searchedRecipes.map((dish) => (
+              {searchedDishes.length > 0 ? (
+                searchedDishes.map((dish) => (
                   <WrapItem key={dish.id} mx="auto">
                     <DishCard
                       id={dish.id}

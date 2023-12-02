@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { Dish } from '../types/Dish';
 
 export const useIngredientSearch = (endpoint: string, user_id: number | undefined) => {
-  const [searchedRecipes, setSearchedRecipes] = useState<Dish[]>([]);
+  const [searchedDishes, setSearchedDishes] = useState<Dish[]>([]);
 
   const handleIngredientSearch = async (searchIngredient: string): Promise<Dish[]> => {
     try {
       if (searchIngredient.trim() === "") {
         // 検索条件が空の場合、すべてのレシピを表示
-        setSearchedRecipes([]);
+        setSearchedDishes([]);
         return [];
       } else {
         // ユーザーがログインしている場合にのみ検索を行う
@@ -18,7 +18,7 @@ export const useIngredientSearch = (endpoint: string, user_id: number | undefine
           const data = await response.json();
 
           if (response.ok) {
-            setSearchedRecipes(data.dishes);
+            setSearchedDishes(data.dishes);
             return data.dishes;
           } else {
             console.error("検索に失敗しました。");
@@ -35,5 +35,5 @@ export const useIngredientSearch = (endpoint: string, user_id: number | undefine
     }
   };
 
-  return { searchedRecipes, handleIngredientSearch };
+  return { searchedDishes, handleIngredientSearch };
 };

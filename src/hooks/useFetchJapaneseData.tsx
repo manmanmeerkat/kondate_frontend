@@ -36,6 +36,6 @@ const createFetchHook = (endpoint: string) => () => useFetchJapaneseData(endpoin
 export const useJapaneseSyusai = createFetchHook('all-my-japanese-syusai');
 export const useJapaneseShirumono = createFetchHook('all-my-japanese-shirumono');
 export const useJapaneseFukusai = createFetchHook('all-my-japanese-fukusai');
-export const useJapaneseRecipes = createFetchHook('all-my-japanese-foods');
+export const useJapaneseDishes = createFetchHook('all-my-japanese-foods');
 export const useJapaneseOthers = createFetchHook('all-my-japanese-others');
 

@@ -37,6 +37,6 @@ const createFetchHook = (endpoint: string) => () => useFetchChineseData(endpoint
 export const useChineseSyusai = createFetchHook('all-my-chinese-syusai');
 export const useChineseShirumono = createFetchHook('all-my-chinese-shirumono');
 export const useChineseFukusai = createFetchHook('all-my-chinese-fukusai');
-export const useChineseRecipes = createFetchHook('all-my-chinese-foods');
+export const useChineseDishes = createFetchHook('all-my-chinese-foods');
 export const useChineseOthers = createFetchHook('all-my-chinese-others');
 

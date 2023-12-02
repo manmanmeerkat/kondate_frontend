@@ -19,10 +19,10 @@ import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../../molecules/GenreButton";
 import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
-import { Recipe } from "../../../types/Recipe";
+import { Dish } from "../../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
-import { useOthersRecipes } from "../../../hooks/useFetchOthersData";
+import { useOthersDishes } from "../../../hooks/useFetchOthersData";
 interface OthersProps {
   id?: number;
   name?: string;
@@ -35,11 +35,11 @@ interface OthersProps {
 export const Others: React.FC<OthersProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getOthers, dishes, loading } = useAllMyDishes();
-  const { data } = useOthersRecipes();
+  const { data } = useOthersDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
 
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("others-food", user?.id);
+  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("others-food", user?.id);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 1ページあたりの項目数
@@ -64,7 +64,7 @@ export const Others: React.FC<OthersProps> = memo(() => {
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [Recipes, setRecipes] = useState<Recipe[]>([]);
+  const [Dishes, setDishes] = useState<Dish[]>([]);
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
 
   const handleSearchButtonClick = useCallback(async () => {
@@ -75,7 +75,7 @@ export const Others: React.FC<OthersProps> = memo(() => {
       console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
-      setRecipes(results);
+      setDishes(results);
     }
   }, [handleIngredientSearch, searchKeyword]);
 
@@ -119,13 +119,13 @@ export const Others: React.FC<OthersProps> = memo(() => {
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
-              {(searchKeyword.trim() === "" ? data : Recipes).map((recipe: Recipe) => (
-                <WrapItem key={recipe.id} mx="auto">
+              {(searchKeyword.trim() === "" ? data : Dishes).map((dish: Dish) => (
+                <WrapItem key={dish.id} mx="auto">
                   <DishCard
-                    id={recipe.id}
-                    imageUrl={recipe.image_path}
+                    id={dish.id}
+                    imageUrl={dish.image_path}
                     menuType="Japanese"
-                    dishName={recipe.name}
+                    dishName={dish.name}
                     onClick={onClickDish}
                   />
                 </WrapItem>
