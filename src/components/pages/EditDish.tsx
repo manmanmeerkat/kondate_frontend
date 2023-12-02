@@ -250,8 +250,7 @@ export const EditDish: React.FC = () => {
   const handleDelete = async () => {
     setIsDeleteAlertOpen(false);
     try {
-      setIsSubmitting(true); // 削除中にフラグをセット
-setIsDeleting(true)
+    setIsDeleting(true)
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
       console.log('XSRF Token:', xsrfToken);
@@ -291,9 +290,11 @@ setIsDeleting(true)
         isClosable: true,
       });
     } finally {
-      setIsDeleting(true); // 削除が完了したらフラグをリセット
+      setIsDeleting(false); // 削除が完了したらフラグをリセット
+      setIsSubmitting(false); // 送信が完了したらフラグをリセット
     }
   };
+
 
   return (
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
@@ -412,32 +413,32 @@ setIsDeleting(true)
             </FormControl>
 
             <Button
-  type="submit"
-  colorScheme="teal"
-  width="100%"
-  fontSize="18px"
-  letterSpacing="1px"
-  borderRadius="base"
-  mt={4}
-  isLoading={isSubmitting}
-  isDisabled={isSubmitting}  
->
-  更新
-</Button>
+                type="submit"
+                colorScheme="teal"
+                width="100%"
+                fontSize="18px"
+                letterSpacing="1px"
+                borderRadius="base"
+                mt={4}
+                isLoading={isSubmitting}
+                isDisabled={isSubmitting}  
+              >
+                更新
+              </Button>
 
-<Button
-  type="button"
-  colorScheme="red"
-  width="100%"
-  fontSize="18px"
-  letterSpacing="1px"
-  borderRadius="base"
-  mt={4}
-  isLoading={isDeleting}  
-  onClick={handleConfirmDelete}
->
-  削除
-</Button>
+              <Button
+                type="button"
+                colorScheme="red"
+                width="100%"
+                fontSize="18px"
+                letterSpacing="1px"
+                borderRadius="base"
+                mt={4}
+                isLoading={isDeleting}  
+                onClick={handleConfirmDelete}
+              >
+                削除
+            </Button>
 
             {/* 確認のアラート */}
             <AlertDialog

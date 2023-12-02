@@ -201,13 +201,14 @@ export const CreateDish = () => {
       );
 
       if (response.status === 201) {
-        console.log('フォームのが登録が成功しました');
+        console.log('フォームの登録が成功しました');
         toast({
           title: '登録が完了しました',
           status: 'success',
           duration: 5000,
           isClosable: true,
         });
+        setIsLoading(false); // ここで isLoading を false に設定
         navigate(-1);
       } else {
         console.error('フォームの登録が失敗しました');
@@ -220,7 +221,7 @@ export const CreateDish = () => {
       }
     } catch (error) {
       console.error('エラー:', error);
-
+  
       toast({
         title: 'エラーが発生しました',
         description: 'フォームの更新中にエラーが発生しました。',
@@ -228,6 +229,8 @@ export const CreateDish = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false); // ここでも isLoading を false に設定
     }
   };
 
