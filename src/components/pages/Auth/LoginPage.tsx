@@ -41,7 +41,6 @@ export const LoginPage: React.FC = () => {
         const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
-
         console.log('CSRFトークン:', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
@@ -49,12 +48,7 @@ export const LoginPage: React.FC = () => {
     };
 
     fetchCsrfToken();
-
-    setFormData({
-      email: '',
-      password: '',
-    });
-  }, []);
+  }, []);  // フォームデータのリセットは不要なので削除
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,7 +69,7 @@ export const LoginPage: React.FC = () => {
       })
       .then((response) => {
         const { token, userId, message, role } = response.data;
-console.log(response.data);
+        console.log(response.data);
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
 
@@ -120,6 +114,7 @@ console.log(response.data);
           ログイン
         </Heading>
         <form onSubmit={handleSubmit}>
+          {/* CSRFトークンをmetaタグで追加 */}
           <meta name="csrf-token" content={csrfToken} />
 
           <FormControl mt="4">

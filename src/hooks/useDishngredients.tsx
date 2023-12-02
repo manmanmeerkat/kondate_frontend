@@ -5,7 +5,6 @@ import axios, { AxiosResponse } from 'axios';
 interface Ingredient {
   id: number;
   name: string;
-  // 他にも必要なプロパティがあれば追加
 }
 
 // レシピの材料のレスポンスの型を定義
