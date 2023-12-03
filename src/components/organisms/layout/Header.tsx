@@ -5,6 +5,7 @@ import { MenuIconButton } from '../../atoms/button/MenuIconButton';
 import { MenuDrawer } from '../../molecules/MenuDrawer';
 import axios from 'axios';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
+import MenuForDate from '../../pages/MenuForDate';
 
 interface HeaderProps {}
 
@@ -44,6 +45,12 @@ export const Header: React.FC<HeaderProps> = () => {
     setHeaderColor(e.target.value);
   };
 
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const handleToggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
+
   return (
     <>
       <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
@@ -61,13 +68,14 @@ export const Header: React.FC<HeaderProps> = () => {
           <Box pr={4} onClick={onClickCreate}>
             <Link>新規登録</Link>
           </Box>
+          <Box onClick={handleToggleMenu}>こんだて作成</Box>
         </Flex>
 
         <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
 
         <MenuIconButton onOpen={onOpen} />
       </Flex>
-
+      {isMenuVisible && <MenuForDate />}
       <MenuDrawer onClickAllMyDishes={onClickAllMyDishes} onLogoutSuccess={onLogoutSuccess} onClose={onClose} isOpen={isOpen} onClickHome={onClickHome} onClickCreate={onClickCreate} csrfToken={csrfToken}/>
     </>
   );

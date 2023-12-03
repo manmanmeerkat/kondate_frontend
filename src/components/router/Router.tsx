@@ -28,13 +28,17 @@ import { OthersOthers } from "../pages/OthersFood/OthersOthers";
 import { LoginPage } from "../pages/Auth/LoginPage";
 import { UsersList } from "../pages/Admin/UsersList";
 import { AllDishImage } from "../pages/Admin/AllDishImage";
+import { Calendar } from "../pages/Calendar";
+import MenuForDate from "../pages/MenuForDate";
 
 export const Router = memo(() => {
+    
     return (
         <Routes>
             <Route path="/" element={<TopPage />}/>
             <Route path="/admin" element={<UsersList />}/>
-            <Route path="/about" element={<AllDishImage />}/>
+            <Route path="/about" element={<MenuForDate/>}/>
+            <Route path="/menu" element={<MenuForDate />} />
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/register" element={<UserRegister />}/>
             <Route path="/all_my_dishes" element={<AllMyDishes />}/>

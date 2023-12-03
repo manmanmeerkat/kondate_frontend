@@ -23,6 +23,7 @@ import { Dish } from "../../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
 import { useJapaneseDishes } from "../../../hooks/useFetchJapaneseData";
+import MenuForDate from "../MenuForDate";
 
 interface JapaneseProps {
   id?: number;
@@ -88,11 +89,17 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
     [dishes, onSelectDish, onOpen]
   );
 
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const handleToggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
 
   return (
     <div>
       <Header />
+      <Button onClick={handleToggleMenu}>こんだて作成</Button>
+      {isMenuVisible && <MenuForDate />}
       <GenreButton />
       <InputGroup mt={4} mx="auto" w={{ base: "80%", md: "60%" }}>
         <Input

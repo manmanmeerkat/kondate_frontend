@@ -32,7 +32,7 @@ export const AllDishImage: React.FC<AllMyDishesProps> = memo(() => {
   const { onSelectDish, selectedDish } = useSelectDish();
   const { dishData } = useGetAllDishes();
   const { user } = useFetchUserData();
-  const { searchedRecipes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
+  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
 
   useEffect(() => {
     getDishes();
@@ -87,8 +87,8 @@ console.log("ヂュエル"  ,dishes);
             </Center>
           ) : (
             <>
-              {searchedRecipes.length > 0 ? (
-                searchedRecipes.map((dish) => (
+              {searchedDishes.length > 0 ? (
+                searchedDishes.map((dish) => (
                   <WrapItem key={dish.id} mx="auto">
                     <DishCard
                       id={dish.id}
@@ -100,8 +100,8 @@ console.log("ヂュエル"  ,dishes);
                   </WrapItem>
                 ))
               ) : (
-                dishData && dishData.recipes && dishData.recipes.length > 0 ? (
-                  dishData.recipes.map((dish: any) => (
+                dishData && dishData.dishes && dishData.dishes.length > 0 ? (
+                  dishData.dishes.map((dish: any) => (
                     <WrapItem key={dish.id} mx="auto">
                       <DishCard
                         id={dish.id}

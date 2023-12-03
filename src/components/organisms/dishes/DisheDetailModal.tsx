@@ -33,7 +33,6 @@ interface DishDetailModalProps {
   isOpen: boolean;
   id: number | null;
   onClose: () => void;
-  handleEdit: () => void; 
 }
 
 export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
