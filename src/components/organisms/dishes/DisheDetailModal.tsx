@@ -33,6 +33,7 @@ interface DishDetailModalProps {
   isOpen: boolean;
   id: number | null;
   onClose: () => void;
+  handleEdit: () => void; 
 }
 
 export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
@@ -112,25 +113,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     }
   }, [isOpen, id]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await axios.put(`http://localhost:8000/api/menu/${id}`, {
-        name: name,
-        genre: genre,
-        // 他のプロパティも必要に応じて追加
-      });
-      console.log("Updated post:", response.data);
-      showMessage({ title: "更新しました", status: "success" });
-      onClose();
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (error) {
-      console.error("Error updating post:", error);
-      showMessage({ title: "更新に失敗しました", status: "error" });
-    }
-  };
+ 
 
   const handleEdit = () => {
     navigate(`/edit/${id}`);
@@ -145,11 +128,11 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
         <ModalBody mx={4}>
           {loading ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="200px">
-              <Spinner size="lg" color="blue.500" />
+              <Spinner data-testid="spinner" size="lg" color="blue.500" />
             </Box>
           ) : (
             <Stack spacing={4}>
-              <form onSubmit={handleSubmit}>
+              <form>
                 <FormControl>
                   <FormLabel>料理名</FormLabel>
                   <Input value={name} readOnly />
