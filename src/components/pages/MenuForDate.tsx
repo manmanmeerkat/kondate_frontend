@@ -1,11 +1,14 @@
-import React from 'react';
-import { Calendar, MenuItem } from './Calendar'; // Calendarコンポーネントのパスを適切に指定する
+// MenuForDate.tsx
 
-export const getMenuForDate = (date: Date): MenuItem[] => {
+import React from 'react';
+import { Calendar, MenuItem } from './Calendar';
+
+const getMenuForDate = (date: Date): MenuItem[] => {
   // ここで実際のデータ取得ロジックを実装する（ダミーデータを返す例）
+  const formattedDate = date.toLocaleDateString();
   return [
-    { name: 'Dish 1', description: 'Description for Dish 1' },
-    { name: 'Dish 2', description: 'Description for Dish 2' },
+    { date, name: `Dish 1 for ${formattedDate}`, description: 'Description for Dish 1' },
+    { date, name: `Dish 2 for ${formattedDate}`, description: 'Description for Dish 2' },
     // ... 他の献立アイテム
   ];
 };

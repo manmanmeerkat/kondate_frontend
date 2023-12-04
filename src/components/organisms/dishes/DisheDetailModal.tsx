@@ -20,6 +20,7 @@ import { EditIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { useMessage } from '../../../hooks/useMessage';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 interface DishDetailModalProps {
   dish: {
@@ -45,6 +46,8 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const [url, setUrl] = useState<string>("");
   const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const selectedDate = useSelector((state: { selectedDate: Date }) => state.selectedDate);
+
 
   const navigate = useNavigate();
 
@@ -118,6 +121,22 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     navigate(`/edit/${id}`);
   };
 
+
+  const handleMenuRegistration = async () => {
+    try {
+      const response = await axios.post('/api/menus', {
+        dish_id: dish?.id,
+        date: selectedDate, // DatePickerで選択された日付
+        // 他のメニューデータも追加
+      });
+  
+      showMessage( { title: 'メニューを登録しました。', status: 'success' });
+    } catch (error) {
+      console.error('メニューの登録に失敗しました。', error);
+      showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} motionPreset="slideInBottom">
       <ModalOverlay />
@@ -165,6 +184,9 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
                 </FormControl>
                 <Stack direction="row" spacing={4} justify="space-between" align="center">
                   <Button leftIcon={<EditIcon />} onClick={handleEdit}>
+                    編集
+                  </Button>
+                  <Button rightIcon={<EditIcon />} onClick={handleMenuRegistration}>
                     編集
                   </Button>
                 </Stack>

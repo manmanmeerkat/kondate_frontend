@@ -1,10 +1,13 @@
+// Calendar.tsx
+
 import React, { useState } from 'react';
-import { Box, Button, ChakraProvider, Flex, Heading, VStack } from '@chakra-ui/react';
+import { Box, ChakraProvider, Flex, Heading, VStack } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ja from 'date-fns/locale/ja';
 
 export interface MenuItem {
+  date: Date;
   name: string;
   description: string;
 }
@@ -32,13 +35,11 @@ export const Calendar: React.FC<CalendarProps> = ({ getMenuForDate }) => {
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
-            dateFormat="カレンダーを表示"
+            dateFormat="yyyy年MM月d日（eee）"
             popperClassName="custom-datepicker"
             locale={ja}
             className="compact-datepicker"
-            customInput={<Button variant="outline">カレンダーを表示</Button>} 
           />
-          
         </Flex>
         <VStack spacing={2} p={2}>
           <Heading size="sm">{selectedDate?.toLocaleDateString()}のメニュー</Heading>
