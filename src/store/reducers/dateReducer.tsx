@@ -1,9 +1,7 @@
-// 例として、dateReducer.ts などで以下のように修正します。
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface DateState {
-  selectedDate: Date | null;
+  selectedDate: string | null;
 }
 
 const initialState: DateState = {
@@ -14,7 +12,7 @@ const dateSlice = createSlice({
   name: 'date',
   initialState,
   reducers: {
-    setSelectedDate: (state, action: PayloadAction<Date>) => {
+    setSelectedDate: (state: DateState, action: PayloadAction<string | null>) => {
       state.selectedDate = action.payload;
     },
   },

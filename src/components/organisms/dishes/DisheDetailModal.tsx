@@ -46,9 +46,9 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const [url, setUrl] = useState<string>("");
   const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const selectedDate = useSelector((state: { selectedDate: Date }) => state.selectedDate);
+  const selectedDate = useSelector((state: { selectedDate: string | null }) => state.selectedDate);
 
-
+  
   const navigate = useNavigate();
 
   const fetchIngredients = async () => {
@@ -121,21 +121,90 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     navigate(`/edit/${id}`);
   };
 
-
-  const handleMenuRegistration = async () => {
-    try {
-      const response = await axios.post('/api/menus', {
-        dish_id: dish?.id,
-        date: selectedDate, // DatePickerで選択された日付
-        // 他のメニューデータも追加
-      });
-  
-      showMessage( { title: 'メニューを登録しました。', status: 'success' });
-    } catch (error) {
-      console.error('メニューの登録に失敗しました。', error);
-      showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+// 仮の getCookie 関数の例
+const getCookie = (name:string) => {
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split('=');
+    if (cookieName === name) {
+      return cookieValue;
     }
-  };
+  }
+  return null;
+};
+
+const getCSRFToken = async () => {
+  await axios.get('http://localhost:8000/api/sanctum/csrf-cookie');
+};
+
+const handleMenuRegistration = async () => {
+  try {
+    // CSRF トークンの取得
+    await getCSRFToken();
+
+    // XSRF-TOKEN Cookieからトークンを取得
+    const xsrfToken = getCookie('XSRF-TOKEN');
+
+   // 日付のフォーマット変換
+// 日付のフォーマット変換
+let formattedDate = null;
+if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in selectedDate) {
+  const dateString = (selectedDate as { selectedDate: string }).selectedDate;
+
+  // "/" を "-" に変換
+  const isoDateString = dateString.replace(/\//g, '-');
+
+  // 月と日が一桁の場合に前に0を付ける
+  const [year, month, day] = isoDateString.split('-');
+  const paddedMonth = month.padStart(2, '0');
+  const paddedDay = day.padStart(2, '0');
+  const correctedIsoDateString = `${year}-${paddedMonth}-${paddedDay}`;
+
+  // タイムゾーンのオフセットを取得
+  const timezoneOffsetMinutes = new Date().getTimezoneOffset();
+  
+  // 日本時間に変換
+  const japanTime = new Date(`${correctedIsoDateString}T00:00:00.000`);
+  japanTime.setMinutes(japanTime.getMinutes() + timezoneOffsetMinutes + 9 * 60); // タイムゾーンの補正
+
+  if (!isNaN(japanTime.valueOf())) {
+    // 手動で日付をフォーマット
+    const formattedYear = japanTime.getFullYear();
+    const formattedMonth = (japanTime.getMonth() + 1).toString().padStart(2, '0');
+    const formattedDay = japanTime.getDate().toString().padStart(2, '0');
+    formattedDate = `${formattedYear}-${formattedMonth}-${formattedDay}`;
+  } else {
+    console.error('Invalid date format. Japan Time:', japanTime);
+    throw new Error('Invalid date format');
+  }
+}
+
+
+    // 実際のメニュー登録リクエスト
+    const response = await axios.post(
+      'http://localhost:8000/api/menus',
+      {
+        dish_id: dish?.id,
+        date: formattedDate,
+      },
+      {
+        headers: {
+          'X-XSRF-TOKEN': xsrfToken,
+        },
+        withCredentials: true,
+      }
+    );
+
+    console.log('Response:', response);
+
+    showMessage({ title: 'メニューを登録しました。', status: 'success' });
+  } catch (error) {
+    console.error('メニューの登録に失敗しました。', error);
+    showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+  }
+};
+
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} motionPreset="slideInBottom">
@@ -187,7 +256,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
                     編集
                   </Button>
                   <Button rightIcon={<EditIcon />} onClick={handleMenuRegistration}>
-                    編集
+                    メニューの登録
                   </Button>
                 </Stack>
               </form>
