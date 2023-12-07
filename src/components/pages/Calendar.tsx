@@ -22,10 +22,12 @@ export interface MenuItem {
 }
 
 interface CalendarProps {
+  selectedDate: Date | null;
+  onDateChange: (date: Date | null) => void;
   getMenuForDate: (date: Date) => MenuItem[];
 }
 
-export const Calendar: React.FC<CalendarProps> = ({ getMenuForDate }) => {
+export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, getMenuForDate }) => {
   const dispatch = useDispatch();
 
   // Reduxのstateの型を指定してuseSelectorを使用
@@ -38,6 +40,7 @@ export const Calendar: React.FC<CalendarProps> = ({ getMenuForDate }) => {
   const [menu, setMenu] = useState<MenuItem[]>([]);
 
   const handleDateChange = (date: Date | null) => {
+    onDateChange(date);
     if (date) {
       dispatch(setSelectedDate(date?.toLocaleDateString())); 
       const menuForDate = getMenuForDate(date);
@@ -57,11 +60,11 @@ export const Calendar: React.FC<CalendarProps> = ({ getMenuForDate }) => {
           popperClassName="custom-datepicker"
           locale={ja}
           className="compact-datepicker"
+          placeholderText='日付を選択してください'
         />
 
         </Flex>
         <VStack spacing={2} p={2}>
-          <Heading size="sm">{selectedDateRedux?.toLocaleDateString()}のメニュー</Heading>
           {menu.map((item, index) => (
             <Box key={index} borderWidth="1px" p={2} borderRadius="md" width="100%">
               <Heading size="xs">{item.name}</Heading>
