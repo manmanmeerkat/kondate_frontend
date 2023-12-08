@@ -1,31 +1,37 @@
-import React, { useState } from 'react';
-import { Calendar, MenuItem } from './Calendar';
+// MenuForDate.tsx
+
+import React, { useState, useEffect } from 'react';
+import { Calendar } from './Calendar';
+import { useMenuForDate } from '../../hooks/useMenuForDate';
+
+
 
 const MenuForDate: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [menu, setMenu] = useState<MenuItem[]>([]);
+  const { menu, loading, error, getMenuForDate } = useMenuForDate();
 
-  const getMenuForDate = (date: Date): MenuItem[] => {
-    // ここで実際のデータ取得ロジックを実装する
-    const formattedDate = date.toLocaleDateString();
-    return [
-      { date, name: `Dish 1 for ${formattedDate}`, description: 'Description for Dish 1' },
-      { date, name: `Dish 2 for ${formattedDate}`, description: 'Description for Dish 2' },
-      // ... 他の献立アイテム
-    ];
-  };
-
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = async (date: Date | null) => {
     setSelectedDate(date);
-    const menuForDate = getMenuForDate(date || new Date()); // date が null の場合はデフォルトの日付を使用
-    setMenu(menuForDate);
+    await getMenuForDate(date || new Date());
   };
+
+  useEffect(() => {
+    // 初期表示時にもデータを取得する場合はコメントアウトを解除
+    // handleDateChange(selectedDate);
+  }, [selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
       <h1>{selectedDate?.toLocaleDateString()}のメニュー</h1>
       <Calendar getMenuForDate={getMenuForDate} selectedDate={selectedDate} onDateChange={handleDateChange} />
-      {/* 他の表示要素やコンポーネント */}
+      {/* メニューの表示
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {menu.map((menuItem) => (
+        <div key={menuItem.id}>
+          <p>Dish Name: {menuItem.dish.name}</p>
+        </div>
+      ))} */}
     </div>
   );
 };
