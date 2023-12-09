@@ -47,6 +47,8 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const selectedDate = useSelector((state: { selectedDate: string | null }) => state.selectedDate);
+  const [loadingButton, setLoadingButton] = useState<boolean>(false);
+  const [loadingText, setLoadingText] = useState<string>("");
 
   
   const navigate = useNavigate();
@@ -139,6 +141,10 @@ const getCSRFToken = async () => {
 
 const handleMenuRegistration = async () => {
   try {
+     // ボタンを非活性にする
+     setLoadingButton(true);
+     setLoadingText("登録中...");
+
     // CSRF トークンの取得
     await getCSRFToken();
 
@@ -198,9 +204,15 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
     console.log('Response:', response);
 
     showMessage({ title: 'メニューを登録しました。', status: 'success' });
+    // モーダルを閉じる
+    onClose();
   } catch (error) {
     console.error('メニューの登録に失敗しました。', error);
     showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+  }finally {
+    // ボタンを活性化
+    setLoadingButton(false);
+    setLoadingText("");
   }
 };
 
@@ -255,7 +267,12 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
                   <Button leftIcon={<EditIcon />} onClick={handleEdit}>
                     編集
                   </Button>
-                  <Button rightIcon={<EditIcon />} onClick={handleMenuRegistration}>
+                  <Button
+                    rightIcon={<EditIcon />}
+                    onClick={handleMenuRegistration}
+                    isLoading={loadingButton} // isLoadingプロパティを使用して非同期処理中にローディング状態を表示
+                    loadingText="登録中..." // ローディング中のテキスト
+                  >
                     メニューの登録
                   </Button>
                 </Stack>

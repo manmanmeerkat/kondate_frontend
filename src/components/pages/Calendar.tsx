@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedDate } from '../../store/reducers/dateReducer';
 import axios from 'axios';
 import { MenuItem, deleteMenu, selectMenu, setMenu } from '../../store/slices/menuSlice';
+
 interface RootState {
   date: {
     selectedDate: Date | null;
@@ -24,6 +25,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
   const dispatch = useDispatch();
   const selectedDateRedux = useSelector((state: RootState) => state.date ? state.date.selectedDate : null);
   const menu = useSelector(selectMenu);
+  const [deletingItemId, setDeletingItemId] = useState<number | null>(null);
 
   const handleDateChange = async (date: Date | null) => {
     onDateChange(date);
@@ -42,6 +44,8 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
     }
 
     try {
+      setDeletingItemId(dishId); // 削除中のアイテムのIDをセット
+
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
       console.log('XSRF Token:', xsrfToken);
@@ -56,6 +60,8 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
       dispatch(deleteMenu(dishId));
     } catch (error) {
       console.error('Error deleting item:', error);
+    } finally {
+      setDeletingItemId(null); // 削除が完了したら削除中のアイテムのIDをリセット
     }
   };
 
@@ -78,14 +84,26 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
         ) : (
           <Wrap spacing={4} mt={4}>
             {menu.map((item, index) => (
-              <WrapItem key={index} p={4} borderRadius="md" borderWidth="1px" width="200px" bg="teal.500">
-                <Box key={index} p={4} borderRadius="md" width="200px" bg="teal.500" textAlign="center" borderWidth={0}>
-                  <Heading size="md" mb={2}>
-                    {item.dish.name}
-                  </Heading>
-                  <Button onClick={() => handleDelete(item.id)}>削除</Button>
-                </Box>
-              </WrapItem>
+              <WrapItem key={index} p={4} position="relative" borderRadius="md" borderWidth="1px" width="200px" bg="teal.500">
+              <Box key={index} p={4} borderRadius="md" width="200px" bg="teal.500" textAlign="center" borderWidth={0}>
+                <Heading size="md" mb={2} color="white"> {/* 文字色を白に設定 */}
+                  {item.dish.name}
+                </Heading>
+                <Button
+                  onClick={() => handleDelete(item.id)}
+                  isDisabled={deletingItemId === item.id}
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  fontSize="12px"
+                  size="xs"
+                  colorScheme="red"  // ボタンの色を赤に設定
+                >
+                  {deletingItemId === item.id ? '削除中...' : '✖'}
+                </Button>
+              </Box>
+            </WrapItem>
+            
             ))}
           </Wrap>
         )}

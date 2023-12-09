@@ -98,8 +98,6 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
   return (
     <div>
       <Header />
-      <Button onClick={handleToggleMenu}>こんだて作成</Button>
-      {isMenuVisible && <MenuForDate />}
       <GenreButton />
       <InputGroup mt={4} mx="auto" w={{ base: "80%", md: "60%" }}>
         <Input
