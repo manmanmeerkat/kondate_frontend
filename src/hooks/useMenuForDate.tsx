@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MenuItem } from '../components/pages/Calendar';
+import { MenuItem } from '../store/slices/menuSlice';
 
 export const useMenuForDate = () => {
   const [menu, setMenu] = useState<MenuItem[]>([]);

@@ -1,26 +1,16 @@
 // Calendar.tsx
-
 import React, { useState } from 'react';
-import { Box, ChakraProvider, Flex, Wrap, WrapItem, Heading, Text } from '@chakra-ui/react';
+import { Box, ChakraProvider, Flex, Wrap, WrapItem, Heading, Text, Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ja from 'date-fns/locale/ja';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedDate } from '../../store/reducers/dateReducer';
-
+import axios from 'axios';
+import { MenuItem, deleteMenu, selectMenu, setMenu } from '../../store/slices/menuSlice';
 interface RootState {
   date: {
     selectedDate: Date | null;
-  };
-}
-
-export interface MenuItem {
-  id: number;
-  date: string;
-  dish: {
-    id: number;
-    name: string;
-    description: string;
   };
 }
 
@@ -32,20 +22,40 @@ interface CalendarProps {
 
 export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, getMenuForDate }) => {
   const dispatch = useDispatch();
-
-  const selectedDateRedux = useSelector((state: RootState) => {
-    console.log(state);
-    return state.date ? state.date.selectedDate : null;
-  });
-
-  const [menu, setMenu] = useState<MenuItem[]>([]);
+  const selectedDateRedux = useSelector((state: RootState) => state.date ? state.date.selectedDate : null);
+  const menu = useSelector(selectMenu);
 
   const handleDateChange = async (date: Date | null) => {
     onDateChange(date);
     if (date) {
       dispatch(setSelectedDate(date?.toLocaleDateString()));
       const menuForDate = await getMenuForDate(date);
-      setMenu(menuForDate);
+      dispatch(setMenu(menuForDate));
+    }
+  };
+
+  const handleDelete = async (dishId: number) => {
+    function getCookie(name: string) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+    }
+
+    try {
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      const xsrfToken = getCookie('XSRF-TOKEN');
+      console.log('XSRF Token:', xsrfToken);
+
+      await axios.delete(`http://localhost:8000/api/delete/menus/${dishId}`, {
+        headers: {
+          'X-XSRF-TOKEN': xsrfToken,
+        },
+        withCredentials: true,
+      });
+
+      dispatch(deleteMenu(dishId));
+    } catch (error) {
+      console.error('Error deleting item:', error);
     }
   };
 
@@ -68,10 +78,13 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
         ) : (
           <Wrap spacing={4} mt={4}>
             {menu.map((item, index) => (
-              <WrapItem key={index} p={4} borderRadius="md" borderWidth="1px" width="200px">
-                <Heading size="md" mb={2}>
-                  {item.dish.name}
-                </Heading>
+              <WrapItem key={index} p={4} borderRadius="md" borderWidth="1px" width="200px" bg="teal.500">
+                <Box key={index} p={4} borderRadius="md" width="200px" bg="teal.500" textAlign="center" borderWidth={0}>
+                  <Heading size="md" mb={2}>
+                    {item.dish.name}
+                  </Heading>
+                  <Button onClick={() => handleDelete(item.id)}>削除</Button>
+                </Box>
               </WrapItem>
             ))}
           </Wrap>

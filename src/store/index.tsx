@@ -2,11 +2,12 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import dateReducer from './reducers/dateReducer';
+import menuReducer from './slices/menuSlice';
 
 const store = configureStore({
   reducer: {
     selectedDate: dateReducer,
-    // 他の reducer も追加可能
+    menu: menuReducer,
   },
 });
 
