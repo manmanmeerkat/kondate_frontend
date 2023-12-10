@@ -69,7 +69,6 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
     <ChakraProvider>
       <Box borderWidth="1px" borderRadius="md" p={4}>
         <Flex align="center" borderBottomWidth="1px">
-          <Button style={{ cursor: 'pointer' }}>
           <DatePicker
             selected={selectedDateRedux ? new Date(selectedDateRedux) : null}
             onChange={handleDateChange}
@@ -92,7 +91,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
                 {selectedDate ? '日付を選択してください' : '日付を選択してください'}
               </Box>
             }
-          /></Button>
+          />
         </Flex>
         {menu.length === 0 ? (
           <Text mt={4}>メニューが何も登録されていません。</Text>

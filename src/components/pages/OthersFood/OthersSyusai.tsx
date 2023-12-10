@@ -106,9 +106,9 @@ export const OthersSyusai: React.FC<JapaneseProps> = memo(() => {
         </Center>
       ) : (
         <>
-          {noSearchResults ? (
+          {noSearchResults || (Dishes.length === 0 && searchKeyword.trim() === "") ? (
             <Center h="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-              <p>該当するデータがありません。</p>
+              <p>登録されているデータがありません。</p>
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
