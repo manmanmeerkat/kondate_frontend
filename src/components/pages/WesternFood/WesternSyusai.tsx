@@ -115,9 +115,9 @@ export const WesternSyusai: React.FC<WesternProps> = memo(() => {
         </Center>
       ) : (
         <>
-          {noSearchResults || (Dishes.length === 0 && searchKeyword.trim() === "") ? (
+          {noSearchResults ? (
             <Center h="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-              <p>登録されているデータがありません。</p>
+              <p>該当するデータがありません。</p>
             </Center>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>

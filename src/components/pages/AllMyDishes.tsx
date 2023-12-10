@@ -76,10 +76,10 @@ console.log("gfdfd",dishes);
           onChange={(e) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
-        <Button onClick={handleSearchButtonClick} size="sm" style={{ backgroundColor: 'black', color: 'white' }}>
-  <SearchIcon />
-  検索
-</Button>
+        <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
+            <SearchIcon />
+            検索
+          </Button>
 
         </InputRightElement>
       </InputGroup>
