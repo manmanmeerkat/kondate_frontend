@@ -11,11 +11,12 @@ interface MenuDrawerProps {
   onClickCreate: () => void;
   onClickAllMyDishes: () => void; // この行を追加
   onLogoutSuccess: () => void;
+  handleToggleMenu: () => void;
   csrfToken: string;
 }
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
-  const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, csrfToken } = props;
+  const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, handleToggleMenu, csrfToken } = props;
 
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
@@ -32,7 +33,11 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
               <Button w="100%" onClick={onClickCreate}>
                 新規登録
               </Button>
-              <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
+              <Button w="100%" onClick={handleToggleMenu}>
+                こんだて作成</Button>
+              <Button w="100%">
+                <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
+              </Button>
             </VStack>
           </DrawerBody>
         </DrawerContent>

@@ -13,13 +13,14 @@ export const Header: React.FC<HeaderProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
-  const [csrfToken, setCsrfToken] = useState<string>(''); // CSRFトークンの状態
-  const [headerColor, setHeaderColor] = useState<string>('white'); // ヘッダーの色
+  const [csrfToken, setCsrfToken] = useState<string>('');
+  const [headerColor, setHeaderColor] = useState<string>('white');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        // Laravel Sanctumの/csrf-cookieエンドポイントを使用
         const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
@@ -28,8 +29,17 @@ export const Header: React.FC<HeaderProps> = () => {
       }
     };
 
-    // コンポーネント初期化時に同期的に CSRF トークンを取得
     fetchCsrfToken();
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const onClickHome = useCallback(() => navigate('/'), [navigate]);
@@ -37,15 +47,8 @@ export const Header: React.FC<HeaderProps> = () => {
   const onClickCreate = useCallback(() => navigate('/create'), [navigate]);
 
   const onLogoutSuccess = useCallback(() => {
-    // ログアウト成功時の追加の処理をここに追加できます
     navigate('/');
   }, [navigate]);
-
-  const handleHeaderColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setHeaderColor(e.target.value);
-  };
-
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const handleToggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
@@ -68,15 +71,29 @@ export const Header: React.FC<HeaderProps> = () => {
           <Box pr={4} onClick={onClickCreate}>
             <Link>新規登録</Link>
           </Box>
-          <Box onClick={handleToggleMenu}>こんだて作成</Box>
+
+          {!isMobile && (
+            <Box onClick={handleToggleMenu}>
+              <Link>こんだて作成</Link>
+            </Box>
+          )}
         </Flex>
 
-        <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
+        {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
 
         <MenuIconButton onOpen={onOpen} />
       </Flex>
       {isMenuVisible && <MenuForDate />}
-      <MenuDrawer onClickAllMyDishes={onClickAllMyDishes} onLogoutSuccess={onLogoutSuccess} onClose={onClose} isOpen={isOpen} onClickHome={onClickHome} onClickCreate={onClickCreate} csrfToken={csrfToken}/>
+      <MenuDrawer
+        onClickAllMyDishes={onClickAllMyDishes}
+        onLogoutSuccess={onLogoutSuccess}
+        handleToggleMenu={handleToggleMenu}
+        onClose={onClose}
+        isOpen={isOpen}
+        onClickHome={onClickHome}
+        onClickCreate={onClickCreate}
+        csrfToken={csrfToken}
+      />
     </>
   );
 };

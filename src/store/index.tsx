@@ -10,8 +10,8 @@ const store = configureStore({
     selectedDate: dateReducer,
     date: dateReducer,
     menu: menuReducer,
-    upDate: upDateReducer,
-    dish: dishReducer,
+    // upDate: upDateReducer,
+    // dish: dishReducer,
   },
 });
 
