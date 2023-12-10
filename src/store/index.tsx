@@ -1,13 +1,17 @@
 // src/store/index.ts
-
 import { configureStore } from '@reduxjs/toolkit';
-import dateReducer from './reducers/dateReducer';
+import dateReducer from './slices/dateSlice';  // パスは実際のファイルの場所に合わせてください
 import menuReducer from './slices/menuSlice';
+import upDateReducer from './slices/upDateMenuSlice';
+import dishReducer from './slices/dishSlice';
 
 const store = configureStore({
   reducer: {
     selectedDate: dateReducer,
+    date: dateReducer,
     menu: menuReducer,
+    upDate: upDateReducer,
+    dish: dishReducer,
   },
 });
 

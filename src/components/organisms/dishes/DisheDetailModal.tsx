@@ -20,7 +20,9 @@ import { EditIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { useMessage } from '../../../hooks/useMessage';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMenuForDate } from '../../../hooks/useMenuForDate';
+import { setMenu } from '../../../store/slices/menuSlice';
 
 interface DishDetailModalProps {
   dish: {
@@ -47,9 +49,8 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const selectedDate = useSelector((state: { selectedDate: string | null }) => state.selectedDate);
-  const [loadingButton, setLoadingButton] = useState<boolean>(false);
-  const [loadingText, setLoadingText] = useState<string>("");
-
+  const { getMenuForDate } = useMenuForDate();
+  const dispatch = useDispatch();
   
   const navigate = useNavigate();
 
@@ -141,10 +142,6 @@ const getCSRFToken = async () => {
 
 const handleMenuRegistration = async () => {
   try {
-     // ボタンを非活性にする
-     setLoadingButton(true);
-     setLoadingText("登録中...");
-
     // CSRF トークンの取得
     await getCSRFToken();
 
@@ -204,15 +201,15 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
     console.log('Response:', response);
 
     showMessage({ title: 'メニューを登録しました。', status: 'success' });
-    // モーダルを閉じる
-    onClose();
+    
+    onClose();  // モーダルを閉じる
+    
+     // メニューの登録が成功したら即座に画面を更新
+     const updatedMenu = await getMenuForDate(new Date(formattedDate || new Date()));
+     dispatch(setMenu(updatedMenu));
   } catch (error) {
     console.error('メニューの登録に失敗しました。', error);
     showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
-  }finally {
-    // ボタンを活性化
-    setLoadingButton(false);
-    setLoadingText("");
   }
 };
 
@@ -267,12 +264,7 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
                   <Button leftIcon={<EditIcon />} onClick={handleEdit}>
                     編集
                   </Button>
-                  <Button
-                    rightIcon={<EditIcon />}
-                    onClick={handleMenuRegistration}
-                    isLoading={loadingButton} // isLoadingプロパティを使用して非同期処理中にローディング状態を表示
-                    loadingText="登録中..." // ローディング中のテキスト
-                  >
+                  <Button rightIcon={<EditIcon />} onClick={handleMenuRegistration}>
                     メニューの登録
                   </Button>
                 </Stack>

@@ -9,10 +9,10 @@ export const useMenuForDate = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getMenuForDate = async (date: Date): Promise<MenuItem[]> => {
+  const getMenuForDate = async (date: Date |null): Promise<MenuItem[]> => {
     setLoading(true);
     try {
-      const formattedDate = date.toLocaleDateString('en-CA');
+      const formattedDate = date?.toLocaleDateString('en-CA');
       const response = await axios.get<MenuItem[]>(`http://localhost:8000/api/recipes/${formattedDate}`);
       setMenu(response.data);
       setError(null);
