@@ -30,6 +30,7 @@ import { UsersList } from "../pages/Admin/UsersList";
 import { AllDishImage } from "../pages/Admin/AllDishImage";
 import { Calendar } from "../pages/Calendar";
 import MenuForDate from "../pages/MenuForDate";
+import { IngredientsList } from "../pages/IngredientLists";
 
 export const Router = memo(() => {
     
@@ -39,6 +40,7 @@ export const Router = memo(() => {
             <Route path="/admin" element={<UsersList />}/>
             <Route path="/about" element={<MenuForDate/>}/>
             <Route path="/menu" element={<MenuForDate />} />
+            <Route path="/ingredients_list" element={<IngredientsList />} />
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/register" element={<UserRegister />}/>
             <Route path="/all_my_dishes" element={<AllMyDishes />}/>

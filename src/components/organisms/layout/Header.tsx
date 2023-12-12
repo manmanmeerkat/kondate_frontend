@@ -45,6 +45,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const onClickHome = useCallback(() => navigate('/'), [navigate]);
   const onClickAllMyDishes = useCallback(() => navigate('/all_my_dishes'), [navigate]);
   const onClickCreate = useCallback(() => navigate('/create'), [navigate]);
+  const onClickIngredientsList = useCallback(() => navigate('/ingredients_list'), [navigate]);
 
   const onLogoutSuccess = useCallback(() => {
     navigate('/');
@@ -73,10 +74,14 @@ export const Header: React.FC<HeaderProps> = () => {
           </Box>
 
           {!isMobile && (
-            <Box onClick={handleToggleMenu}>
+            <Box pr={4} onClick={handleToggleMenu}>
               <Link>こんだて作成</Link>
             </Box>
           )}
+
+          <Box pr={4} onClick={onClickIngredientsList}>
+            <Link>材料リスト</Link>
+          </Box>
         </Flex>
 
         {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}

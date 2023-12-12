@@ -198,12 +198,12 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
       }
     );
 
-    console.log('Response:', response);
+    console.log('Response:', response.data);
 
     showMessage({ title: 'メニューを登録しました。', status: 'success' });
     
     onClose();  // モーダルを閉じる
-    
+
      // メニューの登録が成功したら即座に画面を更新
      const updatedMenu = await getMenuForDate(new Date(formattedDate || new Date()));
      dispatch(setMenu(updatedMenu));

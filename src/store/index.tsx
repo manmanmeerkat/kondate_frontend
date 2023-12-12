@@ -1,6 +1,6 @@
 // src/store/index.ts
 import { configureStore } from '@reduxjs/toolkit';
-import dateReducer from './slices/dateSlice';  // パスは実際のファイルの場所に合わせてください
+import dateReducer from './slices/dateSlice';
 import menuReducer from './slices/menuSlice';
 import upDateReducer from './slices/upDateMenuSlice';
 import dishReducer from './slices/dishSlice';
