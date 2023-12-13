@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
+import { ja } from 'date-fns/locale';
+import { registerLocale } from 'react-datepicker';
 import { Stack, Button, Input, InputGroup, InputLeftAddon, Box, Heading, List, ListItem, Text } from '@chakra-ui/react';
+import { Header } from '../organisms/layout/Header';
 
 interface Menu {
   id: number;
@@ -20,6 +23,9 @@ interface MenuData {
   menus: Menu[];
   ingredients: Ingredient[];
 }
+
+// ロケールを設定
+registerLocale('ja', ja);
 
 const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => void }> = ({ onSearch }) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -48,17 +54,16 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
               w="100%"
               textAlign="left"
             >
-              {
-                startDate
-               ? '開始日を選択' : '日付を選択してください'}
+            {startDate? startDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '開始日を選択'}
             </Box>
           }
         />
-        <Text mx={2}>～</Text>
+          <Text mx={4} my={2}>～</Text>
         <DatePicker 
           dateFormat="yyyy/MM/dd"
           selected={endDate} 
           onChange={setEndDate} 
+          locale={ja}
           placeholderText='終了日を選択'
           customInput={
             <Box
@@ -70,9 +75,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
               w="100%"
               textAlign="left"
             >
-              {
-                startDate
-               ? '' : '終了日を選択'}
+            {endDate ? endDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '終了日を選択'}
             </Box>
           }
         />
@@ -106,6 +109,8 @@ export const IngredientsList: React.FC = () => {
   };
 
   return (
+    <>
+    <Header />
       <Box p={8}>
         <Heading mb={4}>材料リスト</Heading>
         <SearchForm onSearch={handleSearch} />
@@ -136,6 +141,7 @@ export const IngredientsList: React.FC = () => {
           <Text>No data available</Text>
         )}
       </Box>
+      </>
   );
 };
 
