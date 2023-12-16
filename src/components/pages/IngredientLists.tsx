@@ -3,7 +3,8 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import { ja } from 'date-fns/locale';
 import { registerLocale } from 'react-datepicker';
-import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, Menu, useToast } from '@chakra-ui/react';
+import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, Menu, useToast, Flex, Divider, Table, Thead, Tr, Th, Tbody, Td, Badge } from '@chakra-ui/react';
+import { Header } from '../organisms/layout/Header';
 
 interface Menu {
   menu_id: number;
@@ -96,8 +97,8 @@ export const IngredientsList: React.FC = () => {
         toast({
           title: '日付を選択してください',
           status: 'warning',
-          duration: 3000, // トーストが表示される時間（ミリ秒）
-          isClosable: true, // ユーザーが手動でトーストを閉じることができるかどうか
+          duration: 3000,
+          isClosable: true,
         });
         return;
       }
@@ -122,41 +123,96 @@ export const IngredientsList: React.FC = () => {
     }
   };
   
+  // 同じ日付のメニューをグループ化する関数
+  const groupMenusByDate = (menus: Menu[]) => {
+    const groupedMenus: { [date: string]: Menu[] } = {};
+    menus.forEach((menu) => {
+      const date = menu.date;
+      if (groupedMenus[date]) {
+        groupedMenus[date].push(menu);
+      } else {
+        groupedMenus[date] = [menu];
+      }
+    });
+    return groupedMenus;
+  };
 
   return (
     <>
+    <Header />
       <Box p={8}>
         <Heading mb={4}>材料リスト</Heading>
         <SearchForm onSearch={handleSearch} />
 
         {menuData && (
-  <Box>
-    <Heading as="h2" size="md" mb={2}>
-      メニュー
-    </Heading>
-    <List>
-      {menuData.map((menu) => (
-        <ListItem key={menu.menu_id}>
-          {menu.date} - {menu.dish_name}
-        </ListItem>
-      ))}
-    </List>
+          <Flex>
+            {/* 左側のセクション */}
+            <Box flex={2}>
+              {Object.entries(groupMenusByDate(menuData)).map(([date, menus], index, array) => (
+                <Box key={date} mb={index < array.length - 1 ? 4 : 0}>
+                  <Heading as="h2" size="lg" mb={2}>
+                    {`${date} (${new Date(date).toLocaleDateString('ja', { weekday: 'short' })})`}
+                  </Heading>
+                  <Table variant="simple" size="sm">
+                    <Thead>
+                      <Tr>
+                        <Th>メニュー</Th>
+                        <Th>材料</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {menus.map((menu) => (
+                        <Tr key={menu.menu_id}>
+                          <Td>
+                            <Badge colorScheme="teal" mr={2} fontSize="lg">
+                              {menu.dish_name}
+                            </Badge>
+                          </Td>
+                          <Td>
+                            <List fontSize="lg">
+                              {menu.ingredients.map((ingredient, index) => (
+                                <ListItem key={index}>{ingredient}</ListItem>
+                              ))}
+                            </List>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                  {index < array.length - 1 && <Divider mt={4} />}
+                </Box>
+              ))}
+            </Box>
 
-    <Heading as="h2" size="md" mt={4} mb={2}>
-      材料
-    </Heading>
-    <List>
-      {menuData.map((menuItem) => (
-        <ListItem key={menuItem.menu_id}>
-          {menuItem.ingredients.map((ingredient, index) => (
-            <ListItem key={index}>{ingredient}</ListItem>
-          ))}
-        </ListItem>
-      ))}
-    </List>
-  </Box>
-)}
-
+            {/* 右側のセクション */}
+            <Box flex={1} pl={4}>
+              <Heading as="h2" size="lg" mb={2}>
+                すべての材料
+              </Heading>
+              <Divider mb={4} />
+              <List fontSize="lg">
+              {menuData.reduce((allIngredients, menu) => {
+                menu.ingredients.forEach((ingredient) => {
+                  const existingIngredient = allIngredients.find(
+                    (item) => item.name === ingredient
+                  );
+                  if (existingIngredient) {
+                    existingIngredient.count += 1;
+                  } else {
+                    allIngredients.push({ name: ingredient, count: 1 });
+                  }
+                });
+                return allIngredients;
+              }, [] as { name: string; count: number }[])
+                .map((ingredient, index) => (
+                  <ListItem key={index}>
+                    {ingredient.count > 1 ? `${ingredient.name} ×${ingredient.count}` : ingredient.name}
+                  </ListItem>
+                ))}
+            </List>
+            </Box>
+          </Flex>
+        )}
       </Box>
     </>
   );

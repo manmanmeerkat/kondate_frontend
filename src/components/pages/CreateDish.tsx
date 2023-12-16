@@ -16,6 +16,7 @@ import {
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
+import { Header } from '../organisms/layout/Header';
 
 interface FormData {
   name: string;
@@ -242,6 +243,8 @@ export const CreateDish = () => {
   };
 
   return (
+    <>
+    <Header />
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
       <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white" width="90%">
         <Heading size="lg" textAlign="center" mb="4">
@@ -381,5 +384,6 @@ export const CreateDish = () => {
         </form>
       </Box>
     </VStack>
+    </>
   );
 };

@@ -68,16 +68,16 @@ export const Header: React.FC<HeaderProps> = () => {
           <Box pr={4} onClick={onClickAllMyDishes}>
             <Link>すべての料理</Link>
           </Box>
-          
-          <Box pr={4} onClick={onClickCreate}>
-            <Link>新規登録</Link>
-          </Box>
 
           {!isMobile && (
             <Box pr={4} onClick={handleToggleMenu}>
               <Link>こんだて作成</Link>
             </Box>
           )}
+
+          <Box pr={4} onClick={onClickCreate}>
+            <Link>新規登録</Link>
+          </Box>
 
           <Box pr={4} onClick={onClickIngredientsList}>
             <Link>材料リスト</Link>
@@ -97,8 +97,10 @@ export const Header: React.FC<HeaderProps> = () => {
         isOpen={isOpen}
         onClickHome={onClickHome}
         onClickCreate={onClickCreate}
-        csrfToken={csrfToken}
-      />
+        onClickIngredientsList={onClickIngredientsList}
+        csrfToken={csrfToken}>
+      </MenuDrawer>
+      
     </>
   );
 };
