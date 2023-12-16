@@ -1,28 +1,81 @@
-import { memo } from "react";
-import { Header } from "../organisms/layout/Header";
-import { Menu } from "@chakra-ui/react";
-// import { UserRegister } from "./UserRegister";
-import { LoginPage } from "./Auth/LoginPage";
-import { UserRegister } from "./UserRegister";
+// LogoutButton.tsx
+
+import React, { useState } from 'react';
 import axios from 'axios';
+import { useToast } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
+interface LogoutButtonProps {
+  csrfToken: string;
+  onLogoutSuccess?: () => void;
+}
 
-export const LogoutButton = memo(() => {
-    const handleLogout = () => {
-        // ログアウトリクエストを送信
-        axios.post('http://localhost:8000/api/logout')
-          .then((response) => {
-            // ログアウトが成功した場合の処理
-            console.log('ログアウト成功:', response.data);
-            // ログアウト後の処理を追加（例：ユーザーをログアウト状態にする）
-          })
-          .catch((error) => {
-            // エラーメッセージを表示または処理できます
-            console.error('ログアウトエラー:', error.response.data);
-          });
-      };
-    
-      return (
-        <button onClick={handleLogout}>ログアウト</button>
-      );
-    });
+const LogoutButton: React.FC<LogoutButtonProps> = ({ csrfToken, onLogoutSuccess }) => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleLogoutClick = async () => {
+    try {
+      // ログアウト処理中にボタンを不活性にする
+      setIsLoggingOut(true);
+
+      // ログアウトリクエストの送信
+      const logoutResponse = await axios.post('http://localhost:8000/api/logout', null, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
+        withCredentials: true,
+      });
+
+      if (logoutResponse.data.message === 'Unauthenticated.') {
+        // ログアウト成功
+        navigate('/login');
+        console.log('ログアウトしました');
+
+        // トースト表示
+        toast({
+          title: 'ログアウトしました',
+          description: 'またのご利用をお待ちしています。',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+
+        // onLogoutSuccess が渡されていれば呼び出す
+        if (onLogoutSuccess && typeof onLogoutSuccess === 'function') {
+          onLogoutSuccess();
+        }
+
+        // ローカルストレージからトークンとuserIdを削除
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+      } else {
+        // ログアウト失敗
+        throw new Error(`Logout failed: ${logoutResponse.data.message}`);
+      }
+    } catch (error) {
+      console.error('ログアウトエラー:', error);
+
+      // エラーの場合もトースト表示
+      toast({
+        title: 'ログアウトエラー',
+        description: 'ログアウト中に問題が発生しました。',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      // ログアウト処理が完了したらボタンを活性化する
+      setIsLoggingOut(false);
+    }
+  };
+
+  return (
+    <button onClick={handleLogoutClick} disabled={isLoggingOut}>
+      {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
+    </button>
+  );
+};
+
+export { LogoutButton };

@@ -19,6 +19,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "typeRoots": ["./src", "./node_modules/@types"],
+    "types": ["redux-devtools-extension"],
     "resolve": {
       "fallback": {
         "https": require.resolve("https-browserify"),

@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 
 interface Dish {
-  id: string;
+  id: number;
   // 他のDishに関するプロパティを追加
 }
 
 interface UseSelectDishProps {
-  id: string;
+  id: number;
   dishes: Dish[];
   onOpen: () => void;
 }
@@ -21,6 +21,7 @@ export const useSelectDish = (): UseSelectDishResult => {
 
   const onSelectDish = useCallback((props: UseSelectDishProps) => {
     const { id, dishes, onOpen } = props;
+    console.log(id, dishes, onOpen);
     const targetDish = dishes.find((dish) => dish.id === id);
     setSelectedDish(targetDish ?? null);
     onOpen();

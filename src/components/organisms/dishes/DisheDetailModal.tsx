@@ -16,35 +16,50 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { useMessage } from '../../../hooks/useMessage';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useMenuForDate } from '../../../hooks/useMenuForDate';
+import { setMenu } from '../../../store/slices/menuSlice';
 
 interface DishDetailModalProps {
   dish: {
-    id: string;
+    id: number;
     name: string;
-    genre: string;
+    genre_id: number;
+    category_id: number;
+    description: string;
     reference_url: string;
   } | null;
   isOpen: boolean;
-  id: string | null;
+  id: number | null;
   onClose: () => void;
 }
 
 export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const { dish, isOpen, id, onClose } = props;
   const { showMessage } = useMessage();
-
   const [name, setName] = useState<string>("");
-  const [genre, setGenre] = useState<string>("");
+  const [genre, setGenre] = useState<number>();
+  const [category, setCategory] = useState<number>();
+  const [memo, setMemo] = useState<string>("");
   const [url, setUrl] = useState<string>("");
-  const [ingredients, setIngredients] = useState<{ id: string; name: string }[]>([]);
+  const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const selectedDate = useSelector((state: { selectedDate: string | null }) => state.selectedDate);
+  const { getMenuForDate } = useMenuForDate();
+  const dispatch = useDispatch();
+  
+  const navigate = useNavigate();
 
   const fetchIngredients = async () => {
     if (id) {
       try {
-        const response = await axios.get<{ ingredients: { id: string; name: string }[] }>(`http://localhost:8000/api/recipes/${id}/ingredients`);
+        const response = await axios.get<{ ingredients: { id: number; name: string }[] }>(
+          `http://localhost:8000/api/dishes/${id}/ingredients`
+        );
         setIngredients(response.data.ingredients);
         setLoading(false);
       } catch (error) {
@@ -54,63 +69,154 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     }
   };
 
+  const convertGenreToString = (genre_id:number) => {
+    switch (genre_id) {
+      case 1:
+        return '和食';
+      case 2:
+        return '洋食';
+      case 3:
+        return '中華';
+      default:
+        return 'その他';
+    }
+  };
+
+  const convertCategoryToString = (category: number | undefined): string => {
+    if (category === undefined) {
+      return '';
+    }
+  
+    switch (category) {
+      case 1:
+        return '主菜';
+      case 2:
+        return '副菜';
+      case 3:
+        return '汁物';
+      case 4:
+        return 'その他';
+      default:
+        return '';
+    }
+  };
+  console.log(dish)
   useEffect(() => {
     setName(dish?.name || "");
-    setGenre(dish?.genre || "");
+    setGenre(dish?.genre_id || undefined);
+    setCategory(dish?.category_id || undefined);
+    setMemo(dish?.description || "");
     setUrl(dish?.reference_url || "");
   }, [dish]);
 
   useEffect(() => {
     if (isOpen) {
-      // モーダルが開かれたときに材料を取得
       fetchIngredients();
     } else {
-      // モーダルが閉じられたときに材料をクリア
       setIngredients([]);
-      setLoading(true); // ローディング状態をリセット
+      setLoading(true);
     }
   }, [isOpen, id]);
 
-  const deleteUser = (id: string) => {
-    axios
-      .delete(`http://localhost:8000/api/menu/${id}`)
-      .then((response) => {
-        console.log(response);
-        showMessage({ title: "削除しました", status: "error" });
-        onClose();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      })
-      .catch((error) => console.error(error));
+ 
+
+  const handleEdit = () => {
+    navigate(`/edit/${id}`);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await axios.put(`http://localhost:8000/api/menu/${id}`, {
-        name: name,
-        genre: genre,
-      });
-      console.log("Updated post:", response.data);
-      showMessage({ title: "更新しました", status: "success" });
-      onClose();
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (error) {
-      console.error("Error updating post:", error);
-      showMessage({ title: "更新に失敗しました", status: "error" });
+// 仮の getCookie 関数の例
+const getCookie = (name:string) => {
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split('=');
+    if (cookieName === name) {
+      return cookieValue;
     }
-  };
+  }
+  return null;
+};
+
+const getCSRFToken = async () => {
+  await axios.get('http://localhost:8000/api/sanctum/csrf-cookie');
+};
+
+const handleMenuRegistration = async () => {
+  try {
+    // CSRF トークンの取得
+    await getCSRFToken();
+
+    // XSRF-TOKEN Cookieからトークンを取得
+    const xsrfToken = getCookie('XSRF-TOKEN');
+
+   // 日付のフォーマット変換
+// 日付のフォーマット変換
+let formattedDate = null;
+if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in selectedDate) {
+  const dateString = (selectedDate as { selectedDate: string }).selectedDate;
+
+  // "/" を "-" に変換
+  const isoDateString = dateString.replace(/\//g, '-');
+
+  // 月と日が一桁の場合に前に0を付ける
+  const [year, month, day] = isoDateString.split('-');
+  const paddedMonth = month.padStart(2, '0');
+  const paddedDay = day.padStart(2, '0');
+  const correctedIsoDateString = `${year}-${paddedMonth}-${paddedDay}`;
+
+  // タイムゾーンのオフセットを取得
+  const timezoneOffsetMinutes = new Date().getTimezoneOffset();
+  
+  // 日本時間に変換
+  const japanTime = new Date(`${correctedIsoDateString}T00:00:00.000`);
+  japanTime.setMinutes(japanTime.getMinutes() + timezoneOffsetMinutes + 9 * 60); // タイムゾーンの補正
+
+  if (!isNaN(japanTime.valueOf())) {
+    // 手動で日付をフォーマット
+    const formattedYear = japanTime.getFullYear();
+    const formattedMonth = (japanTime.getMonth() + 1).toString().padStart(2, '0');
+    const formattedDay = japanTime.getDate().toString().padStart(2, '0');
+    formattedDate = `${formattedYear}-${formattedMonth}-${formattedDay}`;
+  } else {
+    console.error('Invalid date format. Japan Time:', japanTime);
+    throw new Error('Invalid date format');
+  }
+}
+
+
+    // 実際のメニュー登録リクエスト
+    const response = await axios.post(
+      'http://localhost:8000/api/menus',
+      {
+        dish_id: dish?.id,
+        date: formattedDate,
+      },
+      {
+        headers: {
+          'X-XSRF-TOKEN': xsrfToken,
+        },
+        withCredentials: true,
+      }
+    );
+
+    console.log('Response:', response.data);
+
+    showMessage({ title: 'メニューを登録しました。', status: 'success' });
+    
+    onClose();  // モーダルを閉じる
+
+     // メニューの登録が成功したら即座に画面を更新
+     const updatedMenu = await getMenuForDate(new Date(formattedDate || new Date()));
+     dispatch(setMenu(updatedMenu));
+  } catch (error) {
+    console.error('メニューの登録に失敗しました。', error);
+    showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+  }
+};
+
+
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      autoFocus={false}
-      motionPreset="slideInBottom"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} motionPreset="slideInBottom">
       <ModalOverlay />
       <ModalContent pb={6}>
         <ModalHeader>詳細</ModalHeader>
@@ -118,18 +224,26 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
         <ModalBody mx={4}>
           {loading ? (
             <Box display="flex" justifyContent="center" alignItems="center" height="200px">
-              <Spinner size="lg" color="blue.500" />
+              <Spinner data-testid="spinner" size="lg" color="blue.500" />
             </Box>
           ) : (
             <Stack spacing={4}>
-               <form onSubmit={handleSubmit}>
+              <form>
                 <FormControl>
                   <FormLabel>料理名</FormLabel>
                   <Input value={name} readOnly />
                 </FormControl>
                 <FormControl>
                   <FormLabel>ジャンル</FormLabel>
-                  <Input value={genre} readOnly />
+                  <Input value={genre !== undefined ? convertGenreToString(genre) : ''} readOnly />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>カテゴリー</FormLabel>
+                  <Input value={convertCategoryToString(category)} readOnly />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>メモ</FormLabel>
+                  <Textarea value={memo} readOnly />
                 </FormControl>
                 <FormControl>
                   <FormLabel>参考URL</FormLabel>
@@ -146,10 +260,14 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
                     />
                   )}
                 </FormControl>
-                <Button colorScheme="red" size="xs" onClick={() => deleteUser(dish!.id)}>
-                  削除
-                </Button>
-                <Button type="submit">更新</Button>
+                <Stack direction="row" spacing={4} justify="space-between" align="center">
+                  <Button leftIcon={<EditIcon />} onClick={handleEdit}>
+                    編集
+                  </Button>
+                  <Button rightIcon={<EditIcon />} onClick={handleMenuRegistration}>
+                    メニューの登録
+                  </Button>
+                </Stack>
               </form>
             </Stack>
           )}

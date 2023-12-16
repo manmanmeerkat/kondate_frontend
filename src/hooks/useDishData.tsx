@@ -1,39 +1,50 @@
 import axios, { AxiosResponse } from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-// レシピの型を定義
-interface Recipe {
-  id: string;
+interface Dishes {
+  id: number;
   name: string;
-  // 他にも必要なプロパティがあれば追加
+  genre_id: number;
+  category_id: number;
+  description: string;
+  reference_url: string;
 }
 
-// APIのレスポンスの型を定義
 interface DishDataResponse {
-  recipes: Recipe[];
-  // 他にも必要なプロパティがあれば追加
+  dishes: Dishes[];
 }
+
+const api = axios.create({
+  baseURL: "http://localhost:8000/api",
+});
 
 export const useDishData = () => {
   const [dishData, setDishData] = useState<DishDataResponse | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const getDish = useCallback(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
 
-      axios.get<DishDataResponse>(`http://localhost:8000/api/user/${userId}`, {
+    if (token && userId) {
+      api.get<DishDataResponse>(`/user/${userId}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((response: AxiosResponse<DishDataResponse>) => {
-        const recipes: Recipe[] = response.data.recipes;
-        setDishData({ recipes });
-      })
-      .catch(error => console.error('ユーザー情報の取得エラー:', error));
+        .then((response: AxiosResponse<DishDataResponse>) => {
+          const dishes: Dishes[] = response.data.dishes;
+          console.log(response.data);
+          setDishData({ dishes });
+        })
+        .catch((error) => console.error("ユーザー情報の取得エラー:", error))
+        .finally(() => setLoading(false));
     }
   }, []);
 
-  return { getDish, dishData };
+  useEffect(() => {
+    getDish();
+  }, [getDish]);
+
+  return { loading, dishData, getDish };
 };

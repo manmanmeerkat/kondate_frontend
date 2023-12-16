@@ -7,12 +7,12 @@ interface DishCardProps {
   imageUrl: string;
   menuType: string;
   dishName: string;
-  onClick: (id: string) => void;
+  onClick: (id: number) => void;
 }
 
+// DishCard コンポーネント
 export const DishCard = memo((props: DishCardProps) => {
-  const { id, imageUrl, menuType, dishName, onClick } = props;
-
+  const { id, imageUrl, dishName, onClick } = props;
   return (
     <Box
       w="260px"
@@ -22,17 +22,27 @@ export const DishCard = memo((props: DishCardProps) => {
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
-      onClick={() => onClick(id.toString())}
+      onClick={() => onClick(id)}
       display="flex"
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
     >
-      <FoodPhotography
-        imageFileName={imageUrl}
-        defaultImage="http://127.0.0.1:8000/storage/uploads/AGvtWs5tLIGhkAU9Nob9bJpo3oLHhZ8a7O7bQvem.jpg"
+      <FoodPhotography  
+        imageFileName={imageUrl || "uploads/noimage.jpg"}
+        alt={dishName} // dishNameをaltとして渡す
       />
-      <Text fontSize="lg" mt="20px" fontWeight="bold" textAlign="center" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" maxWidth="100%">
+
+      <Text 
+        fontSize="lg" 
+        mt="20px" 
+        fontWeight="bold" 
+        textAlign="center" 
+        overflow="hidden" 
+        textOverflow="ellipsis" 
+        whiteSpace="nowrap" 
+        maxWidth="100%"
+      >
         {dishName}
       </Text>
     </Box>
