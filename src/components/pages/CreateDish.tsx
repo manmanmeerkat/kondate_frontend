@@ -248,7 +248,7 @@ export const CreateDish = () => {
     <VStack spacing={4} align="center" justify="center" minHeight="100vh">
       <Box p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" bg="white" width="90%">
         <Heading size="lg" textAlign="center" mb="4">
-          レシピを作成
+          料理を登録する
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">

@@ -63,6 +63,7 @@ export const Header: React.FC<HeaderProps> = () => {
             こんだてずかん
           </Heading>
         </Flex>
+        
 
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
           <Box pr={4} onClick={onClickAllMyDishes}>

@@ -80,7 +80,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
         />
       </InputGroup>
       <Button colorScheme="teal" onClick={handleSearch}>
-        Search
+        表示
       </Button>
     </Stack>
   );
@@ -93,16 +93,16 @@ export const IngredientsList: React.FC = () => {
   const handleSearch = async (startDate: string, endDate: string) => {
     try {
       // 日付が選択されていない場合、トースターを表示して処理を中断
-      if (!startDate || !endDate) {
+      if (!startDate || !endDate || new Date(startDate) > new Date(endDate)) {
         toast({
-          title: '日付を選択してください',
+          title: '期間を正しく選択してください',
           status: 'warning',
           duration: 3000,
           isClosable: true,
         });
         return;
       }
-
+  
       // バックエンドに日付範囲を送信し、結果を取得
       const response = await axios.get<ResponseData>('http://localhost:8000/api/get-ingredients-list', {
         params: {
@@ -122,6 +122,7 @@ export const IngredientsList: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
+  
   
   // 同じ日付のメニューをグループ化する関数
   const groupMenusByDate = (menus: Menu[]) => {
@@ -156,14 +157,22 @@ export const IngredientsList: React.FC = () => {
                   <Table variant="simple" size="sm">
                     <Thead>
                       <Tr>
-                        <Th>メニュー</Th>
-                        <Th>材料</Th>
+                      <Th
+                          textAlign="left"
+                          borderRight="1px solid #e0e0e0"
+                          position="sticky"
+                          left="0"
+                          zIndex="1"
+                          background="white"
+                          width="500px"  
+                        >メニュー</Th>
+                        <Th textAlign="left">材料</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
                       {menus.map((menu) => (
                         <Tr key={menu.menu_id}>
-                          <Td>
+                          <Td borderRight="1px solid #e0e0e0">
                             <Badge colorScheme="teal" mr={2} fontSize="lg">
                               {menu.dish_name}
                             </Badge>
@@ -171,7 +180,7 @@ export const IngredientsList: React.FC = () => {
                           <Td>
                             <List fontSize="lg">
                               {menu.ingredients.map((ingredient, index) => (
-                                <ListItem key={index}>{ingredient}</ListItem>
+                                <ListItem key={index} mb={2}>{ingredient}</ListItem>
                               ))}
                             </List>
                           </Td>
@@ -179,11 +188,10 @@ export const IngredientsList: React.FC = () => {
                       ))}
                     </Tbody>
                   </Table>
-                  {index < array.length - 1 && <Divider mt={4} />}
+                  {index < array.length - 1 && <Divider mt={4} borderColor="gray.300" />}
                 </Box>
               ))}
             </Box>
-
             {/* 右側のセクション */}
             <Box flex={1} pl={4}>
               <Heading as="h2" size="lg" mb={2}>
@@ -205,7 +213,7 @@ export const IngredientsList: React.FC = () => {
                 return allIngredients;
               }, [] as { name: string; count: number }[])
                 .map((ingredient, index) => (
-                  <ListItem key={index}>
+                  <ListItem key={index} >
                     {ingredient.count > 1 ? `${ingredient.name} ×${ingredient.count}` : ingredient.name}
                   </ListItem>
                 ))}
