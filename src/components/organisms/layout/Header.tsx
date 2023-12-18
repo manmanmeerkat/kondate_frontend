@@ -46,6 +46,9 @@ export const Header: React.FC<HeaderProps> = () => {
   const onClickAllMyDishes = useCallback(() => navigate('/all_my_dishes'), [navigate]);
   const onClickCreate = useCallback(() => navigate('/create'), [navigate]);
   const onClickIngredientsList = useCallback(() => navigate('/ingredients_list'), [navigate]);
+  const onClickdeleteUser = useCallback(() => navigate('/users/self'), [navigate]);
+  const onClickpasswordChange = useCallback(() => navigate('/change_password'), [navigate]);
+  const [selectedOption, setSelectedOption] = useState('');
 
   const onLogoutSuccess = useCallback(() => {
     navigate('/');
@@ -54,6 +57,24 @@ export const Header: React.FC<HeaderProps> = () => {
   const handleToggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
   };
+
+  const handleSettingsChange = (selectedValue: string) => {
+  switch (selectedValue) {
+    case "deleteAccount":
+      onClickdeleteUser();
+      break;
+    case "changePassword":
+      onClickpasswordChange();
+      break;
+    case "logout":
+      onLogoutSuccess();
+      break;
+    default:
+      // サポートされていない値の場合の処理
+      break;
+  }
+};
+
 
   return (
     <>
@@ -84,7 +105,14 @@ export const Header: React.FC<HeaderProps> = () => {
             <Link>材料リスト</Link>
           </Box>
         </Flex>
-
+          <Box pr={4}>
+            <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)}>
+              {selectedOption === '' && <option value="" disabled >設定</option>}
+              <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
+              <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
+              <option value="logout" style={{ backgroundColor: 'teal', color: 'white' }}>ログアウト</option>
+            </Select>
+          </Box>
         {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
 
         <MenuIconButton onOpen={onOpen} />
