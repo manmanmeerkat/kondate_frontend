@@ -108,9 +108,8 @@ export const Header: React.FC<HeaderProps> = () => {
           <Box pr={4}>
             <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)}>
               {selectedOption === '' && <option value="" disabled >設定</option>}
-              <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
               <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
-              <option value="logout" style={{ backgroundColor: 'teal', color: 'white' }}>ログアウト</option>
+              <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
             </Select>
           </Box>
         {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
@@ -127,6 +126,10 @@ export const Header: React.FC<HeaderProps> = () => {
         onClickHome={onClickHome}
         onClickCreate={onClickCreate}
         onClickIngredientsList={onClickIngredientsList}
+        onClickdeleteUser={onClickdeleteUser}
+        onClickpasswordChange={onClickpasswordChange}
+        handleSettingsChange={handleSettingsChange}
+        selectedOption={selectedOption}
         csrfToken={csrfToken}>
       </MenuDrawer>
       

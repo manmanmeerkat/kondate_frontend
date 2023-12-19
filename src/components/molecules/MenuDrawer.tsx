@@ -1,6 +1,6 @@
 // MenuDrawer.tsx
 
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, VStack } from "@chakra-ui/react";
+import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Select, VStack } from "@chakra-ui/react";
 import { memo } from "react";
 import { LogoutButton } from "../atoms/button/LogoutButton";
 
@@ -9,15 +9,19 @@ interface MenuDrawerProps {
   isOpen: boolean;
   onClickHome: () => void;
   onClickCreate: () => void;
-  onClickAllMyDishes: () => void; // この行を追加
+  onClickAllMyDishes: () => void; 
   onLogoutSuccess: () => void;
   handleToggleMenu: () => void;
   onClickIngredientsList: () => void;
+  onClickdeleteUser: () => void;
+  onClickpasswordChange: () => void;
+  handleSettingsChange: (value: string) => void;
+  selectedOption: string;
   csrfToken: string;
 }
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
-  const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, handleToggleMenu, onClickIngredientsList, csrfToken } = props;
+  const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, handleToggleMenu, onClickIngredientsList, onClickdeleteUser, onClickpasswordChange, handleSettingsChange, selectedOption, csrfToken } = props;
 
   return (
     <Drawer placement="top" size="xs" onClose={onClose} isOpen={isOpen}>
