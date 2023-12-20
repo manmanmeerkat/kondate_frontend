@@ -27,7 +27,7 @@ interface FormData {
   image_path: string | null;
   reference_url: string;
   user_id: string | null;
-  ingredients: string[];
+  ingredients: { name: string; quantity: string }[];
   genre_id: number | null;
   category_id: number | null;
 }
@@ -133,7 +133,7 @@ export const CreateDish = () => {
   };
 
   const handleAddIngredient = () => {
-    setFormData((prevData) => ({ ...prevData, ingredients: [...prevData.ingredients, ''] }));
+    setFormData((prevData) => ({ ...prevData,  ingredients: [...prevData.ingredients, { name: '', quantity: '' }], }));
   };
 
   const handleRemoveIngredient = (index: number) => {
@@ -143,6 +143,15 @@ export const CreateDish = () => {
       return { ...prevData, ingredients: updatedIngredients };
     });
   };
+
+  const handleIngredientChange = (index: number, field: 'name' | 'quantity', value: string) => {
+    setFormData((prevData) => {
+      const updatedIngredients = [...prevData.ingredients];
+      updatedIngredients[index][field] = value;
+      return { ...prevData, ingredients: updatedIngredients };
+    });
+  };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -312,27 +321,33 @@ export const CreateDish = () => {
             </FormControl>
 
             <Wrap spacing={2} mb={4}>
-              {formData.ingredients.map((ingredient, index) => (
-                <WrapItem key={index} width="19.4%">
-                  <Flex>
-                    <Input
-                      type="text"
-                      name={`ingredients[${index}]`}
-                      value={ingredient}
-                      onChange={(e) => {
-                        const updatedIngredients = [...formData.ingredients];
-                        updatedIngredients[index] = e.target.value;
-                        setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
-                      }}
-                      size="sm"
-                      width="100%"
-                    />
-                    <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
-                      削除
-                    </Button>
-                  </Flex>
-                </WrapItem>
-              ))}
+            {formData.ingredients.map((ingredient, index) => (
+            <WrapItem key={index} width="19.4%">
+              <Flex>
+                <Input
+                  type="text"
+                  name={`ingredients[${index}].name`}
+                  value={ingredient.name}
+                  onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+                  size="sm"
+                  width="50%"
+                  placeholder="材料名"
+                />
+                <Input
+                  type="text"
+                  name={`ingredients[${index}].quantity`}
+                  value={ingredient.quantity}
+                  onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
+                  size="sm"
+                  width="40%"
+                  placeholder="数量"
+                />
+                <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
+                  削除
+                </Button>
+              </Flex>
+            </WrapItem>
+          ))}
             </Wrap>
             <Button
               type="button"
