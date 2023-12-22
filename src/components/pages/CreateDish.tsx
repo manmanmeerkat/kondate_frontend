@@ -195,8 +195,9 @@ export const CreateDish = () => {
         formData.category_id !== null ? String(formData.category_id) : ''
       );
 
-      const ingredientsData = formData.ingredients;
-      formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
+     // フォームデータ送信前にingredientsをJSON文字列に変換
+      const ingredientsData = JSON.stringify(formData.ingredients);
+      formDataToSend.append('ingredients', ingredientsData);
 
       const response = await axios.post(
         `http://localhost:8000/api/create`,
