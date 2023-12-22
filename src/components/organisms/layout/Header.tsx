@@ -46,6 +46,9 @@ export const Header: React.FC<HeaderProps> = () => {
   const onClickAllMyDishes = useCallback(() => navigate('/all_my_dishes'), [navigate]);
   const onClickCreate = useCallback(() => navigate('/create'), [navigate]);
   const onClickIngredientsList = useCallback(() => navigate('/ingredients_list'), [navigate]);
+  const onClickdeleteUser = useCallback(() => navigate('/users/self'), [navigate]);
+  const onClickpasswordChange = useCallback(() => navigate('/change_password'), [navigate]);
+  const [selectedOption, setSelectedOption] = useState('');
 
   const onLogoutSuccess = useCallback(() => {
     navigate('/');
@@ -55,6 +58,24 @@ export const Header: React.FC<HeaderProps> = () => {
     setIsMenuVisible(!isMenuVisible);
   };
 
+  const handleSettingsChange = (selectedValue: string) => {
+  switch (selectedValue) {
+    case "deleteAccount":
+      onClickdeleteUser();
+      break;
+    case "changePassword":
+      onClickpasswordChange();
+      break;
+    case "logout":
+      onLogoutSuccess();
+      break;
+    default:
+      // サポートされていない値の場合の処理
+      break;
+  }
+};
+
+
   return (
     <>
       <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
@@ -63,14 +84,11 @@ export const Header: React.FC<HeaderProps> = () => {
             こんだてずかん
           </Heading>
         </Flex>
+        
 
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
           <Box pr={4} onClick={onClickAllMyDishes}>
             <Link>すべての料理</Link>
-          </Box>
-          
-          <Box pr={4} onClick={onClickCreate}>
-            <Link>新規登録</Link>
           </Box>
 
           {!isMobile && (
@@ -79,11 +97,21 @@ export const Header: React.FC<HeaderProps> = () => {
             </Box>
           )}
 
+          <Box pr={4} onClick={onClickCreate}>
+            <Link>新規登録</Link>
+          </Box>
+
           <Box pr={4} onClick={onClickIngredientsList}>
             <Link>材料リスト</Link>
           </Box>
         </Flex>
-
+          <Box pr={4}>
+            <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)}>
+              {selectedOption === '' && <option value="" disabled >設定</option>}
+              <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
+              <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
+            </Select>
+          </Box>
         {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
 
         <MenuIconButton onOpen={onOpen} />
@@ -97,8 +125,14 @@ export const Header: React.FC<HeaderProps> = () => {
         isOpen={isOpen}
         onClickHome={onClickHome}
         onClickCreate={onClickCreate}
-        csrfToken={csrfToken}
-      />
+        onClickIngredientsList={onClickIngredientsList}
+        onClickdeleteUser={onClickdeleteUser}
+        onClickpasswordChange={onClickpasswordChange}
+        handleSettingsChange={handleSettingsChange}
+        selectedOption={selectedOption}
+        csrfToken={csrfToken}>
+      </MenuDrawer>
+      
     </>
   );
 };

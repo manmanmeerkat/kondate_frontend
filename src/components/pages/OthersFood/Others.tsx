@@ -124,7 +124,7 @@ export const Others: React.FC<OthersProps> = memo(() => {
                   <DishCard
                     id={dish.id}
                     imageUrl={dish.image_path}
-                    menuType="Japanese"
+                    menuType="Others"
                     dishName={dish.name}
                     onClick={onClickDish}
                   />

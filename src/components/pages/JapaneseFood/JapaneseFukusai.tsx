@@ -125,7 +125,7 @@ export const JapaneseFukusai: React.FC<JapaneseProps> = memo(() => {
                   <DishCard
                     id={dish.id}
                     imageUrl={dish.image_path}
-                    menuType="Japanese"
+                    menuType="JapaneseFukusai"
                     dishName={dish.name}
                     onClick={onClickDish}
                   />
