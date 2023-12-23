@@ -1,7 +1,9 @@
 import { memo, useEffect, useState } from 'react';
 import {
+  Badge,
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -46,7 +48,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const [category, setCategory] = useState<number>();
   const [memo, setMemo] = useState<string>("");
   const [url, setUrl] = useState<string>("");
-  const [ingredients, setIngredients] = useState<{ id: number; name: string }[]>([]);
+  const [ingredients, setIngredients] = useState<{ id: number; name: string; quantity: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const selectedDate = useSelector((state: { selectedDate: string | null }) => state.selectedDate);
   const { getMenuForDate } = useMenuForDate();
@@ -57,7 +59,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
   const fetchIngredients = async () => {
     if (id) {
       try {
-        const response = await axios.get<{ ingredients: { id: number; name: string }[] }>(
+        const response = await axios.get<{ ingredients: { id: number; name: string; quantity: string }[] }>(
           `http://localhost:8000/api/dishes/${id}/ingredients`
         );
         setIngredients(response.data.ingredients);
@@ -217,62 +219,71 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} motionPreset="slideInBottom">
-      <ModalOverlay />
-      <ModalContent pb={6}>
-        <ModalHeader>詳細</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody mx={4}>
-          {loading ? (
-            <Box display="flex" justifyContent="center" alignItems="center" height="200px">
-              <Spinner data-testid="spinner" size="lg" color="blue.500" />
-            </Box>
-          ) : (
-            <Stack spacing={4}>
-              <form>
-                <FormControl>
-                  <FormLabel>料理名</FormLabel>
-                  <Input value={name} readOnly />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>ジャンル</FormLabel>
-                  <Input value={genre !== undefined ? convertGenreToString(genre) : ''} readOnly />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>カテゴリー</FormLabel>
-                  <Input value={convertCategoryToString(category)} readOnly />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>メモ</FormLabel>
-                  <Textarea value={memo} readOnly />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>参考URL</FormLabel>
-                  <Input value={url} readOnly />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>材料</FormLabel>
-                  {loading ? (
-                    <Text>Loading...</Text>
-                  ) : (
-                    <Textarea
-                      value={ingredients.map((ingredient) => ingredient.name).join(', ')}
-                      readOnly
-                    />
-                  )}
-                </FormControl>
-                <Stack direction="row" spacing={4} justify="space-between" align="center">
-                  <Button leftIcon={<EditIcon />} onClick={handleEdit}>
-                    編集
-                  </Button>
-                  <Button rightIcon={<EditIcon />} onClick={handleMenuRegistration}>
-                    メニューの登録
-                  </Button>
-                </Stack>
-              </form>
+  <ModalOverlay />
+  <ModalContent pb={6} bg="white" borderRadius="md">
+    <ModalHeader bg="teal.500" color="white" borderBottomWidth="1px" borderBottomColor="teal.600">
+      詳細
+    </ModalHeader>
+    <ModalCloseButton />
+    <ModalBody mx={4}>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+          <Spinner data-testid="spinner" size="lg" color="teal.500" />
+        </Box>
+      ) : (
+        <Stack spacing={4}>
+          <form>
+            <FormControl>
+              <FormLabel fontSize="lg" color="teal.600">料理名</FormLabel>
+              <Input value={name} readOnly />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" color="teal.600">ジャンル</FormLabel>
+              <Input value={genre !== undefined ? convertGenreToString(genre) : ''} readOnly />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" color="teal.600">カテゴリー</FormLabel>
+              <Input value={convertCategoryToString(category)} readOnly />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" color="teal.600">メモ</FormLabel>
+              <Textarea value={memo} readOnly />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" color="teal.600">参考URL</FormLabel>
+              <Input value={url} readOnly />
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="lg" color="teal.600">材料</FormLabel>
+              {loading ? (
+                <Text>Loading...</Text>
+              ) : (
+                <Box>
+                  {ingredients.map((ingredient, index) => (
+                    <Box key={ingredient.id} display="inline-block" mr={2} mb={2}>
+                      <Badge colorScheme="teal" fontSize="md" mb={1}>
+                        {ingredient.name}
+                      </Badge>
+                      <Text display="inline" fontSize="md">{`: ${ingredient.quantity}`}</Text>
+                    </Box>
+                  ))}
+                </Box>
+              )}
+            </FormControl>
+            <Stack direction="row" spacing={4} justify="space-between" align="center">
+              <Button leftIcon={<EditIcon />} colorScheme="teal" variant="outline" onClick={handleEdit}>
+                編集
+              </Button>
+              <Button rightIcon={<EditIcon />} colorScheme="teal" onClick={handleMenuRegistration}>
+                こんだてに登録
+              </Button>
             </Stack>
-          )}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+          </form>
+        </Stack>
+      )}
+    </ModalBody>
+  </ModalContent>
+</Modal>
+
   );
 });

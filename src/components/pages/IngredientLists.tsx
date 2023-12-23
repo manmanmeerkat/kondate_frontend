@@ -103,26 +103,29 @@ export const IngredientsList: React.FC = () => {
         return;
       }
   
-      // バックエンドに日付範囲を送信し、結果を取得
-      const response = await axios.get<ResponseData>('http://localhost:8000/api/get-ingredients-list', {
-        params: {
-          start_date: startDate,
-          end_date: endDate,
-        },
-      });
-  
-      // 取得したデータを確認
-      // menuData プロパティが存在することを確認
-      if (response.data && response.data.menuData) {
-        setMenuData(response.data.menuData);
-        console.log(response.data.menuData);
-      } else {
-        console.error('Menu data is not available in the response.');
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
+     // バックエンドに日付範囲を送信し、結果を取得
+     const response = await axios.get<ResponseData>('http://localhost:8000/api/get-ingredients-list', {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+      },
+    });
+
+    // ソート処理を追加（日付の昇順）
+    const sortedMenuData = response.data.menuData?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    // 取得したデータを確認
+    // menuData プロパティが存在することを確認
+    if (sortedMenuData) {
+      setMenuData(sortedMenuData);
+      console.log(sortedMenuData);
+    } else {
+      console.error('Menu data is not available in the response.');
     }
-  };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
   
   
   // 同じ日付のメニューをグループ化する関数
