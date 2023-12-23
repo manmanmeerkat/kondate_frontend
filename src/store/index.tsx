@@ -11,7 +11,7 @@ const store = configureStore({
     date: dateReducer,
     menu: menuReducer,
     // upDate: upDateReducer,
-    // dish: dishReducer,
+    dish: dishReducer,
   },
 });
 

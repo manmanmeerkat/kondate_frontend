@@ -13,7 +13,7 @@ export const useMenuForDate = () => {
     setLoading(true);
     try {
       const formattedDate = date?.toLocaleDateString('en-CA');
-      const response = await axios.get<MenuItem[]>(`http://localhost:8000/api/recipes/${formattedDate}`);
+      const response = await axios.get<MenuItem[]>(`http://localhost:8000/api/recipes/${formattedDate}`, { withCredentials: true });
       setMenu(response.data);
       setError(null);
       return response.data;

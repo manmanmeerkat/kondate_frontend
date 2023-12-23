@@ -1,3 +1,4 @@
+// Calendar.tsx
 import React, { useState } from 'react';
 import { Box, ChakraProvider, Flex, Wrap, WrapItem, Heading, Text, Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
@@ -25,7 +26,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
   const selectedDateRedux = useSelector((state: RootState) => state.date ? state.date.selectedDate : null);
   const menu = useSelector(selectMenu);
   const [deletingItemId, setDeletingItemId] = useState<number | null>(null);
-
+console.log('menu', menu);
   const handleDateChange = async (date: Date | null) => {
     onDateChange(date);
     if (date) {
@@ -36,6 +37,12 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
   };
 
   const handleDelete = async (dishId: number) => {
+    function getCookie(name: string) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+    }
+
     try {
       setDeletingItemId(dishId); // 削除中のアイテムのIDをセット
 
@@ -70,9 +77,11 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
             locale={ja}
             className="compact-datepicker"
             placeholderText='日付を選択してください'
+            //マウスホバーしたらポインターになる
             customInput={
               <Box
                 as={Button}
+                // bg="white"
                 _hover={{ cursor: 'pointer' }}
                 _focus={{ outline: 'none' }}
                 _active={{ outline: 'none' }}
@@ -90,24 +99,25 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
           <Wrap spacing={4} mt={4}>
             {menu.map((item, index) => (
               <WrapItem key={index} p={4} position="relative" borderRadius="md" borderWidth="1px" width="200px" bg="teal.500">
-                <Box key={index} p={4} borderRadius="md" width="200px" bg="teal.500" textAlign="center" borderWidth={0}>
-                  <Heading size="md" mb={2} color="white">
-                    {item.dish.name}
-                  </Heading>
-                  <Button
-                    onClick={() => handleDelete(item.id)}
-                    isDisabled={deletingItemId === item.id}
-                    position="absolute"
-                    top={0}
-                    right={0}
-                    fontSize="12px"
-                    size="xs"
-                    colorScheme="red"
-                  >
-                    {deletingItemId === item.id ? '削除中...' : '✖'}
-                  </Button>
-                </Box>
-              </WrapItem>
+              <Box key={index} p={4} borderRadius="md" width="200px" bg="teal.500" textAlign="center" borderWidth={0}>
+                <Heading size="md" mb={2} color="white"> {/* 文字色を白に設定 */}
+                  {item.dish.name}
+                </Heading>
+                <Button
+                  onClick={() => handleDelete(item.id)}
+                  isDisabled={deletingItemId === item.id}
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  fontSize="12px"
+                  size="xs"
+                  colorScheme="red"  // ボタンの色を赤に設定
+                >
+                  {deletingItemId === item.id ? '削除中...' : '✖'}
+                </Button>
+              </Box>
+            </WrapItem>
+            
             ))}
           </Wrap>
         )}
@@ -115,10 +125,3 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
     </ChakraProvider>
   );
 };
-
-// ヘルパー関数：CookieからXSRF-TOKENを取得
-function getCookie(name: string) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift();
-}
