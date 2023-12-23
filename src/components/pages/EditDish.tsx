@@ -31,6 +31,7 @@ interface DishParams {
 interface Ingredient {
   id: number;
   name: string;
+  quantity: string;
 }
 
 interface DishData {
@@ -84,7 +85,7 @@ export const EditDish: React.FC = () => {
         // レシピの材料情報をフォームデータに反映
         const formattedIngredients = ingredientsData.map((ingredient) => ({
           name: ingredient.name,
-          quantity: '', // デフォルトの数量は空白としておく
+          quantity: ingredient.quantity,
         }));
 
         setFormData({
