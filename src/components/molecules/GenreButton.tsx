@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Button, Menu, MenuButton, MenuList, Box, MenuItem } from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuList, Box, MenuItem, Spacer } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
@@ -16,8 +16,9 @@ export const GenreButton = memo(() => {
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="black"
+          colorScheme="teal"
           variant="outline"
+          mr={2} 
         >
           和食
         </MenuButton>
@@ -29,13 +30,14 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_japanese_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
-
+      
       <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="black"
+          colorScheme="teal"
           variant="outline"
+          mr={2} 
         >
           洋食
         </MenuButton>
@@ -47,13 +49,14 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_western_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
-
+      
       <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="black"
+          colorScheme="teal"
           variant="outline"
+          mr={2} 
         >
           中華
         </MenuButton>
@@ -65,12 +68,12 @@ export const GenreButton = memo(() => {
           <MenuItem onClick={() => onGenreClick("all_my_chinese_others")}>その他</MenuItem>
         </MenuList>
       </Menu>
-
+      
       <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          colorScheme="black"
+          colorScheme="teal"
           variant="outline"
         >
           その他
