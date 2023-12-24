@@ -334,10 +334,10 @@ export const EditDish: React.FC = () => {
             </FormControl>
 
             <FormControl mb={4}>
-              <FormLabel>説明</FormLabel>
+              <FormLabel>メモ</FormLabel>
               <Textarea
                 name="description"
-                value={formData.description || ''}
+                value={formData.description !== "null" ? formData.description : ''}
                 onChange={handleChange}
               />
             </FormControl>
@@ -371,43 +371,44 @@ export const EditDish: React.FC = () => {
                 <option value="4">その他</option>
               </Select>
             </FormControl>
-
+            <FormLabel>材料</FormLabel>
             <Wrap spacing={2} mb={4}>
-  {formData.ingredients.map((ingredient, index) => (
-    <WrapItem key={index} width="30%">
-      <Flex>
-        <Input
-          type="text"
-          name={`ingredients[${index}].name`}
-          value={ingredient.name || ''}
-          onChange={(e) => {
-            const updatedIngredients = [...formData.ingredients];
-            updatedIngredients[index].name = e.target.value;
-            setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
-          }}
-          size="sm"
-          width="70%"
-        />
-        <Input
-          type="text"
-          name={`ingredients[${index}].quantity`}
-          value={ingredient.quantity || ''}
-          onChange={(e) => {
-            const updatedIngredients = [...formData.ingredients];
-            updatedIngredients[index].quantity = e.target.value;
-            setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
-          }}
-          size="sm"
-          width="30%"
-        />
-        <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
-          削除
-        </Button>
-      </Flex>
-    </WrapItem>
-  ))}
-</Wrap>
-
+              {formData.ingredients.map((ingredient, index) => (
+                <WrapItem key={index} width="30%">
+                  <Flex>
+                    <Input
+                      type="text"
+                      name={`ingredients[${index}].name`}
+                      value={ingredient.name || ''}
+                      onChange={(e) => {
+                        const updatedIngredients = [...formData.ingredients];
+                        updatedIngredients[index].name = e.target.value;
+                        setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
+                      }}
+                      size="sm"
+                      width="70%"
+                      placeholder="材料名"
+                    />
+                    <Input
+                      type="text"
+                      name={`ingredients[${index}].quantity`}
+                      value={ingredient.quantity || ''}
+                      onChange={(e) => {
+                        const updatedIngredients = [...formData.ingredients];
+                        updatedIngredients[index].quantity = e.target.value;
+                        setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
+                      }}
+                      size="sm"
+                      width="30%"
+                      placeholder="数量"
+                    />
+                    <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
+                      削除
+                    </Button>
+                  </Flex>
+                </WrapItem>
+              ))}
+            </Wrap>
             <Button
               type="button"
               colorScheme="blue"
@@ -426,11 +427,10 @@ export const EditDish: React.FC = () => {
               <Input
                 type="text"
                 name="reference_url"
-                value={formData.reference_url || ''}
+                value={formData.reference_url !== "null" ? formData.reference_url : ''}
                 onChange={handleChange}
               />
             </FormControl>
-
             <Button
                 type="submit"
                 colorScheme="teal"

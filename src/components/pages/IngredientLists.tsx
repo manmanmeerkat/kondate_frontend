@@ -217,24 +217,34 @@ export const IngredientsList: React.FC = () => {
                 すべての材料
               </Heading>
               <Divider mb={4} />
-              <List fontSize="lg">
-                {menuData.reduce((ingredients, menu) => {
-                  menu.ingredients.forEach((ingredient) => {
-                    const existingIngredient = ingredients.find((item) => item.name === ingredient.name && item.quantity === ingredient.quantity);
-  
-                    if (existingIngredient) {
-                      existingIngredient.quantityCount += 1;
-                    } else {
-                      ingredients.push({ ...ingredient, quantityCount: 1 });
-                    }
-                  });
-                  return ingredients;
-                }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
-                  <ListItem key={index} mb={2}>
-                    {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
-                  </ListItem>
-                ))}
-              </List>
+<List fontSize="lg">
+  {menuData.reduce((ingredients, menu) => {
+    menu.ingredients.forEach((ingredient) => {
+      const existingIngredient = ingredients.find(
+        (item) => item.name === ingredient.name && item.quantity === ingredient.quantity
+      );
+
+      if (existingIngredient) {
+        existingIngredient.quantityCount += 1;
+      } else {
+        if (ingredient.name && ingredient.quantity) {
+          // 材料名と数量がどちらも存在する場合にのみ追加
+          ingredients.push({ ...ingredient, quantityCount: 1 });
+        }
+      }
+    });
+    return ingredients;
+  }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
+    // 材料名と数量がどちらも存在する場合のみ表示
+    ingredient.name && ingredient.quantity && ingredient.quantityCount > 0 && (
+      <ListItem key={index} mb={2}>
+        {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
+      </ListItem>
+    )
+  ))}
+</List>
+
+
             </Box>
           </Flex>
         )}

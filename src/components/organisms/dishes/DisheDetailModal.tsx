@@ -247,11 +247,11 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
             </FormControl>
             <FormControl>
               <FormLabel fontSize="lg" color="teal.600">メモ</FormLabel>
-              <Textarea value={memo} readOnly />
+              <Textarea value={memo !== "null" ? memo : ""} readOnly />
             </FormControl>
             <FormControl>
               <FormLabel fontSize="lg" color="teal.600">参考URL</FormLabel>
-              <Input value={url} readOnly />
+              <Input value={url !== "null" ? url : ""} readOnly />
             </FormControl>
             <FormControl>
               <FormLabel fontSize="lg" color="teal.600">材料</FormLabel>

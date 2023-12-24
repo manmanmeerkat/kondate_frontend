@@ -15,6 +15,7 @@ import {
   VStack,
   Wrap,
   WrapItem,
+  Text,
 } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
 
@@ -260,10 +261,13 @@ export const CreateDish = () => {
         <Heading size="lg" textAlign="center" mb="4">
           料理を登録する
         </Heading>
+        <Text color="red" mb={4}>
+            * マークは必須
+          </Text>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
             <FormControl mb={4}>
-              <FormLabel>画像アップロード</FormLabel>
+              <FormLabel>画像</FormLabel>
               <Input
                 type="file"
                 name="image_file"

@@ -18,7 +18,6 @@ import { DishCard } from "../organisms/dishes/DishCard";
 import { useSelectDish } from "../../hooks/useSelectDish";
 import { DishDetailModal } from "../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../molecules/GenreButton";
-import { Dish } from "../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Header } from "../organisms/layout/Header";
 import { useIngredientSearch } from "../../hooks/useIngredientSearch";
