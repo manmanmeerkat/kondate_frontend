@@ -120,7 +120,6 @@ export const EditDish: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('Updated FormData:', formData);
   }, [formData]);
 
   useEffect(() => {
@@ -162,7 +161,6 @@ export const EditDish: React.FC = () => {
       // CSRF Cookieを同期的に取得
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
-      console.log('XSRF Token:', xsrfToken);
   
       let imagePath = formData.image_path;
   
@@ -213,7 +211,6 @@ export const EditDish: React.FC = () => {
       );
 
       if (response.status === 200) {
-        console.log('フォームの更新が成功しました');
         toast({
           title: '更新が完了しました',
           status: 'success',
@@ -261,7 +258,6 @@ export const EditDish: React.FC = () => {
     setIsDeleting(true)
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
-      console.log('XSRF Token:', xsrfToken);
 
       const response = await axios.delete(`http://localhost:8000/api/delete/${dishId}`, {
         headers: {
@@ -271,7 +267,6 @@ export const EditDish: React.FC = () => {
       });
 
       if (response.status === 200) {
-        console.log('削除が成功しました');
         toast({
           title: '削除が完了しました',
           status: 'success',

@@ -21,7 +21,6 @@ export const useSelectDish = (): UseSelectDishResult => {
 
   const onSelectDish = useCallback((props: UseSelectDishProps) => {
     const { id, dishes, onOpen } = props;
-    console.log(id, dishes, onOpen);
     const targetDish = dishes.find((dish) => dish.id === id);
     setSelectedDish(targetDish ?? null);
     onOpen();

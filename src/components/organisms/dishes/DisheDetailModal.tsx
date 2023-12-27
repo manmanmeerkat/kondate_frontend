@@ -102,7 +102,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
         return '';
     }
   };
-  console.log(dish)
+  
   useEffect(() => {
     setName(dish?.name || "");
     setGenre(dish?.genre_id || undefined);
@@ -200,7 +200,6 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
       }
     );
 
-    console.log('Response:', response.data);
 
     showMessage({ title: 'メニューを登録しました。', status: 'success' });
     

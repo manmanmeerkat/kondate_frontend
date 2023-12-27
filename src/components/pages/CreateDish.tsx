@@ -161,7 +161,6 @@ export const CreateDish = () => {
     try {
       await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
-      console.log('XSRF Token:', xsrfToken);
 
       let imagePath = formData.image_path;
 

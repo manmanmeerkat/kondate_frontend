@@ -118,7 +118,6 @@ export const IngredientsList: React.FC = () => {
     // menuData プロパティが存在することを確認
     if (sortedMenuData) {
       setMenuData(sortedMenuData);
-      console.log(sortedMenuData);
     } else {
       console.error('Menu data is not available in the response.');
     }

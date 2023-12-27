@@ -39,7 +39,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { getDish, dishData } = useDishData();
   const { user } = useFetchUserData();
   const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
-console.log("gfdfd",dishes);
+  
   useEffect(() => {
     getDishes();
     

@@ -24,6 +24,7 @@ interface UserData {
   role: string;
 }
 
+
 export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -31,76 +32,57 @@ export const LoginPage: React.FC = () => {
   });
 
   const navigate = useNavigate();
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
-
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
-        const csrfToken = csrfResponse.data.csrfToken;
-        setCsrfToken(csrfToken);
-        console.log('CSRFトークン:', csrfToken);
-      } catch (error) {
-        console.error('CSRFトークンの取得エラー:', error);
-      }
-    };
-
-    fetchCsrfToken();
-  }, []);  // フォームデータのリセットは不要なので削除
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setIsLoading(true);
 
-    axios
-      .post<UserData>('http://localhost:8000/api/login', formData, {
-        withCredentials: true,
-        headers: {
-          'X-CSRF-TOKEN': csrfToken,
-        },
-      })
-      .then((response) => {
-        const { token, userId, message, role } = response.data;
-        console.log(response.data);
-        localStorage.setItem('token', token);
-        localStorage.setItem('userId', userId);
+    try {
+      const response = await axios.post<UserData>(
+        'http://localhost:8000/api/login',
+        formData,
+        { withCredentials: true } // クッキーの自動送信を有効化
+      );
 
-        toast({
-          title: 'ログインしました',
-          description: message,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
+      const { token, userId, message, role } = response.data;
 
-        if (role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/all_my_dishes');
-        }
-      })
-      .catch((error) => {
-        console.error('ログインエラー:', error.response?.data);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
 
-        toast({
-          title: 'ログインエラー',
-          description: 'ログインに失敗しました。',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
+      toast({
+        title: 'ログインしました',
+        description: message,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
       });
+
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/all_my_dishes');
+      }
+    } catch (error:any) {
+      console.error('ログインエラー:', error.response?.data);
+
+      toast({
+        title: 'ログインエラー',
+        description: error.response?.data?.message || 'ログインに失敗しました。',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoToHome = () => {
@@ -114,9 +96,6 @@ export const LoginPage: React.FC = () => {
           ログイン
         </Heading>
         <form onSubmit={handleSubmit}>
-          {/* CSRFトークンをmetaタグで追加 */}
-          <meta name="csrf-token" content={csrfToken} />
-
           <FormControl mt="4">
             <FormLabel>Eメール</FormLabel>
             <Input type="email" name="email" value={formData.email} onChange={handleChange} required />

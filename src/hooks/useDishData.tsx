@@ -34,7 +34,6 @@ export const useDishData = () => {
       })
         .then((response: AxiosResponse<DishDataResponse>) => {
           const dishes: Dishes[] = response.data.dishes;
-          console.log(response.data);
           setDishData({ dishes });
         })
         .catch((error) => console.error("ユーザー情報の取得エラー:", error))
