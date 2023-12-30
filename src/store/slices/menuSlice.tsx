@@ -12,6 +12,7 @@ export interface MenuItem {
   id: number;
   date: string;
   dish: Dish;
+  
 }
 
 interface MenuState {
