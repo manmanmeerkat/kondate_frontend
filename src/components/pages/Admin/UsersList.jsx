@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { chakra } from '@chakra-ui/react';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
+import config from '../config/production';
 
 export const UsersList = () => {
   const [users, setUsers] = useState([]);
