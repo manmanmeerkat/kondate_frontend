@@ -18,6 +18,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
+import useUserId from '../../hooks/useUserId';
 import config from './config/production';
 
 interface FormData {
@@ -52,7 +53,8 @@ export const CreateDish = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [csrfToken, setCsrfToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 初期値を true に設定
+  const userId = useUserId();
 
   useEffect(() => {
     const fetchCsrfToken = async () => {
@@ -60,15 +62,20 @@ export const CreateDish = () => {
         const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
-
-        const userId = localStorage.getItem('userId');
+        console.log(userId);
         setFormData((prevData) => ({ ...prevData, user_id: userId }));
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
+      } finally {
+        setIsLoading(false); // 非同期処理完了後にisLoadingを false に設定
       }
     };
 
     fetchCsrfToken();
+  }
+  , [userId]);
+
+  useEffect(() => {
 
     // 初期化はここで行う
     setFormData({
@@ -333,7 +340,7 @@ export const CreateDish = () => {
                   type="text"
                   name={`ingredients[${index}].name`}
                   value={ingredient.name}
-                  onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
+                  onChange={(e:any) => handleIngredientChange(index, 'name', e.target.value)}
                   size="sm"
                   width="50%"
                   placeholder="材料名"
@@ -342,7 +349,7 @@ export const CreateDish = () => {
                   type="text"
                   name={`ingredients[${index}].quantity`}
                   value={ingredient.quantity}
-                  onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
+                  onChange={(e:any) => handleIngredientChange(index, 'quantity', e.target.value)}
                   size="sm"
                   width="40%"
                   placeholder="数量"
