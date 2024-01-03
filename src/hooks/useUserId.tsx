@@ -23,6 +23,7 @@ const useUserId = () => {
 
         const fetchedUserId = userResponse.data.id;
         setUserId(fetchedUserId);
+        console.log(userId);
       } catch (error) {
         console.error('ユーザー情報の取得エラー:', error);
       } finally {
