@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import config from '../../pages/config/production';
 
 interface LogoutButtonProps {
   csrfToken: string;
@@ -21,7 +22,7 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ csrfToken, onLogoutSuccess 
       setIsLoggingOut(true);
 
       // ログアウトリクエストの送信
-      const logoutResponse = await axios.post('http://localhost:8000/api/logout', null, {
+      const logoutResponse = await axios.post(`${config.API_ENDPOINT}/api/logout`, null, {
         headers: {
           'X-CSRF-TOKEN': csrfToken,
         },
