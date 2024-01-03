@@ -12,6 +12,7 @@ import {
   useToast,
   FormErrorMessage,
 } from '@chakra-ui/react';
+import  config  from '../config/production'
 
 interface FormData {
   name: string;
@@ -49,7 +50,7 @@ export const UserRegister: React.FC = () => {
     // CSRFトークンを取得
     const fetchCsrfToken = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', {
+        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
           withCredentials: true,
         });
         const csrfToken = response.data.csrfToken;
@@ -73,7 +74,7 @@ export const UserRegister: React.FC = () => {
 
       // メールアドレスの重複チェック
       try {
-        const response = await axios.post('http://localhost:8000/api/check-email', { email: value });
+        const response = await axios.post(`${config.API_ENDPOINT}/api/check-email`, { email: value });
         setEmailExistsError(response.data.exists ? 'すでに登録されているメールアドレスです' : null);
       } catch (error) {
         console.error('メールアドレスの重複チェックエラー:', error);
@@ -115,7 +116,7 @@ export const UserRegister: React.FC = () => {
   
     try {
       const response = await axios.post<{ token: string; userId: string }>(
-        'http://localhost:8000/api/register',
+        `${config.API_ENDPOINT}/api/register`,
         formData,
         {
           withCredentials: true,

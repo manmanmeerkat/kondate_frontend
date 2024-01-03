@@ -11,6 +11,7 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
+import config from '../config/production';
 
 interface FormData {
   email: string;
@@ -47,7 +48,7 @@ export const LoginPage: React.FC = () => {
 
     try {
       const response = await axios.post<UserData>(
-        'http://localhost:8000/api/login',
+        `${config.API_ENDPOINT}/api/login`,
         formData,
         { withCredentials: true } // クッキーの自動送信を有効化
       );
