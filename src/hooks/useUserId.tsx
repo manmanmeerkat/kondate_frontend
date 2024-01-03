@@ -20,7 +20,7 @@ const useUserId = () => {
         });
 
         const fetchedUserId = userResponse.data.id;
-        setUserId(fetchedUserId.toString());
+        setUserId(fetchedUserId);
         console.log('fetchedUserId', fetchedUserId);
         console.log('userId', fetchedUserId); // ここでログに表示
       } catch (error) {
