@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import config from "../pages/config/production";
 
 interface FoodPhotographyProps {
   imageFileName?: string;
@@ -12,7 +13,7 @@ export const FoodPhotography: React.FC<FoodPhotographyProps> = ({ imageFileName,
 
   useEffect(() => {
     if (imageFileName) {
-      const publicUrl = `http://localhost:8000/storage/${imageFileName}`;
+      const publicUrl = `${config.API_ENDPOINT}/storage/${imageFileName}`;
       setImageUrl(publicUrl);
       const imageSizeStyle: React.CSSProperties = {
         width: "160px",

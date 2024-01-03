@@ -11,6 +11,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import config from './config/production';
 
 const ChangePasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -42,7 +43,7 @@ const ChangePasswordForm = () => {
 
     try {
       await axios.post(
-        'http://localhost:8000/api/change_password',
+        `${config.API_ENDPOINT}/api/change_password`,
         { current_password: currentPassword, new_password: newPassword },
         { withCredentials: true }
       );

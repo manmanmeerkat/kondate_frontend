@@ -16,6 +16,7 @@ import {
   VStack,
   Input,
 } from '@chakra-ui/react';
+import config from './config/production';
 
 export const DeleteAccountButton = () => {
   const [isConfirming, setIsConfirming] = useState(false);
@@ -41,7 +42,7 @@ export const DeleteAccountButton = () => {
       setIsDeleting(true);
   
       // バックエンドに削除リクエストとパスワードを送信
-      await axios.delete('http://localhost:8000/api/users/self', {
+      await axios.delete(`${config.API_ENDPOINT}/api/users/self`, {
         headers: {
           'X-XSRF-TOKEN': csrfToken,
         },

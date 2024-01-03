@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import config from "../config/production";
 
 interface UserData {
   id: number;
@@ -19,7 +20,7 @@ export const GetUserData = () => {
       const userId = localStorage.getItem('userId'); // またはセッションから取得
 
       if (userId) {
-        axios.get<UserData>(`http://localhost:8000/api/user/${userId}`, {
+        axios.get<UserData>(`${config.API_ENDPOINT}/api/user/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

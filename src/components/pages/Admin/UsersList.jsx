@@ -10,10 +10,10 @@ export const UsersList = () => {
     const fetchUsers = async () => {
       try {
         // 1. CSRF トークンの取得
-        await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
+        await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, { withCredentials: true });
 
         // 2. ログインユーザー情報の取得
-        const userResponse = await axios.get('http://localhost:8000/api/getuser', { withCredentials: true });
+        const userResponse = await axios.get(`${config.API_ENDPOINT}/api/getuser`, { withCredentials: true });
         const user = userResponse.data;
 
         console.log('ログインユーザー情報:', user.user.role);
@@ -23,7 +23,7 @@ export const UsersList = () => {
           console.log('管理者としてログインしています。');
 
           // ログインユーザーが管理者の場合のみユーザー一覧を取得
-          const adminResponse = await axios.get('http://localhost:8000/api/admin/getallusers', { withCredentials: true });
+          const adminResponse = await axios.get(`${config.API_ENDPOINT}/api/admin/getallusers`, { withCredentials: true });
           setUsers(adminResponse.data.users);
 
           console.log('ユーザー一覧:', adminResponse.data);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import config from '../components/pages/config/production';
 
 interface User {
   id: number;
@@ -23,7 +24,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get<User>('http://localhost:8000/api/user', {
+      const response = await axios.get<User>(`${config.API_ENDPOINT}/api/user`, {
         withCredentials: true,
       });
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useFetchUserData } from './useFetchUserData';
+import config from '../components/pages/config/production';
 
 const useFetchWesternData = (endpoint: string) => {
   const { user } = useFetchUserData();
@@ -13,7 +14,7 @@ const useFetchWesternData = (endpoint: string) => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await axios.get(`http://localhost:8000/api/user/${user.id}/${endpoint}`, {
+      const response = await axios.get(`${config.API_ENDPOINT}/api/user/${user.id}/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

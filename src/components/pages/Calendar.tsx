@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedDate } from '../../store/reducers/dateReducer';
 import axios from 'axios';
 import { MenuItem, deleteMenu, selectMenu, setMenu } from '../../store/slices/menuSlice';
+import config from './config/production';
 
 interface RootState {
   date: {
@@ -46,11 +47,11 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
     try {
       setDeletingItemId(dishId); // 削除中のアイテムのIDをセット
 
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
       console.log('XSRF Token:', xsrfToken);
 
-      await axios.delete(`http://localhost:8000/api/delete/menus/${dishId}`, {
+      await axios.delete(`${config.API_ENDPOINT}/api/delete/menus/${dishId}`, {
         headers: {
           'X-XSRF-TOKEN': xsrfToken,
         },

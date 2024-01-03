@@ -22,6 +22,7 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
 } from '@chakra-ui/react';
+import config from './config/production';
 
 interface DishParams {
   dishId: string;
@@ -70,13 +71,13 @@ export const EditDish: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const csrfResponse = await axios.get('http://localhost:8000/api/csrf-cookie');
+        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/csrf-cookie`);
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
 
         const [dishResponse, ingredientsResponse] = await Promise.all([
-          axios.get(`http://localhost:8000/api/edit/${dishId}`),
-          axios.get(`http://localhost:8000/api/dishes/${dishId}/ingredients`),
+          axios.get(`${config.API_ENDPOINT}/api/edit/${dishId}`),
+          axios.get(`${config.API_ENDPOINT}/api/dishes/${dishId}/ingredients`),
         ]);
 
         const dishData = dishResponse.data;
@@ -145,7 +146,7 @@ export const EditDish: React.FC = () => {
     if (formData.image_path) {
       return (
         <Box mb={4}>
-          <img src={`http://localhost:8000/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
+          <img src={`${config.API_ENDPOINT}/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
         </Box>
       );
     }
@@ -159,7 +160,7 @@ export const EditDish: React.FC = () => {
       setIsSubmitting(true);
   
       // CSRF Cookieを同期的に取得
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
   
       let imagePath = formData.image_path;
@@ -169,7 +170,7 @@ export const EditDish: React.FC = () => {
         imageFormData.append('image_file', formData.image_file);
   
         const imageUploadResponse = await axios.post(
-          'http://localhost:8000/api/upload-image',
+          `${config.API_ENDPOINT}/api/upload-image`,
           imageFormData,
           {
             headers: {
@@ -199,7 +200,7 @@ export const EditDish: React.FC = () => {
       formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
 
       const response = await axios.put(
-        `http://localhost:8000/api/update/${dishId}`,
+        `${config.API_ENDPOINT}/api/update/${dishId}`,
         formDataToSend,
         {
           headers: {
@@ -256,10 +257,10 @@ export const EditDish: React.FC = () => {
     setIsDeleteAlertOpen(false);
     try {
     setIsDeleting(true)
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
 
-      const response = await axios.delete(`http://localhost:8000/api/delete/${dishId}`, {
+      const response = await axios.delete(`${config.API_ENDPOINT}/api/delete/${dishId}`, {
         headers: {
           'X-XSRF-TOKEN': xsrfToken,
         },

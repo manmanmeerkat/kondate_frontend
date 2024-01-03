@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
+import config from '../components/pages/config/production';
 
 // レシピの材料の型を定義
 interface Ingredient {
@@ -27,7 +28,7 @@ const useDishIngredients = (dishId: number | null): UseDishIngredients => {
     if (dishId) {
       const fetchIngredients = async () => {
         try {
-          const response: AxiosResponse<DishIngredientsResponse> = await axios.get(`http://localhost:8000/api/dishes/${dishId}/ingredients`);
+          const response: AxiosResponse<DishIngredientsResponse> = await axios.get(`${config.API_ENDPOINT}/api/dishes/${dishId}/ingredients`);
           setIngredients(response.data.ingredients);
           setLoading(false);
         } catch (error) {

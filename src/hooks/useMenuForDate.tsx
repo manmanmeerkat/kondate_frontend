@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MenuItem } from '../store/slices/menuSlice';
+import config from '../components/pages/config/production';
 
 export const useMenuForDate = () => {
   const [menu, setMenu] = useState<MenuItem[]>([]);
@@ -13,7 +14,7 @@ export const useMenuForDate = () => {
     setLoading(true);
     try {
       const formattedDate = date?.toLocaleDateString('en-CA');
-      const response = await axios.get<MenuItem[]>(`http://localhost:8000/api/recipes/${formattedDate}`, { withCredentials: true });
+      const response = await axios.get<MenuItem[]>(`${config.API_ENDPOINT}/api/recipes/${formattedDate}`, { withCredentials: true });
       setMenu(response.data);
       setError(null);
       return response.data;

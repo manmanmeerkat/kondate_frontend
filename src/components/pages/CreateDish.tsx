@@ -18,6 +18,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
+import config from './config/production';
 
 interface FormData {
   name: string;
@@ -56,7 +57,7 @@ export const CreateDish = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie');
+        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
 
@@ -159,7 +160,7 @@ export const CreateDish = () => {
     setIsLoading(true);
 
     try {
-      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
+      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
 
       let imagePath = formData.image_path;
@@ -169,7 +170,7 @@ export const CreateDish = () => {
         imageFormData.append('image_file', formData.image_file);
 
         const imageUploadResponse = await axios.post(
-          'http://localhost:8000/api/upload-image',
+          `${config.API_ENDPOINT}/api/upload-image`,
           imageFormData,
           {
             headers: {
@@ -200,7 +201,7 @@ export const CreateDish = () => {
       formDataToSend.append('ingredients', ingredientsData);
 
       const response = await axios.post(
-        `http://localhost:8000/api/create`,
+        `${config.API_ENDPOINT}/api/create`,
         formDataToSend,
         {
           headers: {

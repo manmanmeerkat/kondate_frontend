@@ -25,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMenuForDate } from '../../../hooks/useMenuForDate';
 import { setMenu } from '../../../store/slices/menuSlice';
+import config from '../../pages/config/production';
 
 interface DishDetailModalProps {
   dish: {
@@ -60,7 +61,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     if (id) {
       try {
         const response = await axios.get<{ ingredients: { id: number; name: string; quantity: string }[] }>(
-          `http://localhost:8000/api/dishes/${id}/ingredients`
+          `${config.API_ENDPOINT}api/dishes/${id}/ingredients`
         );
         setIngredients(response.data.ingredients);
         setLoading(false);
@@ -139,7 +140,7 @@ const getCookie = (name:string) => {
 };
 
 const getCSRFToken = async () => {
-  await axios.get('http://localhost:8000/api/sanctum/csrf-cookie');
+  await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
 };
 
 const handleMenuRegistration = async () => {
@@ -187,7 +188,7 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
 
     // 実際のメニュー登録リクエスト
     const response = await axios.post(
-      'http://localhost:8000/api/menus',
+      `${config.API_ENDPOINT}/api/menus`,
       {
         dish_id: dish?.id,
         date: formattedDate,

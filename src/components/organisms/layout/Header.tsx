@@ -6,6 +6,7 @@ import { MenuDrawer } from '../../molecules/MenuDrawer';
 import axios from 'axios';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
 import MenuForDate from '../../pages/MenuForDate';
+import config from '../../pages/config/production';
 
 interface HeaderProps {}
 
@@ -21,7 +22,7 @@ export const Header: React.FC<HeaderProps> = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
+        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
       } catch (error) {

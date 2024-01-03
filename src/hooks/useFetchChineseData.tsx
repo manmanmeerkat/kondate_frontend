@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useFetchUserData } from './useFetchUserData';
+import config from '../components/pages/config/production';
 
 
 const useFetchChineseData = (endpoint: string) => {
@@ -15,7 +16,7 @@ const useFetchChineseData = (endpoint: string) => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await axios.get(`http://localhost:8000/api/user/${userId}/${endpoint}`, {
+      const response = await axios.get(`${config.API_ENDPOINT}/api/user/${userId}/${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

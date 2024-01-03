@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
+import config from "../components/pages/config/production";
 
 interface Dishes {
   id: number;
@@ -15,7 +16,7 @@ interface DishDataResponse {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: `${config.API_ENDPOINT}/api`,
 });
 
 export const useDishData = () => {

@@ -5,6 +5,7 @@ import { ja } from 'date-fns/locale';
 import { registerLocale } from 'react-datepicker';
 import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, Menu, useToast, Flex, Divider, Table, Thead, Tr, Th, Tbody, Td, Badge } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
+import config from './config/production';
 
 interface Menu {
   menu_id: number;
@@ -104,7 +105,7 @@ export const IngredientsList: React.FC = () => {
       }
   
      // バックエンドに日付範囲を送信し、結果を取得
-     const response = await axios.get<ResponseData>('http://localhost:8000/api/get-ingredients-list', {
+     const response = await axios.get<ResponseData>(`${config.API_ENDPOINT}/api/get-ingredients-list`, {
       params: {
         start_date: startDate,
         end_date: endDate,
