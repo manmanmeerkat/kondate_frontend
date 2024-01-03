@@ -62,18 +62,20 @@ export const CreateDish = () => {
         const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
-        console.log(userId);
-        setFormData((prevData) => ({ ...prevData, user_id: userId }));
       } catch (error) {
         console.error('CSRFトークンの取得エラー:', error);
-      } finally {
-        setIsLoading(false); // 非同期処理完了後にisLoadingを false に設定
       }
     };
 
     fetchCsrfToken();
-  }
-  , [userId]);
+  }, []);
+
+  // userId が変更されるたびに formData を更新
+  useEffect(() => {
+    if (userId) {
+      setFormData((prevData) => ({ ...prevData, user_id: userId }));
+    }
+  }, [userId]);
 
   useEffect(() => {
 
