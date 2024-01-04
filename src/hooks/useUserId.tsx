@@ -19,7 +19,7 @@ const useUserId = () => {
           },
         });
         console.log('userResponse:', userResponse); // レスポンス全体を確認
-console.log('userResponse', userResponse);
+console.log('userResponseData', userResponse.data);
         const fetchedUserId = userResponse.data.id;
         setUserId(fetchedUserId);
         console.log('fetchedUserId', fetchedUserId);
