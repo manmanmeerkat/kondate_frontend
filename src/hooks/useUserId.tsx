@@ -18,6 +18,7 @@ const useUserId = () => {
             'X-CSRF-TOKEN': csrfToken,
           },
         });
+        console.log('userResponse:', userResponse); // レスポンス全体を確認
 console.log('userResponse', userResponse);
         const fetchedUserId = userResponse.data.id;
         setUserId(fetchedUserId);
