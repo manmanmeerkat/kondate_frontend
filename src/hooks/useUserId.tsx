@@ -18,7 +18,7 @@ const useUserId = () => {
             'X-CSRF-TOKEN': csrfToken,
           },
         });
-
+console.log('userResponse', userResponse);
         const fetchedUserId = userResponse.data.id;
         setUserId(fetchedUserId);
         console.log('fetchedUserId', fetchedUserId);
