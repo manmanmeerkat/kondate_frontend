@@ -52,7 +52,7 @@ export const LoginPage: React.FC = () => {
         formData,
         { withCredentials: true } // クッキーの自動送信を有効化
       );
-
+console.log(response)
       const { token, userId, message, role } = response.data;
 
        // Cookieの設定
