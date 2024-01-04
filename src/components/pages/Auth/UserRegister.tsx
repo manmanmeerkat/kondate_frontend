@@ -56,6 +56,7 @@ export const UserRegister: React.FC = () => {
         const csrfToken = response.data.csrfToken;
         setCsrfToken(csrfToken);
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        console.log('CSRFトークンを取得しました', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得に失敗しました', error);
       }
