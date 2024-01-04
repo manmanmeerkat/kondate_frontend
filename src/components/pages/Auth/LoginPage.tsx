@@ -55,8 +55,11 @@ export const LoginPage: React.FC = () => {
 
       const { token, userId, message, role } = response.data;
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId);
+       // Cookieの設定
+       document.cookie = `token=${token}; path=/`;
+       document.cookie = `userId=${userId}; path=/`;
+
+       console.log(userId, token, role)
 
       toast({
         title: 'ログインしました',

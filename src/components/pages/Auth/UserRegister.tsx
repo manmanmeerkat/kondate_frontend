@@ -12,7 +12,7 @@ import {
   useToast,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import  config  from '../config/production'
+import config from '../config/production';
 
 interface FormData {
   name: string;
@@ -97,9 +97,17 @@ export const UserRegister: React.FC = () => {
     return passwordPattern.test(password);
   };
 
-  const handleRegistrationSuccess = (token: string) => {
-    localStorage.setItem('token', token);
-
+  const handleRegistrationSuccess = async (token: string) => {
+    // ローカルストレージの代わりに適切な手段でトークンを保存する
+    try {
+      // 例: クッキーにトークンを保存
+      document.cookie = `token=${token}; path=/`;
+      // または、HTTPヘッダーにトークンを含める
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } catch (error) {
+      console.error('トークンの保存に失敗しました', error);
+    }
+  
     toast({
       title: 'ユーザー登録が完了しました',
       description: 'ようこそ！',
@@ -107,7 +115,7 @@ export const UserRegister: React.FC = () => {
       duration: 5000,
       isClosable: true,
     });
-
+  
     navigate('/all_my_dishes');
   };
 
@@ -128,8 +136,8 @@ export const UserRegister: React.FC = () => {
   
       const token = response.data.token;
       const userId = response.data.userId;
-      localStorage.setItem('userId', userId);
-      handleRegistrationSuccess(token);
+      // ローカルストレージの代わりにトークンを保存する処理を呼び出す
+      await handleRegistrationSuccess(token);
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
         // バリデーションエラーがある場合
