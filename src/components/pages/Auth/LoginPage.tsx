@@ -48,13 +48,13 @@ export const LoginPage: React.FC = () => {
 
     try {
       // CSRFトークン取得 (Sanctumのログインエンドポイントにアクセスする前に必要)
-      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, {
+      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
 
       // ログインリクエスト
       const response = await axios.post<UserData>(
-        `${config.API_ENDPOINT}/login`,
+        `${config.API_ENDPOINT}/api/login`,
         formData,
         { withCredentials: true }
       );
