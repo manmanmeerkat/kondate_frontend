@@ -62,8 +62,8 @@ export const LoginPage: React.FC = () => {
       const { token, userId, message, role } = response.data;
 
       // Cookieの設定
-      document.cookie = `token=${token}; path=/`;
-      document.cookie = `userId=${userId}; path=/`;
+      // document.cookie = `token=${token}; path=/`;
+      // document.cookie = `userId=${userId}; path=/`;
 
       console.log(userId, token, role);
 
