@@ -47,25 +47,19 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // CSRFトークン取得 (Sanctumのログインエンドポイントにアクセスする前に必要)
-      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-        withCredentials: true,
-      });
-
-      // ログインリクエスト
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
-        { withCredentials: true }
+        { withCredentials: true } // クッキーの自動送信を有効化
       );
-
+console.log(response)
       const { token, userId, message, role } = response.data;
 
-      // Cookieの設定
-      document.cookie = `token=${token}; path=/`;
-      document.cookie = `userId=${userId}; path=/`;
+       // Cookieの設定
+       document.cookie = `token=${token}; path=/`;
+       document.cookie = `userId=${userId}; path=/`;
 
-      console.log(userId, token, role);
+       console.log(userId, token, role)
 
       toast({
         title: 'ログインしました',
@@ -80,7 +74,7 @@ export const LoginPage: React.FC = () => {
       } else {
         navigate('/all_my_dishes');
       }
-    } catch (error: any) {
+    } catch (error:any) {
       console.error('ログインエラー:', error.response?.data);
 
       toast({
