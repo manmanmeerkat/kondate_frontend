@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
 import useUserId from '../../hooks/useUserId';
-import config from './config/production';
 
 interface FormData {
   name: string;
@@ -55,11 +54,11 @@ export const CreateDish = () => {
   const [csrfToken, setCsrfToken] = useState('');
   const [isLoading, setIsLoading] = useState(true); // 初期値を true に設定
   const userId = useUserId();
-
+console.log('userId', userId);
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
+        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie');
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
       } catch (error) {
@@ -70,13 +69,7 @@ export const CreateDish = () => {
     fetchCsrfToken();
   }, []);
 
-  // userId が変更されるたびに formData を更新
-  useEffect(() => {
-    if (userId) {
-      setFormData((prevData) => ({ ...prevData, user_id: userId }));
-    }
-  }, [userId]);
-
+  
   useEffect(() => {
 
     // 初期化はここで行う
@@ -93,7 +86,17 @@ export const CreateDish = () => {
       genre_id: null,
       category_id: null,
     });
+    // 初回レンダリング時のみ isLoading を false に設定
+    setIsLoading(false);
   }, []);
+
+  // userId が変更されるたびに formData を更新
+  useEffect(() => {
+    if (userId) {
+      setFormData((prevData) => ({ ...prevData, user_id: userId }));
+    }
+  }, [userId]);
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -169,17 +172,17 @@ export const CreateDish = () => {
     setIsLoading(true);
 
     try {
-      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
 
       let imagePath = formData.image_path;
-
+console.log('formData', formData);
       if (formData.image_file) {
         const imageFormData = new FormData();
         imageFormData.append('image_file', formData.image_file);
 
         const imageUploadResponse = await axios.post(
-          `${config.API_ENDPOINT}/api/upload-image`,
+          'http://localhost:8000/api/upload-image',
           imageFormData,
           {
             headers: {
@@ -210,7 +213,7 @@ export const CreateDish = () => {
       formDataToSend.append('ingredients', ingredientsData);
 
       const response = await axios.post(
-        `${config.API_ENDPOINT}/api/create`,
+        `http://localhost:8000/api/create`,
         formDataToSend,
         {
           headers: {
