@@ -183,7 +183,7 @@ console.log('formData', formData);
         imageFormData.append('image_file', formData.image_file);
 
         const imageUploadResponse = await axios.post(
-          '${config.API_ENDPOINT}/api/upload-image',
+          `${config.API_ENDPOINT}/api/upload-image`,
           imageFormData,
           {
             headers: {
@@ -238,7 +238,7 @@ console.log('formData', formData);
       } else {
         console.error('フォームの登録が失敗しました');
         toast({
-          title: '更新失敗しました',
+          title: '登録失敗しました',
           status: 'error',
           duration: 5000,
           isClosable: true,
