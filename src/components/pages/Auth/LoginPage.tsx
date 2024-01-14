@@ -1,3 +1,5 @@
+// LoginPage.tsx
+
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import config from '../config/production';
+import { useFetchUserData } from '../../../hooks/useFetchUserData';
 
 interface FormData {
   email: string;
@@ -25,7 +28,6 @@ interface UserData {
   role: string;
 }
 
-
 export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -35,6 +37,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
+  const { fetchUserData } = useFetchUserData(); // useFetchUserDataフックを利用
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -78,6 +81,8 @@ export const LoginPage: React.FC = () => {
       if (role === 'admin') {
         navigate('/admin');
       } else {
+        // useFetchUserDataフックにトークンを渡してユーザーデータを取得
+        await fetchUserData(token);
         navigate('/all_my_dishes');
       }
     } catch (error: any) {

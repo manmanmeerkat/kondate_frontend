@@ -1,3 +1,5 @@
+// useFetchUserData.ts
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../components/pages/config/production';
@@ -14,28 +16,18 @@ interface User {
 
 interface FetchUserDataHook {
   user: User | null;
-  fetchUserData: () => Promise<void>;
+  fetchUserData: (token: string) => Promise<void>; // トークンを引数に追加
 }
 
 export const useFetchUserData = (): FetchUserDataHook => {
   const [user, setUser] = useState<User | null>(null);
-  const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (token: string) => {
     try {
-      // CSRFトークン取得
-      const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-        withCredentials: true,
-      });
-      console.log('csrfResponse:', csrfResponse); // レスポンス全体を確認
-      const csrfToken = csrfResponse.data.csrfToken;
-      setCsrfToken(csrfToken);
-
-      // ユーザーデータ取得
-      const response = await axios.get(`${config.API_ENDPOINT}/api/user`, {
+      const response = await axios.get<User>(`${config.API_ENDPOINT}/api/user`, {
         withCredentials: true,
         headers: {
-          'X-CSRF-TOKEN': csrfToken,
+          'X-CSRF-TOKEN': token,
         },
       });
 
@@ -51,8 +43,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
   };
 
   useEffect(() => {
-    // コンポーネントがマウントされたらユーザーデータを取得
-    fetchUserData();
+    // 何もしない
   }, []);
 
   return {
