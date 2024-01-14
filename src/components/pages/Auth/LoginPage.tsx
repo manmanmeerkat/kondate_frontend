@@ -1,5 +1,3 @@
-// LoginPage.tsx
-
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +12,6 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import config from '../config/production';
-import { useFetchUserData } from '../../../hooks/useFetchUserData';
 
 interface FormData {
   email: string;
@@ -28,6 +25,7 @@ interface UserData {
   role: string;
 }
 
+
 export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -37,7 +35,6 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
-  const { fetchUserData } = useFetchUserData(); // useFetchUserDataフックを利用
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,25 +47,19 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // CSRFトークン取得 (Sanctumのログインエンドポイントにアクセスする前に必要)
-      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-        withCredentials: true,
-      });
-
-      // ログインリクエスト
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
-        { withCredentials: true }
+        { withCredentials: true } // クッキーの自動送信を有効化
       );
-
+console.log(response)
       const { token, userId, message, role } = response.data;
 
-      // Cookieの設定
-      document.cookie = `token=${token}; path=/`;
-      document.cookie = `userId=${userId}; path=/`;
+       // Cookieの設定
+       document.cookie = `token=${token}; path=/`;
+       document.cookie = `userId=${userId}; path=/`;
 
-      console.log(userId, token, role);
+       console.log(userId, token, role)
 
       toast({
         title: 'ログインしました',
@@ -81,11 +72,9 @@ export const LoginPage: React.FC = () => {
       if (role === 'admin') {
         navigate('/admin');
       } else {
-        // useFetchUserDataフックにトークンを渡してユーザーデータを取得
-        await fetchUserData(token);
         navigate('/all_my_dishes');
       }
-    } catch (error: any) {
+    } catch (error:any) {
       console.error('ログインエラー:', error.response?.data);
 
       toast({
