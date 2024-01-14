@@ -1,5 +1,3 @@
-// useFetchUserData.ts
-
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../components/pages/config/production';
@@ -21,23 +19,24 @@ interface FetchUserDataHook {
 
 export const useFetchUserData = (): FetchUserDataHook => {
   const [user, setUser] = useState<User | null>(null);
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
   const fetchUserData = async () => {
     try {
-
+      // CSRFトークン取得
       const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
-      
       const csrfToken = csrfResponse.data.csrfToken;
-      
+      setCsrfToken(csrfToken);
+
+      // ユーザーデータ取得
       const response = await axios.get(`${config.API_ENDPOINT}/api/user`, {
         withCredentials: true,
         headers: {
           'X-CSRF-TOKEN': csrfToken,
         },
       });
-
 
       if (response.status === 200) {
         const userData = response.data;
@@ -51,6 +50,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
   };
 
   useEffect(() => {
+    // コンポーネントがマウントされたらユーザーデータを取得
     fetchUserData();
   }, []);
 
@@ -59,5 +59,3 @@ export const useFetchUserData = (): FetchUserDataHook => {
     fetchUserData,
   };
 };
-
-
