@@ -9,7 +9,10 @@ const useUserId = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
+        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+          withCredentials: true,
+        });
+        
         const csrfToken = csrfResponse.data.csrfToken;
 
         const userResponse = await axios.get(`${config.API_ENDPOINT}/api/user`, {

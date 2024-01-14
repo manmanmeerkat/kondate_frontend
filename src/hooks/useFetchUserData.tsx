@@ -24,9 +24,20 @@ export const useFetchUserData = (): FetchUserDataHook => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get<User>(`${config.API_ENDPOINT}/api/user`, {
+
+      const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
+      
+      const csrfToken = csrfResponse.data.csrfToken;
+      
+      const response = await axios.get(`${config.API_ENDPOINT}/api/user`, {
+        withCredentials: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
+      });
+
 
       if (response.status === 200) {
         const userData = response.data;
