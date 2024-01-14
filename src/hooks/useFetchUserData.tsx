@@ -27,6 +27,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
       const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
+      console.log('csrfResponse:', csrfResponse); // レスポンス全体を確認
       const csrfToken = csrfResponse.data.csrfToken;
       setCsrfToken(csrfToken);
 
