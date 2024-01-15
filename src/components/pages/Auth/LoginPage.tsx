@@ -47,7 +47,7 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, {
+      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
       });
 
