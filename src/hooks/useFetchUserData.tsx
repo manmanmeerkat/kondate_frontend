@@ -16,16 +16,19 @@ interface User {
 
 interface FetchUserDataHook {
   user: User | null;
-  fetchUserData: () => Promise<void>;
+  fetchUserData: (token: string) => Promise<void>; // トークンを引数に追加
 }
 
 export const useFetchUserData = (): FetchUserDataHook => {
   const [user, setUser] = useState<User | null>(null);
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (token: string) => {
     try {
       const response = await axios.get<User>(`${config.API_ENDPOINT}/api/user`, {
         withCredentials: true,
+        headers: {
+          'X-CSRF-TOKEN': token,
+        },
       });
 
       if (response.status === 200) {
@@ -40,7 +43,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
   };
 
   useEffect(() => {
-    fetchUserData();
+    // 何もしない
   }, []);
 
   return {
@@ -48,5 +51,3 @@ export const useFetchUserData = (): FetchUserDataHook => {
     fetchUserData,
   };
 };
-
-
