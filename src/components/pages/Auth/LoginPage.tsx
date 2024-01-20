@@ -47,14 +47,12 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-        withCredentials: true,
-      });
+      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
 
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
-        { withCredentials: true } // クッキーの自動送信を有効化
+        // { withCredentials: true } // クッキーの自動送信を有効化
       );
 console.log(response)
       const { token, userId, message, role } = response.data;
