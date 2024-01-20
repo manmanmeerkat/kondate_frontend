@@ -47,6 +47,10 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+        withCredentials: true,
+      });
+
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
@@ -54,10 +58,6 @@ export const LoginPage: React.FC = () => {
       );
 console.log(response)
       const { token, userId, message, role } = response.data;
-
-       // Cookieの設定
-       document.cookie = `token=${token}; path=/`;
-       document.cookie = `userId=${userId}; path=/`;
 
        console.log(userId, token, role)
 

@@ -129,9 +129,9 @@ export const UserRegister: React.FC = () => {
         formData,
         {
           withCredentials: true,
-          // headers: {
-          //   'X-CSRF-TOKEN': csrfToken,
-          // },
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+          },
         }
       );
   
