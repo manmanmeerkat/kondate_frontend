@@ -24,11 +24,11 @@ export const useFetchUserData = (): FetchUserDataHook => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get<User>(`${config.API_ENDPOINT}/api/user`);
+      const response = await axios.get<User>('/api/user');
+
       if (response.status === 200) {
         const userData = response.data;
         setUser(userData);
-        console.log('ユーザー情報を取得しました:', userData);
       } else {
         console.error('サーバーレスポンスエラー:', response);
       }

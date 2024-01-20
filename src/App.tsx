@@ -7,7 +7,10 @@ import { Router } from "./components/router/Router"
 import { BrowserRouter } from "react-router-dom"
 import { Provider } from "react-redux"
 import store from "./store"
+import axios from 'axios';
+import config from './components/pages/config/production';
 
+axios.defaults.baseURL = config.API_ENDPOINT;
 
 
 export const App = () => (
