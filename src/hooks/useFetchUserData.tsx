@@ -29,6 +29,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
       if (response.status === 200) {
         const userData = response.data;
         setUser(userData);
+        console.log('userData', userData);
       } else {
         console.error('サーバーレスポンスエラー:', response);
       }
