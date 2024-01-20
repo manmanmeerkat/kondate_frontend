@@ -34,7 +34,29 @@ export const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [csrfToken, setCsrfToken] = useState<string>('');
   const toast = useToast();
+
+
+  useEffect(() => {
+    // CSRFトークンを取得
+    const fetchCsrfToken = async () => {
+      try {
+        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+          withCredentials: true,
+        });
+        const csrfToken = response.data.csrfToken;
+        setCsrfToken(csrfToken);
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        console.log('CSRFトークンを取得しました', csrfToken);
+      } catch (error) {
+        console.error('CSRFトークンの取得に失敗しました', error);
+      }
+    };
+
+    fetchCsrfToken();
+  }, []);
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,6 +71,9 @@ export const LoginPage: React.FC = () => {
     try {
       await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
       });
 
       const response = await axios.post<UserData>(
