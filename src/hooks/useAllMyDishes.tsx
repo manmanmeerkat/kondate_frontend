@@ -14,9 +14,9 @@ export const useAllMyDishes = () => {
         setLoading(true);
         try {
             const response = await axios.get(`${config.API_ENDPOINT}/api/all-my-dish`, {
-                withCredentials: true,
             });
             setDishes(response.data.dishes);
+            console.log("response",response);
         } catch (error) {
             showMessage({ title: "データ取得に失敗しました", status: "error" });
         } finally {
