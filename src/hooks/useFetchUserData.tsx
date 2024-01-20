@@ -24,9 +24,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get<User>(`${config.API_ENDPOINT}/api/user`, {
-        withCredentials: true,
-      });
+      const response = await axios.get<User>('/api/user');
 
       if (response.status === 200) {
         const userData = response.data;
@@ -48,5 +46,3 @@ export const useFetchUserData = (): FetchUserDataHook => {
     fetchUserData,
   };
 };
-
-
