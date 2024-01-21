@@ -10,7 +10,7 @@ import store from "./store"
 import axios from 'axios';
 import config from './components/pages/config/production';
 
-// axios.defaults.baseURL = config.API_ENDPOINT;
+axios.defaults.baseURL = config.API_ENDPOINT;
 
 
 export const App = () => (
