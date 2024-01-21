@@ -85,7 +85,6 @@ export const LoginPage: React.FC = () => {
       );
 console.log(response)
       const { token, userId, message, role } = response.data;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
        console.log(userId, token, role)
 
