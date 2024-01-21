@@ -29,7 +29,7 @@ export const useFetchUserData = (): FetchUserDataHook => {
       if (response.status === 200) {
         const userData = response.data;
         setUser(userData);
-        console.log('userData', userData);
+        console.log('ユーザー情報を取得しました:', userData);
       } else {
         console.error('サーバーレスポンスエラー:', response);
       }
