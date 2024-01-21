@@ -11,7 +11,7 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
-import config from '../config/production';
+import config from '../../../config/production';
 
 interface FormData {
   email: string;
@@ -34,29 +34,7 @@ export const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const toast = useToast();
-
-
-  useEffect(() => {
-    // CSRFトークンを取得
-    const fetchCsrfToken = async () => {
-      try {
-        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-          withCredentials: true,
-        });
-        const csrfToken = response.data.csrfToken;
-        setCsrfToken(csrfToken);
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-        console.log('CSRFトークンを取得しました', csrfToken);
-      } catch (error) {
-        console.error('CSRFトークンの取得に失敗しました', error);
-      }
-    };
-
-    fetchCsrfToken();
-  }, []);
-
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,24 +47,25 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // CSRFトークン取得 (Sanctumのログインエンドポイントにアクセスする前に必要)
       await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
-        headers: {
-          'X-CSRF-TOKEN': csrfToken,
-        },
       });
 
+      // ログインリクエスト
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
-        { withCredentials: true ,
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,}} // クッキーの自動送信を有効化
+        { withCredentials: true }
       );
-console.log(response)
+
       const { token, userId, message, role } = response.data;
 
-       console.log(userId, token, role)
+      // Cookieの設定
+      document.cookie = `token=${token}; path=/`;
+      document.cookie = `userId=${userId}; path=/`;
+
+      console.log(userId, token, role);
 
       toast({
         title: 'ログインしました',
@@ -101,7 +80,7 @@ console.log(response)
       } else {
         navigate('/all_my_dishes');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('ログインエラー:', error.response?.data);
 
       toast({
