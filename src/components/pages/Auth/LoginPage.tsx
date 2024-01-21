@@ -71,15 +71,21 @@ export const LoginPage: React.FC = () => {
     try {
       await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
       });
 
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
-        { withCredentials: true } // クッキーの自動送信を有効化
+        { withCredentials: true ,
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,}} // クッキーの自動送信を有効化
       );
 console.log(response)
       const { token, userId, message, role } = response.data;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
        console.log(userId, token, role)
 
