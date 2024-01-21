@@ -11,7 +11,7 @@ import {
   Flex,
   useToast,
 } from '@chakra-ui/react';
-import config from '../../../config/production';
+import config from '../config/production';
 
 interface FormData {
   email: string;
