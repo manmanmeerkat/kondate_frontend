@@ -47,7 +47,6 @@ export const UserRegister: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // CSRFトークンを取得
     const fetchCsrfToken = async () => {
       try {
         const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
