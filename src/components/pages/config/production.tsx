@@ -1,5 +1,5 @@
 const config = {
-  API_ENDPOINT: "https://kondate-zukan.com",
+  API_ENDPOINT: "https://api.kondate-zukan.com",
 };
 
 export default config;
