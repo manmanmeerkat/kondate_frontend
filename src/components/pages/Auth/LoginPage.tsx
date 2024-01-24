@@ -83,7 +83,7 @@ export const LoginPage: React.FC = () => {
           headers: {
             'X-CSRF-TOKEN': csrfToken,}} // クッキーの自動送信を有効化
       );
-console.log(response)
+
       const { token, userId, message, role } = response.data;
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
