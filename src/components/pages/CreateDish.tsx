@@ -173,7 +173,7 @@ console.log('userId', userId);
     setIsLoading(true);
 
     try {
-      await axios.get('/sanctum/csrf-cookie', { withCredentials: true });
+      await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
 
       let imagePath = formData.image_path;
