@@ -61,7 +61,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     if (id) {
       try {
         const response = await axios.get<{ ingredients: { id: number; name: string; quantity: string }[] }>(
-          '/api/dishes/${id}/ingredients'
+          `/api/dishes/${id}/ingredients`
         );
         setIngredients(response.data.ingredients);
         setLoading(false);
