@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
 import useUserId from '../../hooks/useUserId';
-import config from './config/production';
+
 
 interface FormData {
   name: string;
@@ -183,7 +183,7 @@ console.log('formData', formData);
         imageFormData.append('image_file', formData.image_file);
 
         const imageUploadResponse = await axios.post(
-          `${config.API_ENDPOINT}/api/upload-image`,
+          '/api/upload-image',
           imageFormData,
           {
             headers: {
@@ -214,7 +214,7 @@ console.log('formData', formData);
       formDataToSend.append('ingredients', ingredientsData);
 
       const response = await axios.post(
-        `${config.API_ENDPOINT}/api/create`,
+        '/api/create',
         formDataToSend,
         {
           headers: {
