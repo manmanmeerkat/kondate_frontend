@@ -28,7 +28,7 @@ const useDishIngredients = (dishId: number | null): UseDishIngredients => {
     if (dishId) {
       const fetchIngredients = async () => {
         try {
-          const response: AxiosResponse<DishIngredientsResponse> = await axios.get(`${config.API_ENDPOINT}/api/dishes/${dishId}/ingredients`);
+          const response: AxiosResponse<DishIngredientsResponse> = await axios.get('/api/dishes/${dishId}/ingredients');
           setIngredients(response.data.ingredients);
           setLoading(false);
         } catch (error) {
