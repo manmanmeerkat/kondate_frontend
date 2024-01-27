@@ -59,7 +59,7 @@ console.log('userId', userId);
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get('${config.API_ENDPOINT}/api/sanctum/csrf-cookie');
+        const csrfResponse = await axios.get('/sanctum/csrf-cookie');
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
       } catch (error) {
