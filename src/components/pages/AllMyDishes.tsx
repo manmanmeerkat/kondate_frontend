@@ -41,9 +41,10 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
   
   useEffect(() => {
-    console.log("dishData", dishData);
+   
     getDishes();
-    
+    getDish();
+     console.log("dishData", dishData);
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
