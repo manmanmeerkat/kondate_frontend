@@ -26,15 +26,11 @@ export const useDishData = () => {
   const userId = useUserId();
 
   const getDish = useCallback(() => {
-    const token = localStorage.getItem("token");
+    
 
 
-    if (token && userId) {
-      api.get<DishDataResponse>(`/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    if (userId) {
+      api.get<DishDataResponse>(`/user/${userId}`)
         .then((response: AxiosResponse<DishDataResponse>) => {
           console.log("response", response);
           const dishes: Dishes[] = response.data.dishes;
