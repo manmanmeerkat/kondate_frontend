@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import config from "../components/pages/config/production";
+import useUserId from "./useUserId";
 
 interface Dishes {
   id: number;
@@ -22,10 +23,11 @@ const api = axios.create({
 export const useDishData = () => {
   const [dishData, setDishData] = useState<DishDataResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const userId = useUserId();
 
   const getDish = useCallback(() => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+
 
     if (token && userId) {
       api.get<DishDataResponse>(`/user/${userId}`, {
