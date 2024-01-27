@@ -110,7 +110,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
                 ))
               ) : (
                 dishData && dishData.dishes && dishData.dishes.length > 0 ? (
-                  dishData.dishes.map((dish: any) => (
+                  dishes.map((dish: any) => (
                     <WrapItem key={dish.id} mx="auto">
                       <DishCard
                         id={dish.id}
