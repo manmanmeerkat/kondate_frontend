@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { useMessage } from "./useMessage"
 import config from "../components/pages/config/production"
@@ -8,12 +8,38 @@ export const useAllMyDishes = () => {
 
     const [loading, setLoading] = useState(false);
     const [dishes, setDishes] = useState([]);
+    const [csrfToken, setCsrfToken] = useState<string>('');
+
+
+    useEffect(() => {
+        // CSRFトークンを取得
+        const fetchCsrfToken = async () => {
+          try {
+            const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+              withCredentials: true,
+            });
+            const csrfToken = response.data.csrfToken;
+            setCsrfToken(csrfToken);
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+            console.log('CSRFトークンを取得しました', csrfToken);
+          } catch (error) {
+            console.error('CSRFトークンの取得に失敗しました', error);
+          }
+        };
+    
+        fetchCsrfToken();
+      }, []);
+
 
     //全てのメニューを取得
     const getDishes = useCallback(async () => {
         setLoading(true);
         try {
             const response = await axios.get('/api/all-my-dish', {
+                withCredentials: true ,
+                headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
             });
             setDishes(response.data.dishes);
             console.log("response",response);
