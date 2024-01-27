@@ -8,33 +8,16 @@ export const useAllMyDishes = () => {
 
     const [loading, setLoading] = useState(false);
     const [dishes, setDishes] = useState([]);
-    const [csrfToken, setCsrfToken] = useState<string>('');
 
 
-    useEffect(() => {
-        // CSRFトークンを取得
-        const fetchCsrfToken = async () => {
-          try {
-            const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-              withCredentials: true,
-            });
-            const csrfToken = response.data.csrfToken;
-            setCsrfToken(csrfToken);
-            axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-            console.log('CSRFトークンを取得しました', csrfToken);
-          } catch (error) {
-            console.error('CSRFトークンの取得に失敗しました', error);
-          }
-        };
-    
-        fetchCsrfToken();
-      }, []);
 
 
     //全てのメニューを取得
     const getDishes = useCallback(async () => {
         setLoading(true);
         try {
+            const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
+            const csrfToken = csrfResponse.data.csrfToken;
             const response = await axios.get('/api/all-my-dish', {
                 withCredentials: true ,
                 headers: {
