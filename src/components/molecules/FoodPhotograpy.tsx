@@ -13,7 +13,7 @@ export const FoodPhotography: React.FC<FoodPhotographyProps> = ({ imageFileName,
 
   useEffect(() => {
     if (imageFileName) {
-      const publicUrl = `${config.API_ENDPOINT}/storage/${imageFileName}`;
+      const publicUrl = `${imageFileName}`;
       setImageUrl(publicUrl);
       const imageSizeStyle: React.CSSProperties = {
         width: "160px",
