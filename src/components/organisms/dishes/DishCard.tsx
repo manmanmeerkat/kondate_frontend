@@ -29,7 +29,7 @@ export const DishCard = memo((props: DishCardProps) => {
       justifyContent="center"
     >
       <FoodPhotography  
-        imageFileName={imageUrl || "uploads/noimage.jpg"}
+        imageFileName={imageUrl || "https://kondate-zukan.s3.ap-northeast-1.amazonaws.com/no_image.jpg"}
         alt={dishName} // dishNameをaltとして渡す
       />
 
