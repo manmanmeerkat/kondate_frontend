@@ -177,7 +177,7 @@ console.log('userId', userId);
       const xsrfToken = getCookie('XSRF-TOKEN');
 
       let imagePath = formData.image_path;
-console.log('formData', formData);
+        console.log('formData', formData);
       if (formData.image_file) {
         const imageFormData = new FormData();
         imageFormData.append('image_file', formData.image_file);
