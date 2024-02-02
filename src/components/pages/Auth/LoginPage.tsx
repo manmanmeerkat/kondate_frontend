@@ -25,7 +25,6 @@ interface UserData {
   role: string;
 }
 
-
 export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -37,9 +36,7 @@ export const LoginPage: React.FC = () => {
   const [csrfToken, setCsrfToken] = useState<string>('');
   const toast = useToast();
 
-
   useEffect(() => {
-    // CSRFトークンを取得
     const fetchCsrfToken = async () => {
       try {
         const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
@@ -54,9 +51,8 @@ export const LoginPage: React.FC = () => {
       }
     };
 
-    fetchCsrfToken();
+    fetchCsrfToken(); // 非同期処理の完了を待つ
   }, []);
-
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,6 +65,7 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // CSRFトークンを再度取得
       await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
         withCredentials: true,
         headers: {
@@ -79,15 +76,18 @@ export const LoginPage: React.FC = () => {
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
-        { withCredentials: true ,
+        {
+          withCredentials: true,
           headers: {
-            'X-CSRF-TOKEN': csrfToken }} // クッキーの自動送信を有効化
+            'X-CSRF-TOKEN': csrfToken,
+          },
+        }
       );
 
       const { token, userId, message, role } = response.data;
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-       console.log(userId, token, role)
+      console.log(userId, token, role);
 
       toast({
         title: 'ログインしました',
@@ -102,7 +102,7 @@ export const LoginPage: React.FC = () => {
       } else {
         navigate('/all_my_dishes');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('ログインエラー:', error.response?.data);
 
       toast({
