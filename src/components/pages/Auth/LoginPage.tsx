@@ -65,14 +65,7 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // CSRFトークンを再度取得
-      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-        withCredentials: true,
-        headers: {
-          'X-CSRF-TOKEN': csrfToken,
-        },
-      });
-
+   
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
