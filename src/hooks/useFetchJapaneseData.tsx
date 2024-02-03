@@ -10,7 +10,7 @@ const useFetchJapaneseData = (endpoint: string) => {
     try {
       if (!userId) return;
 
-      const response = await axios.get(`http://localhost:8000/api/user/${userId}/${endpoint}`, {
+      const response = await axios.get(`/api/user/${userId}/${endpoint}`, {
         withCredentials: true,
       });
 
