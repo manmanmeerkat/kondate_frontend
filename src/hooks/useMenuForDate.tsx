@@ -14,6 +14,7 @@ export const useMenuForDate = () => {
     setLoading(true);
     try {
       const formattedDate = date?.toLocaleDateString('en-CA');
+      console.log('formattedDate:', formattedDate);
       const response = await axios.get<MenuItem[]>(`/api/recipes/${formattedDate}`, { withCredentials: true });
       setMenu(response.data);
       console.log('response.data:', response.data);
