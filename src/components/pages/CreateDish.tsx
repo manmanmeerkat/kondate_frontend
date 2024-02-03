@@ -56,19 +56,19 @@ export const CreateDish = () => {
   const [isLoading, setIsLoading] = useState(true); // 初期値を true に設定
   const userId = useUserId();
 console.log('userId', userId);
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const csrfResponse = await axios.get('/api/sanctum/csrf-cookie');
-        const csrfToken = csrfResponse.data.csrfToken;
-        setCsrfToken(csrfToken);
-      } catch (error) {
-        console.error('CSRFトークンの取得エラー:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCsrfToken = async () => {
+  //     try {
+  //       const csrfResponse = await axios.get('/api/sanctum/csrf-cookie');
+  //       const csrfToken = csrfResponse.data.csrfToken;
+  //       setCsrfToken(csrfToken);
+  //     } catch (error) {
+  //       console.error('CSRFトークンの取得エラー:', error);
+  //     }
+  //   };
 
-    fetchCsrfToken();
-  }, []);
+  //   fetchCsrfToken();
+  // }, []);
 
   
   useEffect(() => {
@@ -173,8 +173,8 @@ console.log('userId', userId);
     setIsLoading(true);
 
     try {
-      await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
-      const xsrfToken = getCookie('XSRF-TOKEN');
+      // await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
+      // const xsrfToken = getCookie('XSRF-TOKEN');
 
       let imagePath = formData.image_path;
         console.log('formData', formData);
@@ -187,7 +187,7 @@ console.log('userId', userId);
           imageFormData,
           {
             headers: {
-              'X-XSRF-TOKEN': xsrfToken,
+              // 'X-XSRF-TOKEN': xsrfToken,
               'Content-Type': 'multipart/form-data',
             },
             withCredentials: true,
@@ -218,7 +218,7 @@ console.log('userId', userId);
         formDataToSend,
         {
           headers: {
-            'X-XSRF-TOKEN': xsrfToken,
+            // 'X-XSRF-TOKEN': xsrfToken,
             'Content-Type': 'application/json',
           },
           withCredentials: true,
