@@ -1,29 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useFetchUserData } from './useFetchUserData';
-import config from '../components/pages/config/production';
+import useUserId from './useUserId';
 
 const useFetchOthersData = (endpoint: string) => {
-  const { user } = useFetchUserData();
+  const userId = useUserId();
   const [data, setData] = useState([]);
 
   const fetchData = useCallback(async () => {
     try {
-      const userId = user?.id;
       if (!userId) return;
 
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      const response = await axios.get(`${config.API_ENDPOINT}/api/user/${userId}/${endpoint}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get(`/api/user/${userId}/${endpoint}`, {
+        withCredentials: true,
       });
 
       setData(response.data);
     } catch (error) {
       console.error('データの取得エラー:', error);
     }
-  }, [user, endpoint]);
+  }, [userId, endpoint]);
 
   useEffect(() => {
     fetchData();

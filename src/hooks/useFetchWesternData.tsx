@@ -1,28 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useFetchUserData } from './useFetchUserData';
-import config from '../components/pages/config/production';
+import useUserId from './useUserId';
 
 const useFetchWesternData = (endpoint: string) => {
-  const { user } = useFetchUserData();
+  const userId = useUserId();
   const [data, setData] = useState([]);
 
   const fetchData = useCallback(async () => {
     try {
-      if (!user?.id) return;
+      if (!userId) return;
 
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      const response = await axios.get(`${config.API_ENDPOINT}/api/user/${user.id}/${endpoint}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get(`/api/user/${userId}/${endpoint}`, {
+        withCredentials: true,
       });
 
       setData(response.data);
     } catch (error) {
       console.error('データの取得エラー:', error);
     }
-  }, [user, endpoint]);
+  }, [userId, endpoint]);
 
   useEffect(() => {
     fetchData();
@@ -38,4 +34,3 @@ export const useWesternShirumono = createFetchHook('all-my-western-shirumono');
 export const useWesternFukusai = createFetchHook('all-my-western-fukusai');
 export const useWesternDishes = createFetchHook('all-my-western-foods');
 export const useWesternOthers = createFetchHook('all-my-western-others');
-
