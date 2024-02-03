@@ -16,13 +16,10 @@ export const useAllMyDishes = () => {
     const getDishes = useCallback(async () => {
         setLoading(true);
         try {
-            const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
-            const csrfToken = csrfResponse.data.csrfToken;
+       
             const response = await axios.get('/api/all-my-dish', {
                 withCredentials: true ,
-                headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
+          
             });
             setDishes(response.data.dishes);
             console.log("response",response);
