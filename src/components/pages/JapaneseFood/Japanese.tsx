@@ -41,6 +41,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
 
+  console.log("data", data);
   const { handleIngredientSearch } = useIngredientSearch("japanese-food", user?.id);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 1ページあたりの項目数
