@@ -28,7 +28,7 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
   const menu = useSelector(selectMenu);
   const [deletingItemId, setDeletingItemId] = useState<number | null>(null);
 console.log('selectMenu:', selectMenu);
-console.log('menu:', menu);
+
 console.log('selectedDateRedux:', selectedDateRedux);
   const handleDateChange = async (date: Date | null) => {
     onDateChange(date);
@@ -36,6 +36,7 @@ console.log('selectedDateRedux:', selectedDateRedux);
       dispatch(setSelectedDate(date?.toLocaleDateString()));
       const menuForDate = await getMenuForDate(date);
       dispatch(setMenu(menuForDate));
+      console.log('menu:', menu);
     }
   };
 
