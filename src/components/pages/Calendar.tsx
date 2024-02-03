@@ -50,14 +50,7 @@ console.log('selectedDateRedux:', selectedDateRedux);
     try {
       setDeletingItemId(dishId); // 削除中のアイテムのIDをセット
 
-      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
-      const xsrfToken = getCookie('XSRF-TOKEN');
-      console.log('XSRF Token:', xsrfToken);
-
-      await axios.delete(`${config.API_ENDPOINT}/api/delete/menus/${dishId}`, {
-        headers: {
-          'X-XSRF-TOKEN': xsrfToken,
-        },
+      await axios.delete(`/api/delete/menus/${dishId}`, {
         withCredentials: true,
       });
 
