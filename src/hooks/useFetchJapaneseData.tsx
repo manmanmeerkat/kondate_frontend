@@ -16,10 +16,8 @@ const useFetchJapaneseData = (endpoint: string) => {
       if (!token) return;
 
       const response = await axios.get(`${config.API_ENDPOINT}/api/user/${userId}/${endpoint}`, {
-        withCredentials: true,
-      }
-      );
-      
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
       setData(response.data);
     } catch (error) {
