@@ -38,7 +38,10 @@ export const useAllMyDishes = () => {
     //ジャンルが"和食"のデータを全て取得
     const getJapanese = useCallback(() => {
         setLoading(true)
-        axios.get(`${config.API_ENDPOINT}/api/japanese/`)
+        axios.get(`${config.API_ENDPOINT}/api/japanese/`, {
+            withCredentials: true ,
+     
+        })
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
