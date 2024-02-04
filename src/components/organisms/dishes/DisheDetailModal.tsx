@@ -139,11 +139,12 @@ const getCookie = (name:string) => {
 };
 
 const getCSRFToken = async () => {
-  await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
+  await axios.get(`/api/sanctum/csrf-cookie`);
 };
 
 const handleMenuRegistration = async () => {
   try {
+    setLoading(true); // ローディングを開始
     // CSRF トークンの取得
     await getCSRFToken();
 
@@ -211,6 +212,8 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
   } catch (error) {
     console.error('メニューの登録に失敗しました。', error);
     showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+  } finally {
+    setLoading(false); // ローディングを終了
   }
 };
 
@@ -273,7 +276,7 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
               <Button leftIcon={<EditIcon />} colorScheme="teal" variant="outline" onClick={handleEdit}>
                 編集
               </Button>
-              <Button rightIcon={<EditIcon />} colorScheme="teal" onClick={handleMenuRegistration}>
+              <Button rightIcon={<EditIcon />} colorScheme="teal" onClick={handleMenuRegistration} isDisabled={loading}>
                 こんだてに登録
               </Button>
             </Stack>
