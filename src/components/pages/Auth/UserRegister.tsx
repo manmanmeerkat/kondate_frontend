@@ -31,6 +31,7 @@ export const UserRegister: React.FC = () => {
 
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false); // 初期値をfalseに設定
   const [emailExistsError, setEmailExistsError] = useState<string | null>(null);
 
   const navigate = useNavigate();
@@ -123,8 +124,9 @@ export const UserRegister: React.FC = () => {
     e.preventDefault();
   
     try {
+      setLoading(true); // ローディングを開始
       const response = await axios.post<{ token: string; userId: string }>(
-        `${config.API_ENDPOINT}/api/register`,
+        `/api/register`,
         formData,
         {
           withCredentials: true,
@@ -138,6 +140,7 @@ export const UserRegister: React.FC = () => {
       const userId = response.data.userId;
       // ローカルストレージの代わりにトークンを保存する処理を呼び出す
       await handleRegistrationSuccess(token);
+      setLoading(false); // ローディングを終了
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
         // バリデーションエラーがある場合
@@ -147,14 +150,11 @@ export const UserRegister: React.FC = () => {
         if (validationErrors && validationErrors.email) {
           // すでに登録されているメールアドレスのエラーがある場合の処理
           setEmailError('このメールアドレスは既に登録されています');
-        } else {
-          // 他のバリデーションエラーがある場合の処理
-          // 例えば、他のフィールドのエラーに対する処理を追加することができます
-          // 例: setNameError('名前が無効です');
         }
       } else {
         console.error('ユーザー登録エラー:', error.response?.data);
       }
+      setLoading(false); // ローディングを終了
     }
   };
   
@@ -227,6 +227,7 @@ export const UserRegister: React.FC = () => {
             fontSize="18px"
             letterSpacing="1px"
             borderRadius="base"
+            isLoading={loading} // ローディング中はボタンを無効にする
           >
             ユーザー登録
           </Button>
