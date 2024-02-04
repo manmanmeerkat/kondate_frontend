@@ -105,7 +105,8 @@ export const IngredientsList: React.FC = () => {
       }
   
      // バックエンドに日付範囲を送信し、結果を取得
-     const response = await axios.get<ResponseData>(`${config.API_ENDPOINT}/api/get-ingredients-list`, {
+     const response = await axios.get<ResponseData>(`/api/get-ingredients-list`, {
+      withCredentials: true,
       params: {
         start_date: startDate,
         end_date: endDate,
