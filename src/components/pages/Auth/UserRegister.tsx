@@ -73,13 +73,13 @@ export const UserRegister: React.FC = () => {
       const isValidEmail = validateEmail(value);
       setEmailError(isValidEmail ? null : '正しいEメールアドレスの形式ではありません');
 
-      // メールアドレスの重複チェック
-      try {
-        const response = await axios.post(`${config.API_ENDPOINT}/api/check-email`, { email: value });
-        setEmailExistsError(response.data.exists ? 'すでに登録されているメールアドレスです' : null);
-      } catch (error) {
-        console.error('メールアドレスの重複チェックエラー:', error);
-      }
+      // // メールアドレスの重複チェック
+      // try {
+      //   const response = await axios.post(`${config.API_ENDPOINT}/api/check-email`, { email: value });
+      //   setEmailExistsError(response.data.exists ? 'すでに登録されているメールアドレスです' : null);
+      // } catch (error) {
+      //   console.error('メールアドレスの重複チェックエラー:', error);
+      // }
     }
 
     if (name === 'password') {
