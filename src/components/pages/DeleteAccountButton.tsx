@@ -43,9 +43,9 @@ export const DeleteAccountButton = () => {
   
       // バックエンドに削除リクエストとパスワードを送信
       await axios.delete(`${config.API_ENDPOINT}/api/users/self`, {
-        // headers: {
-        //   'X-XSRF-TOKEN': csrfToken,
-        // },
+        headers: {
+          'X-XSRF-TOKEN': csrfToken,
+        },
         withCredentials: true,
         data: { password }, // パスワードをリクエストのデータとして送信
       });
