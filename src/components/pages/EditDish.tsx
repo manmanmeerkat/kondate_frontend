@@ -160,7 +160,7 @@ export const EditDish: React.FC = () => {
       setIsSubmitting(true);
   
       // CSRF Cookieを同期的に取得
-      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
+      await axios.get(`/api/sanctum/csrf-cookie`, { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
   
       let imagePath = formData.image_path;
@@ -170,7 +170,7 @@ export const EditDish: React.FC = () => {
         imageFormData.append('image_file', formData.image_file);
   
         const imageUploadResponse = await axios.post(
-          `${config.API_ENDPOINT}/api/upload-image`,
+          `/api/upload-image`,
           imageFormData,
           {
             headers: {
