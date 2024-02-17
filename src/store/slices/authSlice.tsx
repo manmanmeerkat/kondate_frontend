@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
 import { RootState } from "..";
+import { useEffect, useState } from "react";
 import config from "../../components/pages/config/production";
 
 // stateの初期値
@@ -11,7 +12,6 @@ const initialState: AuthUserType = {
     error: undefined,
 };
 
-// Redux ToolkitのSliceを作成
 export const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -34,24 +34,39 @@ export const authSlice = createSlice({
     },
 });
 
-// Selectorを定義
 export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;
 
-// ログイン中のユーザー情報を取得するAPIを叩くThunk
+// ログイン中のユーザー情報を取得するAPIを叩く関数
 export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
-        try {
-            // ユーザー情報を取得
-            const response = await axios.get("/api/user", {
-                withCredentials: true, // クッキーを使用するための設定
-            });
+        const [csrfToken, setCsrfToken] = useState<string>('');
 
-            return response.data;
-        } catch (error) {
-            // エラーハンドリング
-            throw error;
-        }
+        useEffect(() => {
+            const fetchCsrfToken = async () => {
+                try {
+                    const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+                        withCredentials: true,
+                    });
+                    const csrfToken = response.data.csrfToken;
+                    setCsrfToken(csrfToken);
+                    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+                    console.log('CSRFトークンを取得しました', csrfToken);
+                } catch (error) {
+                    console.error('CSRFトークンの取得に失敗しました', error);
+                }
+            };
+
+            fetchCsrfToken(); // 非同期処理の完了を待つ
+        }, []);
+
+        const response = await axios.get("/api/user", {
+            withCredentials: true, // クッキーを使うための設定
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        });
+        return response.data;
     }
 );
