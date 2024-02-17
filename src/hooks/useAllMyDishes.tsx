@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { useMessage } from "./useMessage"
 import config from "../components/pages/config/production"
-import { fetchAuthUser, loadAuthUser } from "../store/slices/authSlice"
+import { fetchAuthUser } from "../store/slices/authSlice"
 import store from "../store"
 export const useAllMyDishes = () => {
     const { showMessage } = useMessage()
@@ -12,7 +12,7 @@ export const useAllMyDishes = () => {
     const [dishes, setDishes] = useState([]);
 
     useEffect(() => {
-        store.dispatch(loadAuthUser());
+        store.dispatch(fetchAuthUser());
       }, []);
 
 
