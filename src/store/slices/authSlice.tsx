@@ -53,9 +53,6 @@ export const fetchAuthUser = createAsyncThunk(
             // ユーザー情報を取得
             const response = await axios.get("/api/user", {
                 withCredentials: true, // クッキーを使うための設定
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                },
             });
             
             return response.data;
