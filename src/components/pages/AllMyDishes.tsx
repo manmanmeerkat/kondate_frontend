@@ -22,8 +22,6 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { Header } from "../organisms/layout/Header";
 import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 import { useFetchUserData } from "../../hooks/useFetchUserData";
-import store from "../../store";
-import { fetchAuthUser } from "../../store/slices/authSlice";
 
 interface AllMyDishesProps {
   id?: number;
@@ -43,7 +41,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
   
   useEffect(() => {
-    store.dispatch(fetchAuthUser());
+   
     getDishes();
     getDish();
      console.log("dishData", dishData);
