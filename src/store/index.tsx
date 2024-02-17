@@ -4,9 +4,12 @@ import dateReducer from './slices/dateSlice';
 import menuReducer from './slices/menuSlice';
 import upDateReducer from './slices/upDateMenuSlice';
 import dishReducer from './slices/dishSlice';
+import authReducer from './slices/authSlice';
+
 
 const store = configureStore({
   reducer: {
+    auth: authReducer,
     selectedDate: dateReducer,
     date: dateReducer,
     menu: menuReducer,
