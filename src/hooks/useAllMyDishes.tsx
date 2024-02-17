@@ -3,13 +3,17 @@ import { useCallback, useEffect, useState } from "react"
 
 import { useMessage } from "./useMessage"
 import config from "../components/pages/config/production"
+import { fetchAuthUser } from "../store/slices/authSlice"
+import store from "../store"
 export const useAllMyDishes = () => {
     const { showMessage } = useMessage()
 
     const [loading, setLoading] = useState(false);
     const [dishes, setDishes] = useState([]);
 
-
+    useEffect(() => {
+        store.dispatch(fetchAuthUser());
+      }, []);
 
 
     //全てのメニューを取得
