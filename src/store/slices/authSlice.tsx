@@ -12,39 +12,6 @@ const initialState: AuthUserType = {
     error: undefined,
 };
 
-const [csrfToken, setCsrfToken] = useState<string>('');
-
-useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-          withCredentials: true,
-        });
-        const csrfToken = response.data.csrfToken;
-        setCsrfToken(csrfToken);
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-        console.log('CSRFトークンを取得しました', csrfToken);
-      } catch (error) {
-        console.error('CSRFトークンの取得に失敗しました', error);
-      }
-    };
-
-    fetchCsrfToken(); // 非同期処理の完了を待つ
-  }, []);
-
-// ログイン中のユーザー情報を取得するAPIを叩く関数
-export const fetchAuthUser = createAsyncThunk(
-    "auth/fetchAuthUser",
-    async () => {
-        const response = await axios.get("/api/user", {
-            withCredentials: true, // クッキーを使うための設定
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-              },
-            });
-        return response.data;
-    }
-);
 export const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -69,3 +36,37 @@ export const authSlice = createSlice({
 
 export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;
+
+// ログイン中のユーザー情報を取得するAPIを叩く関数
+export const fetchAuthUser = createAsyncThunk(
+    "auth/fetchAuthUser",
+    async () => {
+        const [csrfToken, setCsrfToken] = useState<string>('');
+
+        useEffect(() => {
+            const fetchCsrfToken = async () => {
+                try {
+                    const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+                        withCredentials: true,
+                    });
+                    const csrfToken = response.data.csrfToken;
+                    setCsrfToken(csrfToken);
+                    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+                    console.log('CSRFトークンを取得しました', csrfToken);
+                } catch (error) {
+                    console.error('CSRFトークンの取得に失敗しました', error);
+                }
+            };
+
+            fetchCsrfToken(); // 非同期処理の完了を待つ
+        }, []);
+
+        const response = await axios.get("/api/user", {
+            withCredentials: true, // クッキーを使うための設定
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        });
+        return response.data;
+    }
+);
