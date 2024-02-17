@@ -6,13 +6,13 @@ import { Provider } from "react-redux"
 import store from "./store"
 import axios from 'axios';
 import config from './components/pages/config/production';
-import { fetchAuthUser, loadAuthUser } from "./store/slices/authSlice"
+import { fetchAuthUser } from "./store/slices/authSlice"
 
 axios.defaults.baseURL = config.API_ENDPOINT;
 
 export const App = () => {
   React.useEffect(() => {
-    store.dispatch(loadAuthUser());
+    store.dispatch(fetchAuthUser());
   }, []);
 
   return (

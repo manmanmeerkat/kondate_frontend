@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice, Dispatch } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
 import { RootState } from "..";
-import { useEffect, useState } from "react";
 import config from "../../components/pages/config/production";
 
 // stateの初期値
@@ -12,48 +11,11 @@ const initialState: AuthUserType = {
     error: undefined,
 };
 
-// 認証情報を取得する非同期Thunkアクション
-export const fetchAuthUser = createAsyncThunk(
-    "auth/fetchAuthUser",
-    async () => {
-        const [csrfToken, setCsrfToken] = useState<string>('');
-
-        useEffect(() => {
-            const fetchCsrfToken = async () => {
-                try {
-                    const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-                        withCredentials: true,
-                    });
-                    const csrfToken = response.data.csrfToken;
-                    setCsrfToken(csrfToken);
-                    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-                    console.log('CSRFトークンを取得しました', csrfToken);
-                } catch (error) {
-                    console.error('CSRFトークンの取得に失敗しました', error);
-                }
-            };
-
-            fetchCsrfToken(); // 非同期処理の完了を待つ
-        }, []);
-
-        const response = await axios.get("/api/user", {
-            withCredentials: true, // クッキーを使うための設定
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-            },
-        });
-        return response.data;
-    }
-);
-
+// Redux ToolkitのSliceを作成
 export const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {
-        setAuthUser: (state, action) => {
-            state.user = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuthUser.pending, (state) => {
@@ -70,30 +32,48 @@ export const authSlice = createSlice({
                 state.error = action.error.message;
             });
     },
-    
 });
 
+// Selectorを定義
 export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;
 
-// ページのロード時に認証情報を読み込む
-export const loadAuthUser = () => async (dispatch: Dispatch<any>) => {
-    try {
-        // ロード中のUIを表示するためにローディング状態を設定
-        dispatch(fetchAuthUser.pending);
+// ログイン中のユーザー情報を取得するAPIを叩くThunk
+export const fetchAuthUser = createAsyncThunk(
+    "auth/fetchAuthUser",
+    async () => {
+        try {
+            // CSRFトークンを取得
+            await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+                withCredentials: true,
+            });
 
-        // 認証情報を取得する非同期アクションを実行
-        const resultAction = await dispatch(fetchAuthUser());
+            // ユーザー情報を取得
+            const response = await axios.get("/api/user", {
+                withCredentials: true,
+            });
 
-        // 非同期アクションが成功した場合、認証情報をReduxストアに保存
-        if (fetchAuthUser.fulfilled.match(resultAction)) {
-            const authUser = resultAction.payload;
-            dispatch(authSlice.actions.setAuthUser(authUser));
+            return response.data;
+        } catch (error) {
+            // エラーハンドリング
+            throw error;
         }
+    }
+);
+
+// CSRFトークンを取得する関数
+const fetchCsrfToken = async () => {
+    try {
+        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+            withCredentials: true,
+        });
+        const csrfToken = response.data.csrfToken;
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        console.log('CSRFトークンを取得しました', csrfToken);
     } catch (error) {
-        // エラーが発生した場合、エラーメッセージをログに記録
-        console.error('認証情報の読み込みに失敗しました', error);
+        console.error('CSRFトークンの取得に失敗しました', error);
     }
 };
 
-
+// CSRFトークンを取得
+fetchCsrfToken();
