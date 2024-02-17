@@ -43,14 +43,9 @@ export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
         try {
-            // CSRFトークンを取得
-            await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-                withCredentials: true,
-            });
-
             // ユーザー情報を取得
             const response = await axios.get("/api/user", {
-                withCredentials: true,
+                withCredentials: true, // クッキーを使用するための設定
             });
 
             return response.data;
@@ -60,20 +55,3 @@ export const fetchAuthUser = createAsyncThunk(
         }
     }
 );
-
-// CSRFトークンを取得する関数
-const fetchCsrfToken = async () => {
-    try {
-        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-            withCredentials: true,
-        });
-        const csrfToken = response.data.csrfToken;
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-        console.log('CSRFトークンを取得しました', csrfToken);
-    } catch (error) {
-        console.error('CSRFトークンの取得に失敗しました', error);
-    }
-};
-
-// CSRFトークンを取得
-fetchCsrfToken();
