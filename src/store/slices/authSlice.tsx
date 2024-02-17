@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
 import { RootState } from "..";
+import { useEffect, useState } from "react";
+import config from "../../components/pages/config/production";
 
 // stateの初期値
 const initialState: AuthUserType = {
@@ -14,14 +16,33 @@ const initialState: AuthUserType = {
 export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
-        try {
-            const response = await axios.get("/api/user", {
-                withCredentials: true, // クッキーを使うための設定
-            });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        const [csrfToken, setCsrfToken] = useState<string>('');
+
+        useEffect(() => {
+            const fetchCsrfToken = async () => {
+                try {
+                    const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+                        withCredentials: true,
+                    });
+                    const csrfToken = response.data.csrfToken;
+                    setCsrfToken(csrfToken);
+                    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+                    console.log('CSRFトークンを取得しました', csrfToken);
+                } catch (error) {
+                    console.error('CSRFトークンの取得に失敗しました', error);
+                }
+            };
+
+            fetchCsrfToken(); // 非同期処理の完了を待つ
+        }, []);
+
+        const response = await axios.get("/api/user", {
+            withCredentials: true, // クッキーを使うための設定
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        });
+        return response.data;
     }
 );
 
