@@ -17,11 +17,6 @@ axios.defaults.baseURL = config.API_ENDPOINT;
 
 export const App = () => {
 
- {
-        React.useEffect(() => {
-            store.dispatch(fetchAuthUser());
-        }, []);
-    }   
   return (
     <Provider store={store}>
       <ChakraProvider theme={theme}>
