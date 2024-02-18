@@ -10,17 +10,13 @@ import store, { AppDispatch } from "./store"
 import axios from 'axios';
 import config from './components/pages/config/production';
 import { AsyncThunkAction } from "@reduxjs/toolkit"
-import { fetchAuthUser } from "./store/slices/authSlice"
 
 
 axios.defaults.baseURL = config.API_ENDPOINT;
 
 export const App = () => {
 
-  const dispatch = useDispatch<AppDispatch>();
-React.useEffect(() => {
-    dispatch(fetchAuthUser());
-}, []);
+  
   return (
     <Provider store={store}>
       <ChakraProvider theme={theme}>
