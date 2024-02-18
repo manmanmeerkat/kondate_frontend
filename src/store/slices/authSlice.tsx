@@ -1,31 +1,45 @@
-// reducers/authSlice.ts
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { AuthUserType } from "../../types/AuthUserType";
+import { RootState } from "..";
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface AuthState {
-  isAuthenticated: boolean;
-  token: string | null;
-}
-
-const initialState: AuthState = {
-  isAuthenticated: false,
-  token: null,
+// stateの初期値
+const initialState: AuthUserType = {
+    user: undefined,
+    isLoading: false,
+    error: undefined,
+    token: "",
 };
 
-const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    loginSuccess(state, action: PayloadAction<string>) {
-      state.isAuthenticated = true;
-      state.token = action.payload;
-    },
-    logoutSuccess(state) {
-      state.isAuthenticated = false;
-      state.token = null;
+// ログイン中のユーザー情報を取得するAPIを叩く関数
+export const fetchAuthUser = createAsyncThunk(
+    "auth/fetchAuthUser",
+    async () => {
+        const response = await axios.get(`/api/user`);
+        return response.data;
     }
-  }
+);
+export const authSlice = createSlice({
+    name: "auth",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchAuthUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(fetchAuthUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = action.payload; // fetchAuthUserが実行され、返り値がstateに入る
+                state.error = undefined;
+            })
+            .addCase(fetchAuthUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
+            });
+    },
 });
 
-export const { loginSuccess, logoutSuccess } = authSlice.actions;
+export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;
