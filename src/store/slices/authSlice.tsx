@@ -42,12 +42,12 @@ export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
         try {
-            // CSRFトークンを取得
-            const csrfTokenResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-                withCredentials: true,
-            });
-            const csrfToken = csrfTokenResponse.data.csrfToken;
+            // クッキーからトークンを取得
+            const csrfToken = document.cookie.split('; ')
+                .find(row => row.startsWith('laravel_session='))
+                .split('=')[1];
             console.log(csrfToken);
+            
             // ユーザー情報を取得
             const response = await axios.get(`${config.API_ENDPOINT}/api/user`, {
                 withCredentials: true, // クッキーを使うための設定
