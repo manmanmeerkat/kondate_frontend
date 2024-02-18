@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Heading, FormControl, FormLabel, Input, Button, Flex, useToast } from '@chakra-ui/react';
 import config from '../config/production';
 
-const LoginPage: React.FC = () => {
+export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -96,5 +96,3 @@ function getCookie(name: string) {
   }
   return "";
 }
-
-export default LoginPage;
