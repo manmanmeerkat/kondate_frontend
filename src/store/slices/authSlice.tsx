@@ -19,7 +19,6 @@ export const fetchAuthUser = createAsyncThunk(
     async () => {
 
         try {
-
             const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`,
             {
                 withCredentials: true,
