@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
 import { RootState } from "..";
-import { tr } from "date-fns/locale";
+import { useEffect, useState } from "react";
 import config from "../../components/pages/config/production";
 
 // stateの初期値
@@ -13,34 +13,6 @@ const initialState: AuthUserType = {
     token: "",
 };
 
-// ログイン中のユーザー情報を取得するAPIを叩く関数
-export const fetchAuthUser = createAsyncThunk(
-    "auth/fetchAuthUser",
-    async () => {
-
-        try {
-            const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`,
-            {
-                withCredentials: true,
-                }
-                );
-            const csrfToken = csrfResponse.data.csrfToken;
-            console.log(csrfToken);
-
-            const response = await axios.get(`${config.API_ENDPOINT}/api/user`,{
-                withCredentials: true,
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-            }); console.log(response.data);
-            return response.data;
-           
-        } catch (error) {
-            console.error("ユーザー情報の取得エラー:", error);
-            throw error;
-        }
-    }
-);
 export const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -66,3 +38,30 @@ export const authSlice = createSlice({
 
 export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;
+
+// ログイン中のユーザー情報を取得するAPIを叩く関数
+export const fetchAuthUser = createAsyncThunk(
+    "auth/fetchAuthUser",
+    async () => {
+        try {
+            // CSRFトークンを取得
+            const csrfTokenResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
+                withCredentials: true,
+            });
+            const csrfToken = csrfTokenResponse.data.csrfToken;
+            console.log(csrfToken);
+            // ユーザー情報を取得
+            const response = await axios.get(`${config.API_ENDPOINT}/api/user`, {
+                withCredentials: true, // クッキーを使うための設定
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            });
+            
+            return response.data;
+        } catch (error) {
+            // エラーハンドリング
+            throw error;
+        }
+    }
+);
