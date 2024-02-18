@@ -5,30 +5,28 @@ import { useMessage } from "./useMessage"
 import config from "../components/pages/config/production"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../store"
+import { fetchAuthUser } from "../store/slices/authSlice"
 export const useAllMyDishes = () => {
     const { showMessage } = useMessage()
 
     const [loading, setLoading] = useState(false);
     const [dishes, setDishes] = useState([]);
- 
+    const dispatch:AppDispatch = useDispatch();
+ {
+        useEffect(() => {
+            dispatch(fetchAuthUser());
+        }, []);
+    }   
+
 
 
     //全てのメニューを取得
     const getDishes = useCallback(async () => {
         setLoading(true);
         try {
-              // CSRFトークンを取得
-              const csrfTokenResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-                withCredentials: true,
-            });
-            const csrfToken = csrfTokenResponse.data.csrfToken;
-            console.log(csrfToken);
        
             const response = await axios.get('/api/all-my-dish', {
                 withCredentials: true ,
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                },
           
             });
             setDishes(response.data.dishes);
