@@ -20,7 +20,11 @@ export const fetchAuthUser = createAsyncThunk(
 
         try {
 
-            const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
+            const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`,
+            {
+                withCredentials: true,
+                }
+                );
             const csrfToken = csrfResponse.data.csrfToken;
             console.log(csrfToken);
 
@@ -29,18 +33,13 @@ export const fetchAuthUser = createAsyncThunk(
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
                 },
-            });
+            }); console.log(response.data);
             return response.data;
+           
         } catch (error) {
             console.error("ユーザー情報の取得エラー:", error);
             throw error;
         }
-
-        const response = await axios.get(`/api/user`,{
-            withCredentials: true,
-        });
-        return response.data;
-        console.log(response.data);
     }
 );
 export const authSlice = createSlice({
