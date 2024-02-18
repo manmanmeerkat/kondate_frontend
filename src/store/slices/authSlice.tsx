@@ -15,7 +15,10 @@ const initialState: AuthUserType = {
 export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
-        const response = await axios.get(`/api/user`);
+        
+        const response = await axios.get(`/api/user`,{
+            withCredentials: true,
+        });
         return response.data;
     }
 );
