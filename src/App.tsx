@@ -16,11 +16,18 @@ import { fetchAuthUser } from "./store/slices/authSlice"
 axios.defaults.baseURL = config.API_ENDPOINT;
 
 export const App = () => {
-  {
-         React.useEffect(() => {
-             store.dispatch(fetchAuthUser());
-         }, []);
-     }   
+  React.useEffect(() => {
+    const relogin = async () => {
+      try {
+        const response = await axios.post('/api/relogin');
+        console.log('再ログインが成功しました。', response.data);
+      } catch (error) {
+        console.error('再ログインに失敗しました。', error);
+        // ログインページにリダイレクトなどの処理を行う
+      }
+    };
+    relogin();
+  }, []);
  
   return (
     <Provider store={store}>
