@@ -1,121 +1,55 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Heading,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Flex,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Heading, FormControl, FormLabel, Input, Button, Flex, useToast } from '@chakra-ui/react';
 import config from '../config/production';
 
-interface FormData {
-  email: string;
-  password: string;
-}
-
-interface UserData {
-  userId: string;
-  token: string;
-  message: string;
-  role: string;
-}
-
-export const LoginPage: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
-  });
-
+const LoginPage: React.FC = () => {
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const toast = useToast();
 
   useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        const response = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, {
-          withCredentials: true,
-        });
-        const csrfToken = response.data.csrfToken;
-        setCsrfToken(csrfToken);
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
-        console.log('CSRFトークンを取得しました', csrfToken);
-      } catch (error) {
-        console.error('CSRFトークンの取得に失敗しました', error);
-      }
-    };
+    const token = getCookie('token');
+    if (token) {
+      // ログイン状態の復元などの処理を行う
+      navigate('/dashboard');
+    }
+  }, []); // 初回のみ実行するため空の依存配列を指定
 
-    fetchCsrfToken(); // 非同期処理の完了を待つ
-  }, []);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     try {
-   
-      const response = await axios.post<UserData>(
-        `${config.API_ENDPOINT}/api/login`,
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-          },
-        }
-      );
+      const response = await axios.post(`${config.API_ENDPOINT}/api/login`, formData);
+      const { token } = response.data;
 
-      const { token, userId, message, role } = response.data;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      console.log(userId, token, role);
-
-      toast({
-        title: 'ログインしました',
-        description: message,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-
-      if (role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/all_my_dishes');
-      }
-    } catch (error: any) {
-      console.error('ログインエラー:', error.response?.data);
-
+      // ログイン成功時の処理
+      setCookie('token', token, 7); // 7日間有効なクッキーを設定
+      setIsLoading(false);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('ログインエラー:', error);
+      setIsLoading(false);
       toast({
         title: 'ログインエラー',
-        description: error.response?.data?.message || 'ログインに失敗しました。',
+        description: 'ログインに失敗しました。',
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const handleGoToHome = () => {
-    navigate('/');
-  };
-
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center" flexDirection="column">
+    <Flex height="100vh" alignItems="center" justifyContent="center">
       <Box p="4" borderWidth="1px" borderRadius="lg" boxShadow="lg" background="white" width="400px">
         <Heading size="lg" textAlign="center" mb="4">
           ログイン
@@ -127,40 +61,40 @@ export const LoginPage: React.FC = () => {
           </FormControl>
           <FormControl mt="4">
             <FormLabel>パスワード</FormLabel>
-            <Input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <Input type="password" name="password" value={formData.password} onChange={handleChange} required />
           </FormControl>
-          <Button
-            mt="6"
-            colorScheme="teal"
-            type="submit"
-            width="100%"
-            fontSize="18px"
-            letterSpacing="1px"
-            borderRadius="base"
-            isLoading={isLoading}
-          >
+          <Button mt="6" colorScheme="teal" type="submit" width="100%" fontSize="18px" letterSpacing="1px" borderRadius="base" isLoading={isLoading}>
             ログイン
-          </Button>
-          <Button
-            mt="4"
-            variant="outline"
-            colorScheme="teal"
-            width="100%"
-            fontSize="18px"
-            letterSpacing="1px"
-            borderRadius="base"
-            onClick={handleGoToHome}
-          >
-            トップページに戻る
           </Button>
         </form>
       </Box>
     </Flex>
   );
 };
+
+// クッキーを設定する関数
+function setCookie(name: string, value: string, days: number) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+// クッキーを取得する関数
+function getCookie(name: string) {
+  const cookieName = name + "=";
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const cookieArray = decodedCookie.split(';');
+  for (let i = 0; i < cookieArray.length; i++) {
+    let cookie = cookieArray[i];
+    while (cookie.charAt(0) === ' ') {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(cookieName) === 0) {
+      return cookie.substring(cookieName.length, cookie.length);
+    }
+  }
+  return "";
+}
+
+export default LoginPage;
