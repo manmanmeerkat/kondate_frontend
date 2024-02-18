@@ -22,7 +22,7 @@ export const App = () => {
     const checkAuthentication = async () => {
       if (isAuthenticated) {
         try {
-          const response = await axios.get('/api/check-auth');
+          const response = await axios.get('/api/user');
           // 認証が成功した場合は何もしない
         } catch (error) {
           dispatch(logoutSuccess());
