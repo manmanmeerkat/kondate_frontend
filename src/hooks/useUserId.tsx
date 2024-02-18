@@ -14,9 +14,9 @@ const useUserId = () => {
 
         const userResponse = await axios.get(`${config.API_ENDPOINT}/api/user`, {
           withCredentials: true,
-          // headers: {
-          //   'X-CSRF-TOKEN': csrfToken,
-          // },
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+          },
         });
         const fetchedUserId = userResponse.data.id;
         setUserId(fetchedUserId);
