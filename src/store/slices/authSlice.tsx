@@ -55,7 +55,7 @@ export const fetchAuthUser = createAsyncThunk(
                     'X-CSRF-TOKEN': csrfToken,
                 },
             });
-            
+            console.log(response.data);
             return response.data;
         } catch (error) {
             // エラーハンドリング
