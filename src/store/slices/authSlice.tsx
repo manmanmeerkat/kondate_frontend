@@ -28,7 +28,7 @@ export const fetchAuthUser = createAsyncThunk(
             const csrfToken = csrfResponse.data.csrfToken;
             console.log(csrfToken);
 
-            const response = await axios.get(`/api/user`,{
+            const response = await axios.get(`${config.API_ENDPOINT}/api/user`,{
                 withCredentials: true,
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
