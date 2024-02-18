@@ -14,7 +14,7 @@ export const LoginPage: React.FC = () => {
     const token = getCookie('token');
     if (token) {
       // ログイン状態の復元などの処理を行う
-      navigate('/dashboard');
+      navigate('/all_my_dishes');
     }
   }, []); // 初回のみ実行するため空の依存配列を指定
 
@@ -34,7 +34,7 @@ export const LoginPage: React.FC = () => {
       // ログイン成功時の処理
       setCookie('token', token, 7); // 7日間有効なクッキーを設定
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/all_my_dishes');
     } catch (error) {
       console.error('ログインエラー:', error);
       setIsLoading(false);
