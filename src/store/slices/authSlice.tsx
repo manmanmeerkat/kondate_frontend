@@ -10,6 +10,7 @@ const initialState: AuthUserType = {
     user: undefined,
     isLoading: false,
     error: undefined,
+    token: "",
 };
 
 export const authSlice = createSlice({
@@ -26,6 +27,9 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.user = action.payload; // fetchAuthUserが実行され、返り値がstateに入る
                 state.error = undefined;
+                state.token = action.payload;
+                console.log("state.user", state.user);
+                console.log("state.token", state.token);
             })
             .addCase(fetchAuthUser.rejected, (state, action) => {
                 state.isLoading = false;
