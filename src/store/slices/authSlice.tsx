@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
 import { RootState } from "..";
-import { useEffect, useState } from "react";
 import config from "../../components/pages/config/production";
 
 // stateの初期値
@@ -10,6 +9,7 @@ const initialState: AuthUserType = {
     user: undefined,
     isLoading: false,
     error: undefined,
+    token: '',
 };
 
 export const authSlice = createSlice({
@@ -24,7 +24,8 @@ export const authSlice = createSlice({
             })
             .addCase(fetchAuthUser.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.user = action.payload; // fetchAuthUserが実行され、返り値がstateに入る
+                state.user = action.payload.user; // ユーザー情報をpayloadから取得
+                state.token = action.payload.token; // トークンをpayloadから取得
                 state.error = undefined;
             })
             .addCase(fetchAuthUser.rejected, (state, action) => {
@@ -37,23 +38,14 @@ export const authSlice = createSlice({
 export const selectAuth = (state: RootState) => state.auth;
 export default authSlice.reducer;
 
-// ログイン中のユーザー情報を取得するAPIを叩く関数
+// ログイン中のユーザー情報とトークンを取得するAPIを叩く関数
 export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
         try {
-            // クッキーからトークンを取得
-            const csrfToken = document.cookie.split('; ')
-                .find(row => row.startsWith('laravel_session='))
-                .split('=')[1];
-            console.log(csrfToken);
-            
-            // ユーザー情報を取得
+            // ユーザー情報とトークンを取得
             const response = await axios.get(`${config.API_ENDPOINT}/api/user`, {
                 withCredentials: true, // クッキーを使うための設定
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                },
             });
             
             return response.data;
