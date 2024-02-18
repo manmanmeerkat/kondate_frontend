@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
+import { RootState } from "..";
 
 // stateの初期値
 const initialState: AuthUserType = {
