@@ -16,7 +16,13 @@ import { fetchAuthUser } from "./store/slices/authSlice"
 axios.defaults.baseURL = config.API_ENDPOINT;
 
 export const App = () => {
-
+  const dispatch:AppDispatch = useDispatch();
+  {
+         React.useEffect(() => {
+             dispatch(fetchAuthUser());
+         }, []);
+     }   
+ 
   return (
     <Provider store={store}>
       <ChakraProvider theme={theme}>
