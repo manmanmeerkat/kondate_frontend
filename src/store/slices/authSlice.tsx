@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AuthUserType } from "../../types/AuthUserType";
 import { RootState } from "..";
+import { tr } from "date-fns/locale";
+import config from "../../components/pages/config/production";
 
 // stateの初期値
 const initialState: AuthUserType = {
@@ -15,7 +17,25 @@ const initialState: AuthUserType = {
 export const fetchAuthUser = createAsyncThunk(
     "auth/fetchAuthUser",
     async () => {
-        
+
+        try {
+
+            const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`);
+            const csrfToken = csrfResponse.data.csrfToken;
+            console.log(csrfToken);
+
+            const response = await axios.get(`/api/user`,{
+                withCredentials: true,
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("ユーザー情報の取得エラー:", error);
+            throw error;
+        }
+
         const response = await axios.get(`/api/user`,{
             withCredentials: true,
         });
