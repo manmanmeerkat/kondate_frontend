@@ -19,7 +19,10 @@ export const App = () => {
   React.useEffect(() => {
     const relogin = async () => {
       try {
-        const response = await axios.post('/api/relogin');
+        const response = await axios.post('/api/relogin',
+          {
+            withCredentials: true,
+          },);
         console.log('再ログインが成功しました。', response.data);
       } catch (error) {
         console.error('再ログインに失敗しました。', error);
