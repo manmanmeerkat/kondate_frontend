@@ -2,9 +2,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import config from '../components/pages/config/production';
+import useAuthToken from './useAuthToken';
 
 const useUserId = () => {
   const [userId, setUserId] = useState<string | null>(null);
+  const authToken = useAuthToken();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -16,6 +18,7 @@ const useUserId = () => {
           withCredentials: true,
           headers: {
             'X-CSRF-TOKEN': csrfToken,
+            'Authorization': `Bearer ${authToken}`,
           },
         });
         console.log('userResponse:', userResponse);

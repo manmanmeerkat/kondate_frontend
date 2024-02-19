@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../components/pages/config/production';
+import useAuthToken from './useAuthToken';
 
 interface User {
   id: number;
@@ -21,10 +22,16 @@ interface FetchUserDataHook {
 
 export const useFetchUserData = (): FetchUserDataHook => {
   const [user, setUser] = useState<User | null>(null);
+  const authToken = useAuthToken();
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get<User>('/api/user');
+      const response = await axios.get<User>('/api/user', {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        });
 
       if (response.status === 200) {
         const userData = response.data;
