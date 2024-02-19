@@ -12,7 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import config from '../config/production';
-import { setCookie, getCookie, deleteCookie } from '../../../types/cookieUtils'
+import { useCookie } from '../../../hooks/useCookie';
 
 interface FormData {
   email: string;
@@ -35,6 +35,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [csrfToken, setCsrfToken] = useState<string>('');
+  const { getCookie, setCookie } = useCookie();
   const [authToken, setAuthToken] = useState(getCookie('authToken'));
   const toast = useToast();
 
