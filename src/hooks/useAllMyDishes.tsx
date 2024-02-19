@@ -6,9 +6,10 @@ import config from "../components/pages/config/production"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../store"
 import { fetchAuthUser } from "../store/slices/authSlice"
+import useAuthToken from "./useAuthToken"
 export const useAllMyDishes = () => {
     const { showMessage } = useMessage()
-
+    const authToken = useAuthToken();
     const [loading, setLoading] = useState(false);
     const [dishes, setDishes] = useState([]);
     const dispatch:AppDispatch = useDispatch();
@@ -27,6 +28,9 @@ export const useAllMyDishes = () => {
        
             const response = await axios.get('/api/all-my-dish', {
                 withCredentials: true ,
+                headers: {
+                    Authorization: `Bearer ${authToken}`
+                }
           
             });
             setDishes(response.data.dishes);
