@@ -6,6 +6,7 @@ import { registerLocale } from 'react-datepicker';
 import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, Menu, useToast, Flex, Divider, Table, Thead, Tr, Th, Tbody, Td, Badge } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
 import config from './config/production';
+import useAuthToken from '../../hooks/useAuthToken';
 
 interface Menu {
   menu_id: number;
@@ -89,6 +90,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
 
 export const IngredientsList: React.FC = () => {
   const [menuData, setMenuData] = useState<MenuData[] | null>(null);
+  const authToken = useAuthToken();  
   const toast = useToast();
 
   const handleSearch = async (startDate: string, endDate: string) => {
@@ -107,6 +109,9 @@ export const IngredientsList: React.FC = () => {
      // バックエンドに日付範囲を送信し、結果を取得
      const response = await axios.get<ResponseData>(`/api/get-ingredients-list`, {
       withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
       params: {
         start_date: startDate,
         end_date: endDate,
