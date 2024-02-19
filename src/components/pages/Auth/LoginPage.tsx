@@ -12,6 +12,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import config from '../config/production';
+import { setCookie, getCookie, deleteCookie } from '../../../types/cookieUtils'
 
 interface FormData {
   email: string;
@@ -34,6 +35,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [csrfToken, setCsrfToken] = useState<string>('');
+  const [authToken, setAuthToken] = useState(getCookie('authToken'));
   const toast = useToast();
 
   useEffect(() => {
@@ -79,6 +81,9 @@ export const LoginPage: React.FC = () => {
 
       const { token, userId, message, role } = response.data;
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      setCookie('authToken', token, 7); // 有効期限を7日に設定
+      setAuthToken(token);
 
       console.log(userId, token, role);
 
