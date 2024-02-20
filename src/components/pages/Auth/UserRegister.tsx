@@ -13,6 +13,7 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react';
 import config from '../config/production';
+import { useCookie } from '../../../hooks/useCookie';
 
 interface FormData {
   name: string;
@@ -33,6 +34,8 @@ export const UserRegister: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false); // 初期値をfalseに設定
   const [emailExistsError, setEmailExistsError] = useState<string | null>(null);
+  const { setCookie } = useCookie();
+  
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -101,6 +104,8 @@ export const UserRegister: React.FC = () => {
     //   console.error('トークンの保存に失敗しました', error);
     // }
   
+    setCookie('authToken', token, 7); // 有効期限を7日に設定
+
     toast({
       title: 'ユーザー登録が完了しました',
       description: 'ようこそ！',
