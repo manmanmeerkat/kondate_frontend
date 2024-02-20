@@ -92,14 +92,14 @@ export const UserRegister: React.FC = () => {
 
   const handleRegistrationSuccess = async (token: string) => {
     // ローカルストレージの代わりに適切な手段でトークンを保存する
-    try {
-      // 例: クッキーにトークンを保存
-      // document.cookie = `token=${token}; path=/`;
-      // または、HTTPヘッダーにトークンを含める
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } catch (error) {
-      console.error('トークンの保存に失敗しました', error);
-    }
+    // try {
+    //   // 例: クッキーにトークンを保存
+    //   // document.cookie = `token=${token}; path=/`;
+    //   // または、HTTPヘッダーにトークンを含める
+    //   // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    // } catch (error) {
+    //   console.error('トークンの保存に失敗しました', error);
+    // }
   
     toast({
       title: 'ユーザー登録が完了しました',
