@@ -5,24 +5,16 @@ import {
 } from "@chakra-ui/react"
 import { Router } from "./components/router/Router"
 import { BrowserRouter } from "react-router-dom"
-import { Provider, useDispatch } from "react-redux"
-import store, { AppDispatch } from "./store"
+import { Provider } from "react-redux"
+import store from "./store"
 import axios from 'axios';
 import config from './components/pages/config/production';
-import { AsyncThunkAction } from "@reduxjs/toolkit"
-import { fetchAuthUser } from "./store/slices/authSlice"
 
 
 axios.defaults.baseURL = config.API_ENDPOINT;
 
 export const App = () => {
-  const dispatch:AppDispatch = useDispatch();
-  {
-         React.useEffect(() => {
-             dispatch(fetchAuthUser());
-         }, []);
-     }   
- 
+
   return (
     <Provider store={store}>
       <ChakraProvider theme={theme}>
