@@ -35,8 +35,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const { getCookie, setCookie } = useCookie();
-  const [authToken, setAuthToken] = useState(getCookie('authToken'));
+  const { setCookie } = useCookie();
   const toast = useToast();
 
   useEffect(() => {
@@ -84,7 +83,6 @@ export const LoginPage: React.FC = () => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setCookie('authToken', token, 7); // 有効期限を7日に設定
-      setAuthToken(token);
 
       console.log(userId, token, role);
 

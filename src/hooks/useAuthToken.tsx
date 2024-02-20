@@ -5,11 +5,11 @@ import { useCookie } from './useCookie';
 
 export const useAuthToken = () => {
   const { getCookie } = useCookie();
-  const [authToken, setAuthToken] = useState(getCookie('laravel_session'));
+  const [authToken, setAuthToken] = useState(getCookie('authToken'));
 
   useEffect(() => {
     // ページがロードされたときにトークンを取得する
-    setAuthToken(getCookie('laravel_session'));
+    setAuthToken(getCookie('authToken'));
   }, []);
 
   return authToken;
