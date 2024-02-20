@@ -97,7 +97,7 @@ export const LoginPage: React.FC = () => {
       if (role === 'admin') {
         navigate('/admin');
       } else {
-        navigate('/all_my_dishes');
+        navigate('/create');
       }
     } catch (error: any) {
       console.error('ログインエラー:', error.response?.data);
