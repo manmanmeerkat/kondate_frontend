@@ -17,6 +17,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 import config from './config/production';
+import useAuthToken from '../../hooks/useAuthToken';
 
 export const DeleteAccountButton = () => {
   const [isConfirming, setIsConfirming] = useState(false);
@@ -26,6 +27,7 @@ export const DeleteAccountButton = () => {
   const navigate = useNavigate();
   const [csrfToken, setCsrfToken] = useState<string>('');
   const toast = useToast();
+  const authToken = useAuthToken();  
 
   const handleDeleteClick = () => {
     setIsConfirming(true);
@@ -47,6 +49,9 @@ export const DeleteAccountButton = () => {
         //   'X-XSRF-TOKEN': csrfToken,
         // },
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
         data: { password }, // パスワードをリクエストのデータとして送信
       });
   
