@@ -12,12 +12,14 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import config from './config/production';
+import useAuthToken from '../../hooks/useAuthToken';
 
 const ChangePasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const authToken = useAuthToken();
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -45,7 +47,11 @@ const ChangePasswordForm = () => {
       await axios.post(
         `${config.API_ENDPOINT}/api/change_password`,
         { current_password: currentPassword, new_password: newPassword },
-        { withCredentials: true }
+        { withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
       );
 
       handleSuccess();
