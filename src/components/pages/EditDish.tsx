@@ -257,7 +257,7 @@ export const EditDish: React.FC = () => {
     setIsDeleteAlertOpen(false);
     try {
     setIsDeleting(true)
-      await axios.get(`${config.API_ENDPOINT}/sanctum/csrf-cookie`, { withCredentials: true });
+      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
 
       const response = await axios.delete(`${config.API_ENDPOINT}/api/delete/${dishId}`, {
