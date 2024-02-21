@@ -19,6 +19,7 @@ const ChangePasswordForm = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); // 新しい状態を追加
   const authToken = useAuthToken();
 
   const navigate = useNavigate();
@@ -43,11 +44,14 @@ const ChangePasswordForm = () => {
       return;
     }
 
+    setIsSubmitting(true); // 送信中に設定
+
     try {
       await axios.post(
         `${config.API_ENDPOINT}/api/change_password`,
         { current_password: currentPassword, new_password: newPassword },
-        { withCredentials: true,
+        {
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -57,6 +61,8 @@ const ChangePasswordForm = () => {
       handleSuccess();
     } catch (error) {
       handleError(error);
+    } finally {
+      setIsSubmitting(false); // 送信が完了したらリセット
     }
   };
 
@@ -90,7 +96,7 @@ const ChangePasswordForm = () => {
             {error}
           </Box>
         )}
-        <Button colorScheme="teal" onClick={handleChangePassword}>
+        <Button colorScheme="teal" onClick={handleChangePassword} isLoading={isSubmitting} loadingText="送信中..." disabled={isSubmitting}>
           パスワード変更
         </Button>
       </VStack>
