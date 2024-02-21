@@ -119,8 +119,8 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center" flexDirection="column">
-      <Box p="4" borderWidth="1px" borderRadius="lg" boxShadow="lg" background="white" width="400px">
+    <Flex height="100vh" alignItems="center" justifyContent="center">
+      <Box p="4" borderWidth="1px" borderRadius="lg" boxShadow="lg" background="white" width="90%">
         <Heading size="lg" textAlign="center" mb="4">
           ログイン
         </Heading>
