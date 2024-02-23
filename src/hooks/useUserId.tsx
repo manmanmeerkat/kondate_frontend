@@ -21,7 +21,6 @@ const useUserId = () => {
             'Authorization': `Bearer ${authToken}`,
           },
         });
-        console.log('userResponse:', userResponse);
         const fetchedUserId = userResponse.data.id;
         setUserId(fetchedUserId);
       } catch (error) {
