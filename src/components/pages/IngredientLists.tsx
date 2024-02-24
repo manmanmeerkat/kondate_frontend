@@ -3,8 +3,10 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import { ja } from 'date-fns/locale';
 import { registerLocale } from 'react-datepicker';
-import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, useToast, Flex, Divider, Table, Thead, Tr, Th, Tbody, Td, Badge } from '@chakra-ui/react';
+import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, Menu, useToast, Flex, Divider, Table, Thead, Tr, Th, Tbody, Td, Badge } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
+import config from './config/production';
+import useAuthToken from '../../hooks/useAuthToken';
 
 interface Menu {
   menu_id: number;
@@ -88,6 +90,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
 
 export const IngredientsList: React.FC = () => {
   const [menuData, setMenuData] = useState<MenuData[] | null>(null);
+  const authToken = useAuthToken();  
   const toast = useToast();
 
   const handleSearch = async (startDate: string, endDate: string) => {
@@ -104,8 +107,11 @@ export const IngredientsList: React.FC = () => {
       }
   
      // バックエンドに日付範囲を送信し、結果を取得
-     const response = await axios.get<ResponseData>('http://localhost:8000/api/get-ingredients-list', {
+     const response = await axios.get<ResponseData>(`/api/get-ingredients-list`, {
       withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
       params: {
         start_date: startDate,
         end_date: endDate,
@@ -217,30 +223,34 @@ export const IngredientsList: React.FC = () => {
                 すべての材料
               </Heading>
               <Divider mb={4} />
-              <List fontSize="lg">
-                {menuData.reduce((ingredients, menu) => {
-                  menu.ingredients.forEach((ingredient) => {
-                    const existingIngredient = ingredients.find(
-                      (item) => item.name === ingredient.name && item.quantity === ingredient.quantity
-                    );
+<List fontSize="lg">
+  {menuData.reduce((ingredients, menu) => {
+    menu.ingredients.forEach((ingredient) => {
+      const existingIngredient = ingredients.find(
+        (item) => item.name === ingredient.name && item.quantity === ingredient.quantity
+      );
 
-                    if (existingIngredient) {
-                      existingIngredient.quantityCount += 1;
-                    } else {
-                      if (ingredient.name && ingredient.quantity) {
-                        ingredients.push({ ...ingredient, quantityCount: 1 });
-                      }
-                    }
-                  });
-                  return ingredients;
-                }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
-                  ingredient.name && ingredient.quantity && ingredient.quantityCount > 0 && (
-                    <ListItem key={index} mb={2}>
-                      {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
-                    </ListItem>
-                  )
-                ))}
-              </List>
+      if (existingIngredient) {
+        existingIngredient.quantityCount += 1;
+      } else {
+        if (ingredient.name && ingredient.quantity) {
+          // 材料名と数量がどちらも存在する場合にのみ追加
+          ingredients.push({ ...ingredient, quantityCount: 1 });
+        }
+      }
+    });
+    return ingredients;
+  }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
+    // 材料名と数量がどちらも存在する場合のみ表示
+    ingredient.name && ingredient.quantity && ingredient.quantityCount > 0 && (
+      <ListItem key={index} mb={2}>
+        {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
+      </ListItem>
+    )
+  ))}
+</List>
+
+
             </Box>
           </Flex>
         )}
