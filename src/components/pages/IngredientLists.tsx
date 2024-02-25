@@ -40,51 +40,55 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
   };
 
   return (
-    <Stack spacing={4} mb={8} direction="row" align="center">
-      <InputGroup>
-        <DatePicker
-          dateFormat="yyyy/MM/dd"
-          selected={startDate}
-          onChange={(date) => setStartDate(date as Date)}
-          placeholderText="開始日を選択"
-          customInput={
-            <Box
-              as={Button}
-              _hover={{ cursor: 'pointer' }}
-              _focus={{ outline: 'none' }}
-              _active={{ outline: 'none' }}
-              w="100%"
-              textAlign="left"
-            >
-              {startDate ? startDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '開始日を選択'}
-            </Box>
-          }
-        />
-        <Text mx={4} my={2}>～</Text>
-        <DatePicker
-          dateFormat="yyyy/MM/dd"
-          selected={endDate}
-          onChange={(date) => setEndDate(date as Date)}
-          locale={ja}
-          placeholderText="終了日を選択"
-          customInput={
-            <Box
-              as={Button}
-              _hover={{ cursor: 'pointer' }}
-              _focus={{ outline: 'none' }}
-              _active={{ outline: 'none' }}
-              w="100%"
-              textAlign="left"
-            >
-              {endDate ? endDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '終了日を選択'}
-            </Box>
-          }
-        />
-      </InputGroup>
-      <Button colorScheme="teal" onClick={handleSearch}>
-        表示
-      </Button>
-    </Stack>
+    <Stack spacing={4} mb={8} direction={{ base: 'column', md: 'row' }} align="center">
+  <Flex direction={{ base: 'row', md: 'row' }} align="center" justify="center">
+    <InputGroup>
+      <DatePicker
+        dateFormat="yyyy/MM/dd"
+        selected={startDate}
+        onChange={(date) => setStartDate(date as Date)}
+        placeholderText="開始日を選択"
+        customInput={
+          <Box
+            as={Button}
+            _hover={{ cursor: 'pointer' }}
+            _focus={{ outline: 'none' }}
+            _active={{ outline: 'none' }}
+            w="100%"
+            textAlign="left"
+          >
+            {startDate ? startDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '開始日を選択'}
+          </Box>
+        }
+      />
+    </InputGroup>
+    <Text mx={4} my={2}>～</Text>
+    <InputGroup>
+      <DatePicker
+        dateFormat="yyyy/MM/dd"
+        selected={endDate}
+        onChange={(date) => setEndDate(date as Date)}
+        locale={ja}
+        placeholderText="終了日を選択"
+        customInput={
+          <Box
+            as={Button}
+            _hover={{ cursor: 'pointer' }}
+            _focus={{ outline: 'none' }}
+            _active={{ outline: 'none' }}
+            w="100%"
+            textAlign="left"
+          >
+            {endDate ? endDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '終了日を選択'}
+          </Box>
+        }
+      />
+    </InputGroup>
+  </Flex>
+  <Button colorScheme="teal" w={{ base: '100%', md: 'auto' }} mt={{ base: 4, md: 0 }} mb={{ base: 8, md: 0 }} onClick={handleSearch}>
+    表示
+  </Button>
+</Stack>
   );
 };
 
