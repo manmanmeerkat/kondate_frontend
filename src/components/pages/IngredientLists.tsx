@@ -41,54 +41,54 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
 
   return (
     <Stack spacing={4} mb={8} direction={{ base: 'column', md: 'row' }} align="center">
-  <Flex direction={{ base: 'row', md: 'row' }} align="center" justify="center">
-    <InputGroup>
-      <DatePicker
-        dateFormat="yyyy/MM/dd"
-        selected={startDate}
-        onChange={(date) => setStartDate(date as Date)}
-        placeholderText="開始日を選択"
-        customInput={
-          <Box
-            as={Button}
-            _hover={{ cursor: 'pointer' }}
-            _focus={{ outline: 'none' }}
-            _active={{ outline: 'none' }}
-            w="100%"
-            textAlign="left"
-          >
-            {startDate ? startDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '開始日を選択'}
-          </Box>
-        }
-      />
-    </InputGroup>
-    <Text mx={4} my={2}>～</Text>
-    <InputGroup>
-      <DatePicker
-        dateFormat="yyyy/MM/dd"
-        selected={endDate}
-        onChange={(date) => setEndDate(date as Date)}
-        locale={ja}
-        placeholderText="終了日を選択"
-        customInput={
-          <Box
-            as={Button}
-            _hover={{ cursor: 'pointer' }}
-            _focus={{ outline: 'none' }}
-            _active={{ outline: 'none' }}
-            w="100%"
-            textAlign="left"
-          >
-            {endDate ? endDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '終了日を選択'}
-          </Box>
-        }
-      />
-    </InputGroup>
-  </Flex>
-  <Button colorScheme="teal" w={{ base: '100%', md: 'auto' }} mt={{ base: 4, md: 0 }} mb={{ base: 8, md: 0 }} onClick={handleSearch}>
-    表示
-  </Button>
-</Stack>
+    <Flex direction={{ base: 'row', md: 'row' }} align="center" justify="center" ml={{ base: 2, md: 0 }} mr={{ base: 2, md: 0 }}>
+      <InputGroup flex={{ base: '1', md: 'auto' }} mr={{ base: 0, md: 2 }} mb={{ base: -4, md: 0 }}>
+        <DatePicker
+          dateFormat="yyyy/MM/dd"
+          selected={startDate}
+          onChange={(date) => setStartDate(date as Date)}
+          placeholderText="開始日を選択"
+          customInput={
+            <Box
+              as={Button}
+              _hover={{ cursor: 'pointer' }}
+              _focus={{ outline: 'none' }}
+              _active={{ outline: 'none' }}
+              w="100%"
+              textAlign="left"
+            >
+              {startDate ? startDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '開始日を選択'}
+            </Box>
+          }
+        />
+      </InputGroup>
+      <Text mx={2} my={2} mb={-4} alignSelf="center">～</Text>
+      <InputGroup flex={{ base: '1', md: 'auto' }} mr={{ base: 0, md: 2 }} mb={{ base: -4, md: 0 }}>
+        <DatePicker
+          dateFormat="yyyy/MM/dd"
+          selected={endDate}
+          onChange={(date) => setEndDate(date as Date)}
+          locale={ja}
+          placeholderText="終了日を選択"
+          customInput={
+            <Box
+              as={Button}
+              _hover={{ cursor: 'pointer' }}
+              _focus={{ outline: 'none' }}
+              _active={{ outline: 'none' }}
+              w="100%"
+              textAlign="left"
+            >
+              {endDate ? endDate.toLocaleDateString('ja', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }) : '終了日を選択'}
+            </Box>
+          }
+        />
+      </InputGroup>
+      <Button colorScheme="teal" flex={{ base: '1', md: 'auto' }} mt={{ base: 4, md: 0 }} ml={{ base: 0, md: 2 }} onClick={handleSearch}>
+        表示
+      </Button>
+    </Flex>
+  </Stack>
   );
 };
 
@@ -160,8 +160,7 @@ export const IngredientsList: React.FC = () => {
         <SearchForm onSearch={handleSearch} />
   
         {menuData && (
-          <Flex>
-            {/* 左側のセクション */}
+          <Flex direction={{ base: 'column', md: 'row' }}>
             <Box flex={1}>
               {Object.entries(groupMenusByDate(menuData)).map(([date, menus], index, array) => (
                 <Box key={date} mb={index < array.length - 1 ? 4 : 0}>
@@ -171,19 +170,9 @@ export const IngredientsList: React.FC = () => {
                   <Table variant="simple" size="sm">
                     <Thead>
                       <Tr>
-                        <Th
-                          textAlign="left"
-                          borderRight="1px solid #e0e0e0"
-                          position="sticky"
-                          left="0"
-                          zIndex="1"
-                          background="white"
-                          width="50%" 
-                        >
-                          メニュー
-                        </Th>
-                        <Th textAlign="left" width="25%">材料</Th> {/* 材料のカラムを半分の幅に設定 */}
-                        <Th textAlign="left" width="25%">数量</Th> {/* ここに数量のカラムを追加 */}
+                        <Th textAlign="left" borderRight="1px solid #e0e0e0" position="sticky" left="0" zIndex="1" background="white" width="50%">メニュー</Th>
+                        <Th textAlign="left" width="25%">材料</Th>
+                        <Th textAlign="left" width="25%">数量</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -221,40 +210,35 @@ export const IngredientsList: React.FC = () => {
               ))}
             </Box>
   
-            {/* 右側のセクション */}
-            <Box flex={0.7} pl={4}>
+            <Box flex={{ base: 'auto', md: 0.7 }} pl={{ base: 0, md: 4 }}>
               <Heading as="h2" size="lg" mb={2}>
                 すべての材料
               </Heading>
               <Divider mb={4} />
-<List fontSize="lg">
-  {menuData.reduce((ingredients, menu) => {
-    menu.ingredients.forEach((ingredient) => {
-      const existingIngredient = ingredients.find(
-        (item) => item.name === ingredient.name && item.quantity === ingredient.quantity
-      );
+              <List fontSize="lg">
+                {menuData.reduce((ingredients, menu) => {
+                  menu.ingredients.forEach((ingredient) => {
+                    const existingIngredient = ingredients.find(
+                      (item) => item.name === ingredient.name && item.quantity === ingredient.quantity
+                    );
 
-      if (existingIngredient) {
-        existingIngredient.quantityCount += 1;
-      } else {
-        if (ingredient.name && ingredient.quantity) {
-          // 材料名と数量がどちらも存在する場合にのみ追加
-          ingredients.push({ ...ingredient, quantityCount: 1 });
-        }
-      }
-    });
-    return ingredients;
-  }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
-    // 材料名と数量がどちらも存在する場合のみ表示
-    ingredient.name && ingredient.quantity && ingredient.quantityCount > 0 && (
-      <ListItem key={index} mb={2}>
-        {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
-      </ListItem>
-    )
-  ))}
-</List>
-
-
+                    if (existingIngredient) {
+                      existingIngredient.quantityCount += 1;
+                    } else {
+                      if (ingredient.name && ingredient.quantity) {
+                        ingredients.push({ ...ingredient, quantityCount: 1 });
+                      }
+                    }
+                  });
+                  return ingredients;
+                }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
+                  ingredient.name && ingredient.quantity && ingredient.quantityCount > 0 && (
+                    <ListItem key={index} mb={2}>
+                      {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
+                    </ListItem>
+                  )
+                ))}
+              </List>
             </Box>
           </Flex>
         )}
