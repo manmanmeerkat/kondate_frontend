@@ -309,7 +309,6 @@ export const EditDish: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
             <Image />
-
             <FormControl mb={4}>
               <FormLabel>画像を変更する</FormLabel>
               <Input
@@ -317,9 +316,9 @@ export const EditDish: React.FC = () => {
                 name="image_file"
                 accept="image/*"
                 onChange={handleFileChange}
+                size="xs" // フォントサイズを小さいサイズに変更
               />
             </FormControl>
-
             <FormControl isRequired mb={4}>
               <FormLabel>料理名</FormLabel>
               <Input
@@ -369,9 +368,9 @@ export const EditDish: React.FC = () => {
               </Select>
             </FormControl>
             <FormLabel>材料</FormLabel>
-            <Wrap spacing={2} mb={4}>
+            <Wrap spacing={1} mb={4} flexDirection={{ base: 'column', md: 'row' }}>
               {formData.ingredients.map((ingredient, index) => (
-                <WrapItem key={index} width="30%">
+                <WrapItem key={index} width={{ base: '100%', md: '33%' }}>
                   <Flex>
                     <Input
                       type="text"
@@ -406,6 +405,7 @@ export const EditDish: React.FC = () => {
                 </WrapItem>
               ))}
             </Wrap>
+
             <Button
               type="button"
               colorScheme="blue"
