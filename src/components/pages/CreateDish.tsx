@@ -286,7 +286,8 @@ console.log('userId', userId);
                 name="image_file"
                 accept="image/*"
                 onChange={handleFileChange}
-                size="xs" // フォントサイズを小さいサイズに変更
+                size="xs" 
+                height="26px" 
               />
             </FormControl>
 

@@ -316,7 +316,8 @@ export const EditDish: React.FC = () => {
                 name="image_file"
                 accept="image/*"
                 onChange={handleFileChange}
-                size="xs" // フォントサイズを小さいサイズに変更
+                size="xs" 
+                height="26px" 
               />
             </FormControl>
             <FormControl isRequired mb={4}>
