@@ -338,35 +338,36 @@ console.log('userId', userId);
               </Select>
             </FormControl>
 
-            <Wrap spacing={2} mb={4}>
-            {formData.ingredients.map((ingredient, index) => (
-            <WrapItem key={index} width="19.4%">
-              <Flex>
-                <Input
-                  type="text"
-                  name={`ingredients[${index}].name`}
-                  value={ingredient.name}
-                  onChange={(e:any) => handleIngredientChange(index, 'name', e.target.value)}
-                  size="sm"
-                  width="50%"
-                  placeholder="材料名"
-                />
-                <Input
-                  type="text"
-                  name={`ingredients[${index}].quantity`}
-                  value={ingredient.quantity}
-                  onChange={(e:any) => handleIngredientChange(index, 'quantity', e.target.value)}
-                  size="sm"
-                  width="40%"
-                  placeholder="数量"
-                />
-                <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
-                  削除
-                </Button>
-              </Flex>
-            </WrapItem>
-          ))}
+            <Wrap spacing={1} mb={4}>
+              {formData.ingredients.map((ingredient, index) => (
+                <WrapItem key={index} width={{ base: '100%', md: '33%' }}>
+                  <Flex>
+                    <Input
+                      type="text"
+                      name={`ingredients[${index}].name`}
+                      value={ingredient.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIngredientChange(index, 'name', e.target.value)}
+                      size="sm"
+                      width="100%"
+                      placeholder="材料名"
+                    />
+                    <Input
+                      type="text"
+                      name={`ingredients[${index}].quantity`}
+                      value={ingredient.quantity}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIngredientChange(index, 'quantity', e.target.value)}
+                      size="sm"
+                      width="100%"
+                      placeholder="数量"
+                    />
+                    <Button ml={2} colorScheme="red" onClick={() => handleRemoveIngredient(index)}>
+                      削除
+                    </Button>
+                  </Flex>
+                </WrapItem>
+              ))}
             </Wrap>
+
             <Button
               type="button"
               colorScheme="blue"
