@@ -6,7 +6,6 @@ import { MenuDrawer } from '../../molecules/MenuDrawer';
 import axios from 'axios';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
 import MenuForDate from '../../pages/MenuForDate';
-import config from '../../pages/config/production';
 
 interface HeaderProps {}
 
@@ -22,7 +21,7 @@ export const Header: React.FC<HeaderProps> = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, { withCredentials: true });
+        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
       } catch (error) {
@@ -81,12 +80,10 @@ export const Header: React.FC<HeaderProps> = () => {
     <>
       <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
         <Flex align="center" as="a" mr={8} _hover={{ cursor: 'pointer' }} onClick={onClickHome}>
-          <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }}>
+          <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }} noOfLines={1}>
             こんだてずかん
           </Heading>
         </Flex>
-        
-
         <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
           <Box pr={4} onClick={onClickAllMyDishes}>
             <Link>すべての料理</Link>
@@ -106,7 +103,7 @@ export const Header: React.FC<HeaderProps> = () => {
             <Link>材料リスト</Link>
           </Box>
         </Flex>
-          <Box pr={4}>
+          <Box pr={3}>
             <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)}>
               {selectedOption === '' && <option value="" disabled >設定</option>}
               <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
