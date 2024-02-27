@@ -42,7 +42,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
   return (
     <Stack spacing={4} mb={8} direction={{ base: 'column', md: 'row' }} align="center">
     <Flex direction={{ base: 'row', md: 'row' }} align="center" justify="center" ml={{ base: 2, md: 0 }} mr={{ base: 2, md: 0 }}>
-      <InputGroup flex={{ base: '1', md: 'auto' }} mr={{ base: 0, md: -2 }} mb={{ base: 0, md: 0 }}>
+      <InputGroup flex={{ base: '1', md: 'auto' }} mr={{ base: 0, md: -7 }} mb={{ base: 0, md: 0 }}>
         <DatePicker
           dateFormat="yyyy/MM/dd"
           selected={startDate}
@@ -62,8 +62,8 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
           }
         />
       </InputGroup>
-      <Text mx={2} my={2}  alignSelf="center">～</Text>
-      <InputGroup flex={{ base: '1', md: 'auto' }} mr={{ base: 0, md: 2 }} mb={{ base: 0, md: 0 }}>
+      <Text  my={2}  alignSelf="center">～</Text>
+      <InputGroup flex={{ base: '1', md: 'auto' }} mr={{ base: 0, md: 2 }} ml={{ base: 0, md: 2 }} mb={{ base: 0, md: 0 }}>
         <DatePicker
           dateFormat="yyyy/MM/dd"
           selected={endDate}
@@ -84,11 +84,20 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
           }
         />
       </InputGroup>
-      <Button colorScheme="teal" flex={{ base: '1', md: 'auto' }} mt={{ base: 0, md: 0 }} ml={{ base: 0, md: 2 }} onClick={handleSearch}>
-        表示
-      </Button>
+      <Button 
+  colorScheme="teal" 
+  flex={{ base: '1', md: 'auto' }} 
+  mt={{ base: 0, md: 0 }} 
+  ml={{ base: 0, md: 2 }} 
+  onClick={handleSearch}
+  width={{ base: 'auto', md: '150px' }} // スマホ画面の横幅を150pxに設定
+>
+  表示
+</Button>
     </Flex>
   </Stack>
+  
+
   );
 };
 
