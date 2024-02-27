@@ -377,13 +377,13 @@ console.log('userId', userId);
               fontSize="18px"
               letterSpacing="1px"
               borderRadius="base"
-              mt={4}
+              mt={2}
               onClick={handleAddIngredient}
             >
               材料を追加
             </Button>
 
-            <FormControl mb={4}>
+            <FormControl mb={4} mt={2}>
               <FormLabel>参考URL</FormLabel>
               <Input
                 type="text"
