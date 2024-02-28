@@ -93,28 +93,27 @@ console.log('selectedDateRedux:', selectedDateRedux);
         {menu.length === 0 ? (
           <Text mt={4}>メニューが何も登録されていません。</Text>
         ) : (
-          <Wrap spacing={4} mt={4}>
+          <Wrap spacing="1" justify="space-between" flexWrap="wrap">
             {menu.map((item, index) => (
-              <WrapItem key={index} p={4} position="relative" borderRadius="md" borderWidth="1px" width="200px" bg="teal.500">
-              <Box key={index} p={4} borderRadius="md" width="200px" bg="teal.500" textAlign="center" borderWidth={0}>
-                <Heading size="md" mb={2} color="white"> {/* 文字色を白に設定 */}
-                  {item.dish.name}
-                </Heading>
-                <Button
-                  onClick={() => handleDelete(item.id)}
-                  isDisabled={deletingItemId === item.id}
-                  position="absolute"
-                  top={0}
-                  right={0}
-                  fontSize="12px"
-                  size="xs"
-                  colorScheme="red"  // ボタンの色を赤に設定
-                >
-                  {deletingItemId === item.id ? '削除中...' : '✖'}
-                </Button>
-              </Box>
-            </WrapItem>
-            
+              <WrapItem key={index} p={5} position="relative" borderRadius="md" borderWidth="1px" width={{ base: "100%", sm: "32%", md: "32%", lg: "33%" }} bg="teal.500">
+                <Box key={index} borderRadius="md" width="100%" bg="teal.500" textAlign="center" borderWidth={0}>
+                  <Heading size="md" color="white" fontSize={16}>
+                    {item.dish.name}
+                  </Heading>
+                  <Button
+                    onClick={() => handleDelete(item.id)}
+                    isDisabled={deletingItemId === item.id}
+                    position="absolute"
+                    top={0}
+                    right={0}
+                    fontSize="12px"
+                    size="xs"
+                    colorScheme="red"
+                  >
+                    {deletingItemId === item.id ? '削除中...' : '✖'}
+                  </Button>
+                </Box>
+              </WrapItem>
             ))}
           </Wrap>
         )}
