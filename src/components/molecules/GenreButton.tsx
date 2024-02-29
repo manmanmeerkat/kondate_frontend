@@ -18,7 +18,7 @@ export const GenreButton = memo(() => {
           rightIcon={<ChevronDownIcon />}
           colorScheme="teal"
           variant="outline"
-          mr={2} 
+          mr={1} 
         >
           和食
         </MenuButton>
@@ -37,7 +37,7 @@ export const GenreButton = memo(() => {
           rightIcon={<ChevronDownIcon />}
           colorScheme="teal"
           variant="outline"
-          mr={2} 
+          mr={1} 
         >
           洋食
         </MenuButton>
@@ -56,7 +56,7 @@ export const GenreButton = memo(() => {
           rightIcon={<ChevronDownIcon />}
           colorScheme="teal"
           variant="outline"
-          mr={2} 
+          mr={1} 
         >
           中華
         </MenuButton>
