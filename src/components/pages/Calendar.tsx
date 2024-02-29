@@ -94,9 +94,10 @@ console.log('selectedDateRedux:', selectedDateRedux);
           <Text mt={4}>メニューが何も登録されていません。</Text>
         ) : (
           <Wrap spacing="1" mt={6} justify="space-between" flexWrap="wrap">
+          <Wrap spacing="1" justify="flex-start" flexWrap="wrap" width="100%">
             {menu.map((item, index) => (
-              <WrapItem key={index} p={5} position="relative" borderRadius="md" borderWidth="1px" width={{ base: "100%", sm: "32%", md: "32%", lg: "33%" }} bg="teal.500">
-                <Box key={index} borderRadius="md" width="100%" bg="teal.500" textAlign="center" borderWidth={0}>
+              <Box key={index} p={5} position="relative" borderRadius="md" borderWidth="1px" width={{ base: "100%", sm: "calc(100% / 3 - 3px)", md: "calc(100% / 3 - 3px)", lg: "calc(100% / 3 - 3px)" }} bg="teal.500" marginBottom="1px">
+                <Box borderRadius="md" width="100%" bg="teal.500" textAlign="center" borderWidth={0}>
                   <Heading size="md" color="white" fontSize={16}>
                     {item.dish.name}
                   </Heading>
@@ -113,8 +114,10 @@ console.log('selectedDateRedux:', selectedDateRedux);
                     {deletingItemId === item.id ? '削除中...' : '✖'}
                   </Button>
                 </Box>
-              </WrapItem>
+              </Box>
             ))}
+          </Wrap>
+          
           </Wrap>
         )}
       </Box>
