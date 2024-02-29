@@ -11,7 +11,7 @@ export const GenreButton = memo(() => {
   };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center" mt={4} marginX={6}>
+    <Box display="flex" alignItems="center" justifyContent="center" mt={4} marginX={1}>
       <Menu isLazy>
         <MenuButton
           as={Button}
