@@ -104,13 +104,13 @@ export const Header: React.FC<HeaderProps> = () => {
             <Link>材料リスト</Link>
           </Box>
         </Flex>
-          <Box pr={3}>
-            <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)}>
-              {selectedOption === '' && <option value="" disabled >設定</option>}
-              <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
-              <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
-            </Select>
-          </Box>
+        <Box pr={{ base: 1, md: 3 }}>
+          <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)} width={{ base: "80px", md: "auto" }}>
+            {selectedOption === '' && <option value="" disabled>設定</option>}
+            <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
+            <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
+          </Select>
+        </Box>
         {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
 
         <MenuIconButton onOpen={onOpen} />
