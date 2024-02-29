@@ -93,7 +93,7 @@ console.log('selectedDateRedux:', selectedDateRedux);
         {menu.length === 0 ? (
           <Text mt={4}>メニューが何も登録されていません。</Text>
         ) : (
-          <Wrap spacing="1" mt={3} justify="space-between" flexWrap="wrap">
+          <Wrap spacing="1" mt={6} justify="space-between" flexWrap="wrap">
             {menu.map((item, index) => (
               <WrapItem key={index} p={5} position="relative" borderRadius="md" borderWidth="1px" width={{ base: "100%", sm: "32%", md: "32%", lg: "33%" }} bg="teal.500">
                 <Box key={index} borderRadius="md" width="100%" bg="teal.500" textAlign="center" borderWidth={0}>
