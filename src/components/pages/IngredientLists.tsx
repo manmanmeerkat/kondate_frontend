@@ -169,55 +169,38 @@ export const IngredientsList: React.FC = () => {
         <SearchForm onSearch={handleSearch} />
   
         {menuData && (
-          <Flex direction={{ base: 'column', md: 'row' }}>
-            <Box flex={1}>
-              {Object.entries(groupMenusByDate(menuData)).map(([date, menus], index, array) => (
-                <Box key={date} mb={index < array.length - 1 ? 4 : 0}>
-                  <Heading as="h2" size="lg" mb={2}>
-                    {`${date} (${new Date(date).toLocaleDateString('ja', { weekday: 'short' })})`}
-                  </Heading>
-                  <Table variant="simple" size="sm">
-                    <Thead>
-                      <Tr>
-                        <Th textAlign="left" borderRight="1px solid #e0e0e0" position="sticky" left="0" zIndex="1" background="white" width="50%">メニュー</Th>
-                        <Th textAlign="left" width="25%">材料</Th>
-                        <Th textAlign="left" width="25%">数量</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {menus.map((menu) => (
-                        <Tr key={menu.menu_id}>
-                          <Td borderRight="1px solid #e0e0e0">
-                            <Badge colorScheme="teal" mr={2} fontSize="lg">
-                              {menu.dish_name}
-                            </Badge>
-                          </Td>
-                          <Td width="25%">
-                            <List fontSize="lg">
-                              {menu.ingredients.map((ingredient, index) => (
-                                <ListItem key={index} mb={2}>
-                                  {ingredient.name}
-                                </ListItem>
-                              ))}
-                            </List>
-                          </Td>
-                          <Td width="25%">
-                            <List fontSize="lg">
-                              {menu.ingredients && menu.ingredients.map((count, index) => (
-                                <ListItem key={index} mb={2}>
-                                  {count.quantity}
-                                </ListItem>
-                              ))}
-                            </List>
-                          </Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
-                  {index < array.length - 1 && <Divider mt={4} borderColor="gray.300" />}
-                </Box>
-              ))}
-            </Box>
+            <Flex direction={{ base: 'column', md: 'row' }}>
+              <Box flex={1}>
+                {Object.entries(groupMenusByDate(menuData)).map(([date, menus], index, array) => (
+                  <Box key={date} mb={index < array.length - 1 ? 4 : 0}>
+                    <Heading as="h2" size="lg" mb={2}>
+                      {`${date} (${new Date(date).toLocaleDateString('ja', { weekday: 'short' })})`}
+                    </Heading>
+                    {menus.map((menu) => (
+                      <Box key={menu.menu_id} mb={4}>
+                        <Badge colorScheme="teal" mb={2} fontSize="lg">{menu.dish_name}</Badge>
+                        <Table variant="simple" size="sm">
+                          <Thead>
+                            <Tr>
+                              <Th textAlign="left">材料</Th>
+                              <Th textAlign="left">数量</Th>
+                            </Tr>
+                          </Thead>
+                          <Tbody>
+                            {menu.ingredients.map((ingredient, index) => (
+                              <Tr key={index}>
+                                <Td>{ingredient.name}</Td>
+                                <Td>{ingredient.quantity}</Td>
+                              </Tr>
+                            ))}
+                          </Tbody>
+                        </Table>
+                      </Box>
+                    ))}
+                    {index < array.length - 1 && <Divider mt={4} borderColor="gray.300" />}
+                  </Box>
+                ))}
+              </Box>
   
             <Box flex={{ base: 'auto', md: 0.7 }} pl={{ base: 0, md: 4 }}>
               <Heading as="h2" size="lg" mb={2}>
