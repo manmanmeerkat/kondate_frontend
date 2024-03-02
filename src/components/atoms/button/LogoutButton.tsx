@@ -73,9 +73,13 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ csrfToken, onLogoutSuccess 
   };
 
   return (
-    <button onClick={handleLogoutClick} disabled={isLoggingOut}>
-      {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
-    </button>
+    <button
+    onClick={handleLogoutClick}
+    disabled={isLoggingOut}
+    style={{ marginRight: '10px' }} 
+  > 
+    {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
+  </button>
   );
 };
 
