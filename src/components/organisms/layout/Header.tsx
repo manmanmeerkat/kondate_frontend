@@ -117,6 +117,7 @@ return (
           variant="unstyled" // 外枠の色を削除する
           //アイコンの色を変更する
           iconColor="teal"
+          cursor="pointer"
         >
           {selectedOption === '' && <option value="" disabled></option>}
           <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>　パスワード変更　</option>
