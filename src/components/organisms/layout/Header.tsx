@@ -7,6 +7,7 @@ import axios from 'axios';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
 import MenuForDate from '../../pages/MenuForDate';
 import config from '../../pages/config/production';
+import { SettingsIcon } from '@chakra-ui/icons';
 
 interface HeaderProps {}
 
@@ -77,61 +78,84 @@ export const Header: React.FC<HeaderProps> = () => {
 };
 
 
-  return (
-    <>
-      <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
-        <Flex align="center" as="a" mr={8} _hover={{ cursor: 'pointer' }} onClick={onClickHome}>
-          <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }} noOfLines={1}>
-            こんだてずかん
-          </Heading>
-        </Flex>
-        <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
-          <Box pr={4} onClick={onClickAllMyDishes}>
-            <Link>すべての料理</Link>
-          </Box>
-
-          {!isMobile && (
-            <Box pr={4} onClick={handleToggleMenu}>
-              <Link>こんだて作成</Link>
-            </Box>
-          )}
-
-          <Box pr={4} onClick={onClickCreate}>
-            <Link>新規登録</Link>
-          </Box>
-
-          <Box pr={4} onClick={onClickIngredientsList}>
-            <Link>材料リスト</Link>
-          </Box>
-        </Flex>
-        <Box pr={{ base: 1, md: 3 }}>
-          <Select value={selectedOption} colorScheme="teal" onChange={(e) => handleSettingsChange(e.target.value)} width={{ base: "80px", md: "auto" }}>
-            {selectedOption === '' && <option value="" disabled>設定</option>}
-            <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>パスワード変更</option>
-            <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>アカウント削除</option>
-          </Select>
-        </Box>
-        {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
-
-        <MenuIconButton onOpen={onOpen} />
+return (
+  <>
+    <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
+      <Flex align="center" as="a" mr={8} _hover={{ cursor: 'pointer' }} onClick={onClickHome}>
+        <Heading as="h1" fontSize={{ base: 'md', md: 'lg' }} noOfLines={1}>
+          こんだてずかん
+        </Heading>
       </Flex>
-      {isMenuVisible && <MenuForDate />}
-      <MenuDrawer
-        onClickAllMyDishes={onClickAllMyDishes}
-        onLogoutSuccess={onLogoutSuccess}
-        handleToggleMenu={handleToggleMenu}
-        onClose={onClose}
-        isOpen={isOpen}
-        onClickHome={onClickHome}
-        onClickCreate={onClickCreate}
-        onClickIngredientsList={onClickIngredientsList}
-        onClickdeleteUser={onClickdeleteUser}
-        onClickpasswordChange={onClickpasswordChange}
-        handleSettingsChange={handleSettingsChange}
-        selectedOption={selectedOption}
-        csrfToken={csrfToken}>
-      </MenuDrawer>
-      
-    </>
-  );
+      <Flex align="center" fontSize="sm" flexGrow={2} display={{ base: 'none', md: 'flex' }}>
+        <Box pr={4} onClick={onClickAllMyDishes}>
+          <Link>すべての料理</Link>
+        </Box>
+
+        {!isMobile && (
+          <Box pr={4} onClick={handleToggleMenu}>
+            <Link>こんだて作成</Link>
+          </Box>
+        )}
+
+        <Box pr={4} onClick={onClickCreate}>
+          <Link>新規登録</Link>
+        </Box>
+
+        <Box pr={4} onClick={onClickIngredientsList}>
+          <Link>材料リスト</Link>
+        </Box>
+      </Flex>
+
+      {!isMobile && <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />}
+
+      <Box pr={{ base: 1, md: 3 }} position="relative">
+        <Select
+          value={selectedOption}
+          colorScheme="teal"
+          onChange={(e) => handleSettingsChange(e.target.value)}
+          width={{ base: "15px", md: "15px" }}
+          variant="unstyled" // 外枠の色を削除する
+          //アイコンの色を変更する
+          iconColor="teal"
+        >
+          {selectedOption === '' && <option value="" disabled></option>}
+          <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>　パスワード変更　</option>
+          <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>　アカウント削除　</option>
+        </Select>
+        <Box
+          position="absolute"
+          top="50%"
+          paddingBottom={{ base: "3px", md: "3px" }}
+          right="6px" // アイコンとの間隔を調整するための値
+          transform="translateY(-50%)"
+          pointerEvents="none" // アイコンがクリック可能にならないようにする
+        >
+          <SettingsIcon />
+        </Box>
+      </Box>
+
+
+ 
+
+      <MenuIconButton onOpen={onOpen} />
+    </Flex>
+    {isMenuVisible && <MenuForDate />}
+    <MenuDrawer
+      onClickAllMyDishes={onClickAllMyDishes}
+      onLogoutSuccess={onLogoutSuccess}
+      handleToggleMenu={handleToggleMenu}
+      onClose={onClose}
+      isOpen={isOpen}
+      onClickHome={onClickHome}
+      onClickCreate={onClickCreate}
+      onClickIngredientsList={onClickIngredientsList}
+      onClickdeleteUser={onClickdeleteUser}
+      onClickpasswordChange={onClickpasswordChange}
+      handleSettingsChange={handleSettingsChange}
+      selectedOption={selectedOption}
+      csrfToken={csrfToken}>
+    </MenuDrawer>
+    
+  </>
+);
 };
