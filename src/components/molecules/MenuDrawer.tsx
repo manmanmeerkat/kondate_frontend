@@ -1,7 +1,7 @@
 // MenuDrawer.tsx
 
-import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Select, VStack } from "@chakra-ui/react";
-import { memo } from "react";
+import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Text, VStack } from "@chakra-ui/react";
+import { memo, useState } from "react";
 import { LogoutButton } from "../atoms/button/LogoutButton";
 
 interface MenuDrawerProps {
@@ -22,30 +22,45 @@ interface MenuDrawerProps {
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
   const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, handleToggleMenu, onClickIngredientsList, onClickdeleteUser, onClickpasswordChange, handleSettingsChange, selectedOption, csrfToken } = props;
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <Drawer placement="top" size="xs" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay>
         <DrawerContent>
-          <DrawerBody p={0} bg="gray.100">
+          <DrawerBody p={4} bg="gray.100">
             <VStack spacing={4} align="stretch">
-              <Button w="100%" onClick={onClickHome}>
+              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickHome}>
                 TOP
               </Button>
-              <Button w="100%" onClick={onClickAllMyDishes}>
+              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickAllMyDishes}>
                 すべての料理
               </Button>
-              <Button w="100%" onClick={onClickIngredientsList}>
-                材料リスト
+              <Button w="100%" variant="solid" colorScheme="blue" onClick={handleToggleMenu}>
+                こんだて作成
               </Button>
-              <Button w="100%" onClick={handleToggleMenu}>
-                こんだて作成</Button>
-              <Button w="100%" onClick={onClickCreate}>
+              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickCreate}>
                 新規登録
               </Button>
-              <Button w="100%">
-                <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
+              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickIngredientsList}>
+                材料リスト
               </Button>
+              <Button w="100%" variant="solid" colorScheme="blue" onClick={() => setShowSettings(!showSettings)}>
+                設定
+              </Button>
+              {showSettings && (
+                <>
+                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickdeleteUser}>
+                    ユーザーを削除する
+                  </Button>
+                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickpasswordChange}>
+                    パスワードの変更
+                  </Button>
+                  <Button w="100%" variant="outline" colorScheme="blue" onClick={() => {}}>
+                    <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
+                  </Button>
+                </>
+              )}
             </VStack>
           </DrawerBody>
         </DrawerContent>
