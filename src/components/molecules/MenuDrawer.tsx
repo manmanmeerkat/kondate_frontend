@@ -28,35 +28,35 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
     <Drawer placement="top" size="xs" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay>
         <DrawerContent>
-          <DrawerBody p={4} bg="gray.100">
+          <DrawerBody p={4} bg="orange.200"> {/* 要素全体の背景色をオレンジに設定 */}
             <VStack spacing={4} align="stretch">
-              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickHome}>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={onClickHome}> {/* TOPボタンの色を緑に設定 */}
                 TOP
               </Button>
-              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickAllMyDishes}>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={onClickAllMyDishes}> {/* すべての料理ボタンの色を緑に設定 */}
                 すべての料理
               </Button>
-              <Button w="100%" variant="solid" colorScheme="blue" onClick={handleToggleMenu}>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={handleToggleMenu}> {/* こんだて作成ボタンの色を緑に設定 */}
                 こんだて作成
               </Button>
-              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickCreate}>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={onClickCreate}> {/* 新規登録ボタンの色を緑に設定 */}
                 新規登録
               </Button>
-              <Button w="100%" variant="solid" colorScheme="blue" onClick={onClickIngredientsList}>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={onClickIngredientsList}> {/* 材料リストボタンの色を緑に設定 */}
                 材料リスト
               </Button>
-              <Button w="100%" variant="solid" colorScheme="blue" onClick={() => setShowSettings(!showSettings)}>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={() => setShowSettings(!showSettings)}> {/* 設定ボタンの色を緑に設定 */}
                 設定
               </Button>
               {showSettings && (
                 <>
-                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickdeleteUser}>
+                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickdeleteUser}> {/* ユーザーを削除するボタンの色を赤に設定 */}
                     ユーザーを削除する
                   </Button>
-                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickpasswordChange}>
+                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickpasswordChange}> {/* パスワードの変更ボタンの色を赤に設定 */}
                     パスワードの変更
                   </Button>
-                  <Button w="100%" variant="outline" colorScheme="blue" onClick={() => {}}>
+                  <Button w="100%" variant="outline" colorScheme="green" onClick={() => {}}> {/* ログアウトボタンの枠線色を緑に設定 */}
                     <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
                   </Button>
                 </>
