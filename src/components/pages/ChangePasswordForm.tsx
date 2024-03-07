@@ -96,8 +96,11 @@ const ChangePasswordForm = () => {
             {error}
           </Box>
         )}
-        <Button colorScheme="teal" onClick={handleChangePassword} isLoading={isSubmitting} loadingText="送信中..." disabled={isSubmitting}>
+        <Button colorScheme="teal" onClick={handleChangePassword}>
           パスワード変更
+        </Button>
+        <Button colorScheme="gray" onClick={() => navigate(-1)}>
+          戻る
         </Button>
       </VStack>
     </Box>

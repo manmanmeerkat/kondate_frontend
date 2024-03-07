@@ -154,6 +154,10 @@ export const DeleteAccountButton = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      <Button colorScheme="gray" onClick={() => navigate(-1)}>
+        戻る
+      </Button>
     </VStack>
   );
 };
