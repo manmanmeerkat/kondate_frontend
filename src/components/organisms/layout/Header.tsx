@@ -6,8 +6,9 @@ import { MenuDrawer } from '../../molecules/MenuDrawer';
 import axios from 'axios';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
 import MenuForDate from '../../pages/MenuForDate';
-import config from '../../pages/config/production';
 import { SettingsIcon } from '@chakra-ui/icons';
+import { nodeModuleNameResolver } from 'typescript';
+
 
 interface HeaderProps {}
 
@@ -23,7 +24,7 @@ export const Header: React.FC<HeaderProps> = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, { withCredentials: true });
+        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
       } catch (error) {
@@ -118,7 +119,7 @@ return (
           onChange={(e) => handleSettingsChange(e.target.value)}
           width="15px" // アイコンの幅を設定
           variant="unstyled" // 外枠の色を削除する
-          iconColor="teal" // アイコンの色を設定
+          iconColor="teal" // 
           cursor="pointer"
           userSelect="none" // テキスト選択を無効にする
           position="absolute" // 要素の位置を絶対位置に設定
@@ -132,14 +133,16 @@ return (
           <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}> 　アカウント削除　 </option>
         </Select>
         <Box
-          position="absolute"
-          top="50%"
-          paddingBottom="3px"
-          right="10px" // アイコンの位置を右端に設定
-          transform="translateY(-50%)"
-        >
-          <SettingsIcon />
-        </Box>
+  position="absolute"
+  top="50%"
+  paddingBottom="3px"
+  right="10px" // アイコンの位置を右端に設定
+  transform="translateY(-50%)"
+  display={{ base: 'none', md: 'block' }} // スマホ画面では非表示
+>
+  <SettingsIcon />
+</Box>
+
       </Box>
     </Flex>
     {isMenuVisible && <MenuForDate />}
