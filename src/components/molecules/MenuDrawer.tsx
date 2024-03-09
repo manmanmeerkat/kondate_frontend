@@ -36,7 +36,10 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
               <Button w="100%" variant="solid" colorScheme="green" onClick={onClickAllMyDishes}> {/* すべての料理ボタンの色を緑に設定 */}
                 すべての料理
               </Button>
-              <Button w="100%" variant="solid" colorScheme="green" onClick={handleToggleMenu}> {/* こんだて作成ボタンの色を緑に設定 */}
+              <Button w="100%" variant="solid" colorScheme="green" onClick={() => {
+                handleToggleMenu(); // こんだて作成の処理を実行
+                onClose(); // ドロワーを閉じる
+              }}>
                 こんだて作成
               </Button>
               <Button w="100%" variant="solid" colorScheme="green" onClick={onClickCreate}> {/* 新規登録ボタンの色を緑に設定 */}
