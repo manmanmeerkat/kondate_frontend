@@ -50,11 +50,11 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
               </Button>
               {showSettings && (
                 <>
-                  <Button w="100%" variant="solid" colorScheme="red" onClick={onClickdeleteUser}> {/* ユーザーを削除するボタンの色を赤に設定 */}
-                    ユーザーを削除する
-                  </Button>
                   <Button w="100%" variant="solid" colorScheme="red" onClick={onClickpasswordChange}> {/* パスワードの変更ボタンの色を赤に設定 */}
                     パスワードの変更
+                  </Button>
+                    <Button w="100%" variant="solid" colorScheme="red" onClick={onClickdeleteUser}> {/* ユーザーを削除するボタンの色を赤に設定 */}
+                    ユーザーを削除する
                   </Button>
                   <Button w="100%" variant="outline" colorScheme="green" onClick={() => {}}> {/* ログアウトボタンの枠線色を緑に設定 */}
                     <LogoutButton csrfToken={csrfToken} onLogoutSuccess={onLogoutSuccess} />
