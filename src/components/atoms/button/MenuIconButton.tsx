@@ -16,7 +16,7 @@ export const MenuIconButton: React.FC<MenuIconButtonProps> = memo((props) => {
       size="md"
       colorScheme="white"
       variant="outline"
-      display={{ base: "block", md: "block" }}
+      display={{ base: "block", md: "none" }}
       _hover={{ color: "white" }}
       onClick={onOpen}
     />
