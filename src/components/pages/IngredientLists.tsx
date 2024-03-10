@@ -165,44 +165,43 @@ export const IngredientsList: React.FC = () => {
     <>
       <Header />
       <Box p={8}>
-        <Heading mb={4}>材料リスト</Heading>
-        <SearchForm onSearch={handleSearch} />
-  
+        <Heading mb={4} textAlign={{ base: 'center', md: 'left' }}>材料リスト</Heading>
+        <SearchForm onSearch={handleSearch} isLoading={isLoading} />
+
         {menuData && (
-            <Flex direction={{ base: 'column', md: 'row' }}>
-              <Box flex={1}>
-                {Object.entries(groupMenusByDate(menuData)).map(([date, menus], index, array) => (
-                  <Box key={date} mb={index < array.length - 1 ? 4 : 0}>
-                    <Heading as="h2" size="lg" mb={2}>
-                      {`${date} (${new Date(date).toLocaleDateString('ja', { weekday: 'short' })})`}
-                    </Heading>
-                    {menus.map((menu) => (
-                      <Box key={menu.menu_id} mb={4}>
-                        <Badge colorScheme="teal" mb={2} fontSize="lg">{menu.dish_name}</Badge>
-                        <Table variant="simple" size="sm">
-                          <Thead>
-                            <Tr>
-                              <Th textAlign="left">材料</Th>
-                              <Th textAlign="left">数量</Th>
+          <Flex direction={{ base: 'column', md: 'row' }}>
+            <Box flex={{ base: 1, md: 'auto' }}>
+              {Object.entries(groupMenusByDate(menuData)).map(([date, menus], index, array) => (
+                <Box key={date} mb={index < array.length - 1 ? 4 : 0}>
+                  <Heading as="h2" size="lg" mb={2} textAlign={{ base: 'center', md: 'left' }}>
+                    {`${date} (${new Date(date).toLocaleDateString('ja', { weekday: 'short' })})`}
+                  </Heading>
+                  {menus.map((menu) => (
+                    <Box key={menu.menu_id} mb={4}>
+                      <Badge colorScheme="teal" mb={2} fontSize="lg">{menu.dish_name}</Badge>
+                      <Table variant="simple" size="sm">
+                        <Thead>
+                          <Tr>
+                            <Th textAlign="left">材料</Th>
+                            <Th textAlign="left">数量</Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {menu.ingredients.map((ingredient, index) => (
+                            <Tr key={index}>
+                              <Td>{ingredient.name}</Td>
+                              <Td>{ingredient.quantity}</Td>
                             </Tr>
-                          </Thead>
-                          <Tbody>
-                            {menu.ingredients.map((ingredient, index) => (
-                              <Tr key={index}>
-                                <Td>{ingredient.name}</Td>
-                                <Td>{ingredient.quantity}</Td>
-                              </Tr>
-                            ))}
-                          </Tbody>
-                        </Table>
-                      </Box>
-                    ))}
-                    {index < array.length - 1 && <Divider mt={4} borderColor="gray.300" />}
-                  </Box>
-                ))}
-              </Box>
-  
-            <Box flex={{ base: 'auto', md: 0.7 }} pl={{ base: 0, md: 4 }}>
+                          ))}
+                        </Tbody>
+                      </Table>
+                    </Box>
+                  ))}
+                  {index < array.length - 1 && <Divider mt={4} borderColor="gray.300" />}
+                </Box>
+              ))}
+            </Box>
+            <Box flex={{ base: 'auto', md: 0.7 }} pl={{ base: 0, md: 4 }} textAlign={{ base: 'center', md: 'left' }}>
               <Heading as="h2" size="lg" mb={2}>
                 すべての材料
               </Heading>
@@ -238,5 +237,3 @@ export const IngredientsList: React.FC = () => {
     </>
   );
 };
-
-export default IngredientsList;
