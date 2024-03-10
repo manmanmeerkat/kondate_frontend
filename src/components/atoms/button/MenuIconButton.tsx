@@ -12,10 +12,12 @@ export const MenuIconButton: React.FC<MenuIconButtonProps> = memo((props) => {
   return (
     <IconButton
       aria-label="メニューボタン"
-      icon={<HamburgerIcon />}
-      size="sm"
-      variant="unstyled"
-      display={{ base: "block", md: "none" }}
+      icon={<HamburgerIcon boxSize={6} />}
+      size="md"
+      colorScheme="white"
+      variant="outline"
+      display={{ base: "block", md: "block" }}
+      _hover={{ color: "white" }}
       onClick={onOpen}
     />
   );
