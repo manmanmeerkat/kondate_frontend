@@ -22,7 +22,6 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
 } from '@chakra-ui/react';
-import config from './config/production';
 
 interface DishParams {
   dishId: string;
@@ -71,13 +70,13 @@ export const EditDish: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const csrfResponse = await axios.get(`${config.API_ENDPOINT}/api/csrf-cookie`);
+        const csrfResponse = await axios.get('http://localhost:8000/api/csrf-cookie');
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
 
         const [dishResponse, ingredientsResponse] = await Promise.all([
-          axios.get(`${config.API_ENDPOINT}/api/edit/${dishId}`),
-          axios.get(`${config.API_ENDPOINT}/api/dishes/${dishId}/ingredients`),
+          axios.get(`http://localhost:8000/api/edit/${dishId}`),
+          axios.get(`http://localhost:8000/api/dishes/${dishId}/ingredients`),
         ]);
 
         const dishData = dishResponse.data;
@@ -146,7 +145,7 @@ export const EditDish: React.FC = () => {
     if (formData.image_path) {
       return (
         <Box mb={4}>
-          <img src={`${config.API_ENDPOINT}/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
+          <img src={`http://localhost:8000/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
         </Box>
       );
     }
@@ -160,7 +159,7 @@ export const EditDish: React.FC = () => {
       setIsSubmitting(true);
   
       // CSRF Cookieを同期的に取得
-      await axios.get(`/api/sanctum/csrf-cookie`, { withCredentials: true });
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
   
       let imagePath = formData.image_path;
@@ -170,7 +169,7 @@ export const EditDish: React.FC = () => {
         imageFormData.append('image_file', formData.image_file);
   
         const imageUploadResponse = await axios.post(
-          `/api/upload-image`,
+          'http://localhost:8000/api/upload-image',
           imageFormData,
           {
             headers: {
@@ -200,7 +199,7 @@ export const EditDish: React.FC = () => {
       formDataToSend.append('ingredients', JSON.stringify(ingredientsData));
 
       const response = await axios.put(
-        `${config.API_ENDPOINT}/api/update/${dishId}`,
+        `http://localhost:8000/api/update/${dishId}`,
         formDataToSend,
         {
           headers: {
@@ -257,10 +256,10 @@ export const EditDish: React.FC = () => {
     setIsDeleteAlertOpen(false);
     try {
     setIsDeleting(true)
-      await axios.get(`${config.API_ENDPOINT}/api/sanctum/csrf-cookie`, { withCredentials: true });
+      await axios.get('http://localhost:8000/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
 
-      const response = await axios.delete(`${config.API_ENDPOINT}/api/delete/${dishId}`, {
+      const response = await axios.delete(`http://localhost:8000/api/delete/${dishId}`, {
         headers: {
           'X-XSRF-TOKEN': xsrfToken,
         },
@@ -317,7 +316,7 @@ export const EditDish: React.FC = () => {
                 accept="image/*"
                 onChange={handleFileChange}
                 size="xs" 
-                height="26px" 
+                height="26px" // 
               />
             </FormControl>
             <FormControl isRequired mb={4}>
@@ -486,6 +485,20 @@ export const EditDish: React.FC = () => {
             </AlertDialog>
           </Flex>
         </form>
+
+       {/* 前のページに戻るボタン */}
+       <Button
+          mt={4}
+          onClick={() => navigate(-1)}
+          colorScheme="blue" // ボタンの色を変更
+          size="sm"
+          width="100%" // 幅を100%にして全幅を占めるようにする
+          fontSize="18px"
+          letterSpacing="1px"
+          borderRadius="base"
+        >
+          戻る
+        </Button>
       </Box>
     </VStack>
   );
