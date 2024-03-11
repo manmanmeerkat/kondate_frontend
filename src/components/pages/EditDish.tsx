@@ -492,7 +492,7 @@ export const EditDish: React.FC = () => {
           onClick={() => navigate(-1)}
           colorScheme="blue" // ボタンの色を変更
           size="sm"
-          width="100%" // 幅を100%にして全幅を占めるようにする
+          width="100%" 
           fontSize="18px"
           letterSpacing="1px"
           borderRadius="base"
