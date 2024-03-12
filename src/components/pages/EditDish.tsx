@@ -490,7 +490,7 @@ export const EditDish: React.FC = () => {
        <Button
           mt={4}
           onClick={() => navigate(-1)}
-          colorScheme="blue" // ボタンの色を変更
+          colorScheme="blue" 
           size="sm"
           width="100%" 
           fontSize="18px"
