@@ -44,7 +44,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
    
     getDishes();
     getDish();
-     console.log("dishData", dishData);
+    
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
