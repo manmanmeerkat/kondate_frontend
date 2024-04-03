@@ -44,7 +44,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
    
     getDishes();
     getDish();
-
+    
   }, []);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
@@ -61,7 +61,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     [dishes, onSelectDish, onOpen]
   );
 
-  // console.log("dishes"  ,dishes);
+  console.log("dishes"  ,dishes);
   
 
   const handleSearchButtonClick = useCallback(async () => {
