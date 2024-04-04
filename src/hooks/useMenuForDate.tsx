@@ -1,9 +1,6 @@
-// useMenuForDate.tsx
-
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MenuItem } from '../store/slices/menuSlice';
-import config from '../components/pages/config/production';
 import useAuthToken from './useAuthToken';
 
 export const useMenuForDate = () => {
