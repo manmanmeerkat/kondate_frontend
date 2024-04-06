@@ -21,7 +21,6 @@ export const useMenuForDate = () => {
         },
         });
       setMenu(response.data);
-      console.log('menu:', menu);
       setError(null);
       return response.data;
     } catch (error) {
