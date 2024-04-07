@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = () => {
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
-        const csrfResponse = await axios.get('http://localhost:8000/api/sanctum/csrf-cookie', { withCredentials: true });
+        const csrfResponse = await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
         const csrfToken = csrfResponse.data.csrfToken;
         setCsrfToken(csrfToken);
       } catch (error) {
