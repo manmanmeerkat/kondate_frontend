@@ -60,8 +60,6 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     },
     [dishes, onSelectDish, onOpen]
   );
-
-  console.log("dishes"  ,dishes);
   
 
   const handleSearchButtonClick = useCallback(async () => {
