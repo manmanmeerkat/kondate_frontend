@@ -209,7 +209,15 @@ export const IngredientsList: React.FC = () => {
                 </Box>
               ))}
             </Box>
-            <Box flex={{ base: 'auto', md: 0.7 }} pl={{ base: 0, md: 4 }} textAlign={{ base: 'center', md: 'left' }}>
+            <Box
+              flex={{ base: 'auto', md: 0.7 }}
+              pl={{ base: 0, md: 4 }}
+              textAlign={{ base: 'left', md: 'left' }} // テキストを左揃えにする
+              bg="teal.50"
+              p={4}
+              borderRadius="md"
+              width="100%" // スマホ画面のときは幅をフルに使う
+            >
               <Heading as="h2" size="lg" mb={2}>
                 すべての材料
               </Heading>
@@ -217,25 +225,23 @@ export const IngredientsList: React.FC = () => {
               <List fontSize="lg">
                 {menuData.reduce((ingredients, menu) => {
                   menu.ingredients.forEach((ingredient) => {
-                    const existingIngredient = ingredients.find(
+                    const existingIngredientIndex = ingredients.findIndex(
                       (item) => item.name === ingredient.name && item.quantity === ingredient.quantity
                     );
 
-                    if (existingIngredient) {
-                      existingIngredient.quantityCount += 1;
+                    if (existingIngredientIndex !== -1) {
+                      ingredients[existingIngredientIndex].quantityCount += 1;
                     } else {
-                      if (ingredient.name && ingredient.quantity) {
+                      if (ingredient.name) {
                         ingredients.push({ ...ingredient, quantityCount: 1 });
                       }
                     }
                   });
                   return ingredients;
-                }, [] as { name: string; quantity: string; quantityCount: number }[]).map((ingredient, index) => (
-                  ingredient.name && ingredient.quantity && ingredient.quantityCount > 0 && (
-                    <ListItem key={index} mb={2}>
-                      {`${ingredient.name}：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}`}
-                    </ListItem>
-                  )
+                }, [] as { name: string; quantity: string | undefined; quantityCount: number }[]).map((ingredient, index) => (
+                  <ListItem key={index} mb={2}>
+                    {`${ingredient.name}${ingredient.quantity ? `：${ingredient.quantityCount > 1 ? `${ingredient.quantity} × ${ingredient.quantityCount}` : ingredient.quantity}` : ''}`}
+                  </ListItem>
                 ))}
               </List>
             </Box>
