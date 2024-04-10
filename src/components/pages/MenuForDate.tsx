@@ -1,5 +1,3 @@
-// MenuForDate.tsx
-
 import React, { useState, useEffect } from 'react';
 import { Calendar } from './Calendar';
 import { useMenuForDate } from '../../hooks/useMenuForDate';
