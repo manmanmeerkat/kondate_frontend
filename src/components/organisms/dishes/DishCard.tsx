@@ -9,8 +9,6 @@ interface DishCardProps {
   dishName: string;
   onClick: (id: number) => void;
 }
-
-// DishCard コンポーネント
 export const DishCard = memo((props: DishCardProps) => {
   const { id, imageUrl, dishName, onClick } = props;
   return (
