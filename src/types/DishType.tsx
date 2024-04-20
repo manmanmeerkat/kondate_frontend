@@ -5,5 +5,4 @@ export interface Dishtype {
     genre: string;
     reference_url: string;
     image_path: string;
-    // 他のプロパティも追加
   }
