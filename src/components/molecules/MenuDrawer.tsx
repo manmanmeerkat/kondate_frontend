@@ -1,5 +1,3 @@
-// MenuDrawer.tsx
-
 import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Text, VStack } from "@chakra-ui/react";
 import { memo, useState } from "react";
 import { LogoutButton } from "../atoms/button/LogoutButton";
