@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 
 interface Dish {
   id: number;
-  // 他のDishに関するプロパティを追加
 }
 
 interface UseSelectDishProps {
