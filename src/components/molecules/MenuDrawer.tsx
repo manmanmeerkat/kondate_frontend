@@ -1,4 +1,4 @@
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Text, VStack } from "@chakra-ui/react";
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, VStack } from "@chakra-ui/react";
 import { memo, useState } from "react";
 import { LogoutButton } from "../atoms/button/LogoutButton";
 
