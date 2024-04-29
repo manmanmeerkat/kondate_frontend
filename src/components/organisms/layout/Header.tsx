@@ -7,7 +7,6 @@ import axios from 'axios';
 import { LogoutButton } from '../../atoms/button/LogoutButton';
 import MenuForDate from '../../pages/MenuForDate';
 import { SettingsIcon } from '@chakra-ui/icons';
-import { nodeModuleNameResolver } from 'typescript';
 
 
 interface HeaderProps {}
