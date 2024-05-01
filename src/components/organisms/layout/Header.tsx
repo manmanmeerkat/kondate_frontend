@@ -118,7 +118,7 @@ return (
           onChange={(e) => handleSettingsChange(e.target.value)}
           width="15px" // アイコンの幅を設定
           variant="unstyled" // 外枠の色を削除する
-          iconColor="teal" // 
+          iconColor="teal" 
           cursor="pointer"
           userSelect="none" // テキスト選択を無効にする
           position="absolute" // 要素の位置を絶対位置に設定
