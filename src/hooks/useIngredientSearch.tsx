@@ -1,4 +1,3 @@
-// useIngredientSearch.tsx
 import { useState } from 'react';
 import { Dish } from '../types/Dish';
 import config from '../components/pages/config/production';

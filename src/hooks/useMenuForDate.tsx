@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { MenuItem } from "../store/slices/menuSlice";
 import useAuthToken from "./useAuthToken";
