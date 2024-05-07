@@ -1,5 +1,3 @@
-// AllMyDishes.tsx
-
 import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   Center,
