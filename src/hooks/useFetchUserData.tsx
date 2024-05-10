@@ -1,5 +1,3 @@
-// useFetchUserData.ts
-
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../components/pages/config/production';
