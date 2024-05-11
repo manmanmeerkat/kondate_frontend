@@ -1,4 +1,3 @@
-// slices/upDateSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UpDateState {
