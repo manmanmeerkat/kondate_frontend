@@ -1,6 +1,3 @@
-
-import { useState } from 'react';
-
 export const useCookie = () => {
   const setCookie = (name: string, value: string, days: number): void => {
     const expires = new Date();
