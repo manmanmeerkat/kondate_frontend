@@ -16,7 +16,6 @@ export const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const [headerColor, setHeaderColor] = useState<string>('white');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
