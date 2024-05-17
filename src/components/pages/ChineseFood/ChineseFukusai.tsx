@@ -13,7 +13,6 @@ import {
 import { useAllMyDishes } from "../../../hooks/useAllMyDishes";
 import { useSelectDish } from "../../../hooks/useSelectDish";
 import { useIngredientSearch } from "../../../hooks/useIngredientSearch";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
 import { GenreButton } from "../../molecules/GenreButton";
