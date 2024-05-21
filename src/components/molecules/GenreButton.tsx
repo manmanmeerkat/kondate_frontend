@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Button, Menu, MenuButton, MenuList, Box, MenuItem, Spacer } from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuList, Box, MenuItem } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
