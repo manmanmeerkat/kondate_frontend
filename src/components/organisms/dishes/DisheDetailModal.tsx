@@ -204,7 +204,7 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
 
     showMessage({ title: 'メニューを登録しました。', status: 'success' });
     
-    onClose();  // モーダルを閉じる
+    onClose(); 
 
      // メニューの登録が成功したら即座に画面を更新
      const updatedMenu = await getMenuForDate(new Date(formattedDate || new Date()));
