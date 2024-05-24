@@ -213,7 +213,7 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
     console.error('メニューの登録に失敗しました。', error);
     showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
   } finally {
-    setLoading(false); // ローディングを終了
+    setLoading(false); 
   }
 };
 
