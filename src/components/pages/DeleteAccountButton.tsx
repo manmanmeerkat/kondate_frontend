@@ -64,7 +64,6 @@ export const DeleteAccountButton = () => {
         isClosable: true,
       });
   
-      // ログアウト
       navigate('/logout');
   
       // ユーザーをホーム画面にリダイレクト
