@@ -233,7 +233,7 @@ console.log('userId', userId);
           duration: 5000,
           isClosable: true,
         });
-        setIsLoading(false); // ここで isLoading を false に設定
+        setIsLoading(false); 
         navigate(-1);
       } else {
         console.error('フォームの登録が失敗しました');
