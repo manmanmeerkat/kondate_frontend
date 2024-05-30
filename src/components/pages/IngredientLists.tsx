@@ -212,7 +212,7 @@ export const IngredientsList: React.FC = () => {
             <Box
               flex={{ base: 'auto', md: 0.7 }}
               pl={{ base: 0, md: 4 }}
-              textAlign={{ base: 'left', md: 'left' }} // テキストを左揃えにする
+              textAlign={{ base: 'left', md: 'left' }} 
               bg="teal.50"
               p={4}
               borderRadius="md"
