@@ -216,7 +216,7 @@ export const IngredientsList: React.FC = () => {
               bg="teal.50"
               p={4}
               borderRadius="md"
-              width="100%" // スマホ画面のときは幅をフルに使う
+              width="100%" 
             >
               <Heading as="h2" size="lg" mb={2}>
                 すべての材料
