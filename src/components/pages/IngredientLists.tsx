@@ -12,7 +12,7 @@ interface Menu {
   menu_id: number;
   date: string;
   dish_name: string;
-  ingredients: { name: string; quantity: string }[]; // 材料の名前と数量 
+  ingredients: { name: string; quantity: string }[]; 
 }
 
 interface MenuData {
