@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from '../components/pages/config/production';
 
 export const useGetAllDishes = () => {
-  const [dishData, setDishData] = useState({ dishes: [] }); // 初期値をオブジェクトに変更
+  const [dishData, setDishData] = useState({ dishes: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
