@@ -115,7 +115,7 @@ return (
           value={selectedOption}
           colorScheme="teal"
           onChange={(e) => handleSettingsChange(e.target.value)}
-          width="15px" // アイコンの幅を設定
+          width="15px" 
           variant="unstyled" // 外枠の色を削除する
           iconColor="teal" 
           cursor="pointer"
