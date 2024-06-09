@@ -33,6 +33,7 @@ import MenuForDate from "../pages/MenuForDate";
 import { IngredientsList } from "../pages/IngredientLists";
 import { DeleteAccountButton } from "../pages/DeleteAccountButton";
 import ChangePasswordForm from "../pages/ChangePasswordForm";
+import { About } from "../pages/About";
 
 export const Router = memo(() => {
     
@@ -42,7 +43,7 @@ export const Router = memo(() => {
             <Route path="/admin" element={<UsersList />}/>
             <Route path="users/self" element={<DeleteAccountButton />}/>
             <Route path="/change_password" element={<ChangePasswordForm />}/>
-            <Route path="/about" element={<MenuForDate/>}/>
+            <Route path="/about" element={<About />}/>
             <Route path="/menu" element={<MenuForDate />} />
             <Route path="/ingredients_list" element={<IngredientsList />} />
             <Route path="/login" element={<LoginPage />}/>
