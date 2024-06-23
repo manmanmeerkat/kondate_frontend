@@ -9,12 +9,14 @@ interface DishCardProps {
   dishName: string;
   onClick: (id: number) => void;
 }
+
 export const DishCard = memo((props: DishCardProps) => {
   const { id, imageUrl, dishName, onClick } = props;
+
   return (
     <Box
-      w="260px"
-      h="260px"
+      w={{ base: "160px", md: "260px" }}  // baseがスマホ、mdが中サイズ以上
+      h={{ base: "200px", md: "320px" }}
       bg="white"
       borderRadius="10px"
       shadow="md"
@@ -28,12 +30,11 @@ export const DishCard = memo((props: DishCardProps) => {
     >
       <FoodPhotography  
         imageFileName={imageUrl || "https://kondate-zukan.s3.ap-northeast-1.amazonaws.com/noimage.jpg"}
-        alt={dishName} // dishNameをaltとして渡す
+        alt={dishName} 
       />
-
       <Text 
-        fontSize="lg" 
-        mt="20px" 
+        fontSize={{ base: "sm", md: "lg" }} 
+        mt={{ base: "10px", md: "20px" }} 
         fontWeight="bold" 
         textAlign="center" 
         overflow="hidden" 
