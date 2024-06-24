@@ -307,7 +307,6 @@ export const EditDish: React.FC = () => {
         </Heading>
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
-            <Image />
             <FormControl mb={4}>
               <FormLabel>画像を変更する</FormLabel>
               <Input
