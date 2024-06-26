@@ -145,7 +145,7 @@ export const EditDish: React.FC = () => {
     if (formData.image_path) {
       return (
         <Box mb={4}>
-          <img src={`/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
+          <img src={formData.image_path} alt="Dish" style={{ maxWidth: '100%' }} />
         </Box>
       );
     }
