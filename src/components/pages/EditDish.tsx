@@ -141,16 +141,16 @@ export const EditDish: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, ingredients: updatedIngredients }));
   };
 
-  // const Image: React.FC = () => {
-  //   if (formData.image_path) {
-  //     return (
-  //       <Box mb={4}>
-  //         <img src={`/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
-  //       </Box>
-  //     );
-  //   }
-  //   return null;
-  // };
+  const Image: React.FC = () => {
+    if (formData.image_path) {
+      return (
+        <Box mb={4}>
+          <img src={`/storage/${formData.image_path}`} alt="Dish" style={{ maxWidth: '100%' }} />
+        </Box>
+      );
+    }
+    return null;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,7 +159,7 @@ export const EditDish: React.FC = () => {
       setIsSubmitting(true);
   
       // CSRF Cookieを同期的に取得
-      await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
+      await axios.get('/sanctum/csrf-cookie', { withCredentials: true });
       const xsrfToken = getCookie('XSRF-TOKEN');
   
       let imagePath = formData.image_path;
