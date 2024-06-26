@@ -60,13 +60,13 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const handleSettingsChange = (selectedValue: string) => {
     switch (selectedValue) {
-      case 'deleteAccount':
+      case "deleteAccount":
         onClickdeleteUser();
         break;
-      case 'changePassword':
+      case "changePassword":
         onClickpasswordChange();
         break;
-      case 'logout':
+      case "logout":
         onLogoutSuccess();
         break;
       default:
@@ -125,12 +125,8 @@ export const Header: React.FC<HeaderProps> = () => {
             transform="translateY(-50%)" // 上下中央に配置
           >
             {selectedOption === '' && <option value="" disabled></option>}
-            <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}>
-              パスワード変更
-            </option>
-            <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}>
-              アカウント削除
-            </option>
+            <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}> 　パスワード変更　 </option>
+            <option value="deleteAccount" style={{ backgroundColor: 'teal', color: 'white' }}> 　アカウント削除　 </option>
           </Select>
           <Box
             position="absolute"
@@ -139,6 +135,7 @@ export const Header: React.FC<HeaderProps> = () => {
             right="10px" // アイコンの位置を右端に設定
             transform="translateY(-50%)"
             display={{ base: 'none', md: 'block' }} // スマホ画面では非表示
+            pointerEvents={{ base: 'none', md: 'auto' }} // スマホ画面ではクリックを無効にする
           >
             <SettingsIcon />
           </Box>
@@ -162,4 +159,4 @@ export const Header: React.FC<HeaderProps> = () => {
       />
     </>
   );
-};
+}
