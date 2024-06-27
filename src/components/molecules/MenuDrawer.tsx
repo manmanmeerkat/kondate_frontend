@@ -14,12 +14,13 @@ interface MenuDrawerProps {
   onClickdeleteUser: () => void;
   onClickpasswordChange: () => void;
   handleSettingsChange: (value: string) => void;
+  onClickMenuCalendar: () => void;
   selectedOption: string;
   csrfToken: string;
 }
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
-  const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, handleToggleMenu, onClickIngredientsList, onClickdeleteUser, onClickpasswordChange, handleSettingsChange, selectedOption, csrfToken } = props;
+  const { onClose, isOpen, onClickHome, onClickCreate, onClickAllMyDishes, onLogoutSuccess, handleToggleMenu, onClickIngredientsList, onClickdeleteUser, onClickpasswordChange, onClickMenuCalendar, handleSettingsChange, selectedOption, csrfToken } = props;
   const [showSettings, setShowSettings] = useState(false);
 
   return (
@@ -42,6 +43,9 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
               </Button>
               <Button w="100%" variant="solid" colorScheme="green" onClick={onClickCreate}> {/* 新規登録ボタンの色を緑に設定 */}
                 新規登録
+              </Button>
+              <Button w="100%" variant="solid" colorScheme="green" onClick={onClickMenuCalendar}> {/* 設定ボタンの色を緑に設定 */}
+                カレンダー
               </Button>
               <Button w="100%" variant="solid" colorScheme="green" onClick={onClickIngredientsList}> {/* 材料リストボタンの色を緑に設定 */}
                 材料リスト

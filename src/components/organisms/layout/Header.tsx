@@ -158,6 +158,7 @@ export const Header: React.FC<HeaderProps> = () => {
         onClickIngredientsList={onClickIngredientsList}
         onClickdeleteUser={onClickdeleteUser}
         onClickpasswordChange={onClickpasswordChange}
+        onClickMenuCalendar={onClickMenuCalendar}
         handleSettingsChange={handleSettingsChange}
         selectedOption={selectedOption}
         csrfToken={csrfToken}
