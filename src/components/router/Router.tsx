@@ -34,6 +34,7 @@ import { IngredientsList } from "../pages/IngredientLists";
 import { DeleteAccountButton } from "../pages/DeleteAccountButton";
 import ChangePasswordForm from "../pages/ChangePasswordForm";
 import { About } from "../pages/About";
+import MenuCalendar from "../pages/MenuCalendar";
 
 export const Router = memo(() => {
     
@@ -45,6 +46,7 @@ export const Router = memo(() => {
             <Route path="/change_password" element={<ChangePasswordForm />}/>
             <Route path="/about" element={<About />}/>
             <Route path="/menu" element={<MenuForDate />} />
+            <Route path="/menu_calendar" element={<MenuCalendar />} />
             <Route path="/ingredients_list" element={<IngredientsList />} />
             <Route path="/login" element={<LoginPage />}/>
             <Route path="/register" element={<UserRegister />}/>

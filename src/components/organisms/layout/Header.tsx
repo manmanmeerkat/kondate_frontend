@@ -48,6 +48,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const onClickIngredientsList = useCallback(() => navigate('/ingredients_list'), [navigate]);
   const onClickdeleteUser = useCallback(() => navigate('/users/self'), [navigate]);
   const onClickpasswordChange = useCallback(() => navigate('/change_password'), [navigate]);
+  const onClickMenuCalendar = useCallback(() => navigate('/menu_calendar'), [navigate]);
   const [selectedOption, setSelectedOption] = useState('');
 
   const onLogoutSuccess = useCallback(() => {
@@ -99,6 +100,10 @@ export const Header: React.FC<HeaderProps> = () => {
 
           <Box pr={4} onClick={onClickCreate}>
             <Link>新規登録</Link>
+          </Box>
+
+          <Box pr={4} onClick={onClickMenuCalendar}>
+            <Link>カレンダー</Link>
           </Box>
 
           <Box pr={4} onClick={onClickIngredientsList}>
