@@ -31,7 +31,7 @@ const MenuCalendar = () => {
         //endDateをYYYY-MM-DDの形に変換
         const endDate = datesetInfo.view.currentEnd.toISOString().split('T')[0];
 
-        axios.get('http://localhost:8000/api/get-ingredients-list', {
+        axios.get('/api/get-ingredients-list', {
             withCredentials: true,
             params: {
               start_date: startDate,
