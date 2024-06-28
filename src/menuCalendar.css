@@ -40,3 +40,47 @@
 #event-balance {
   color: #4caf50;
 }
+
+/* スマホサイズのスタイル */
+@media (max-width: 600px) {
+  .menu-calendar {
+    height: 100vh; /* ビューポートの高さに合わせる */
+    overflow: hidden; /* スクロールを無効にする */
+  }
+
+  .fc {
+    font-size: 0.7rem; /* 全体のフォントサイズを少し小さくする */
+    height: 100%; /* フルカレンダーの高さをコンテナに合わせる */
+  }
+
+  .fc .fc-toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fc .fc-toolbar-title {
+    margin-bottom: 10px;
+    font-size: 1rem; /* タイトルのフォントサイズを調整 */
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+
+  .fc .fc-dayGridMonth-view .fc-dayGrid-cell {
+    padding: 2px; /* セルのパディングを調整 */
+  }
+
+  .fc .fc-dayGridMonth-view .fc-dayGrid-day-number {
+    font-size: 0.7rem; /* 日付のフォントサイズを調整 */
+  }
+
+  .fc .fc-dayGridMonth-view .fc-event {
+    font-size: 0.7rem; /* イベントのフォントサイズを調整 */
+    text-align: left; /* イベントタイトルを左寄せにする */
+    padding-left: 2px; /* 左側にパディングを追加して少し余白を取る */
+  }
+}
