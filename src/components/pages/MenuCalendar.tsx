@@ -55,6 +55,7 @@ const MenuCalendar = () => {
     }, []);
 
     return (
+        <div className="menu-calendar">
         <FullCalendar 
             locale={jaLocale}
             plugins={[dayGridPlugin]}
@@ -63,6 +64,7 @@ const MenuCalendar = () => {
             eventContent={renderEventContent}
             datesSet={handleDatesSet}
         />
+         </div>
     );
 }
 
