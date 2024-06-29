@@ -89,6 +89,11 @@ const MenuCalendar = () => {
 
     return (
         <div className="menu-calendar">
+            <HStack justify="space-between" mt={4}>
+                <Button onClick={() => window.history.back()} colorScheme="teal">
+                    戻る
+                </Button>
+            </HStack>
             <FullCalendar 
                 locale={jaLocale}
                 plugins={[dayGridPlugin, interactionPlugin]}
