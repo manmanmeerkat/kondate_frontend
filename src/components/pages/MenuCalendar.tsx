@@ -45,7 +45,7 @@ const MenuCalendar = () => {
 
     const renderEventContent = useCallback((eventInfo: EventContentArg) => {
         return (
-            <div className='money' id="event-income">
+            <div className='menu' id="menu-title">
                 <b>{eventInfo.timeText}</b>
                 <i>{eventInfo.event.title}</i>
             </div>

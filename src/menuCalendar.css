@@ -30,15 +30,8 @@
 }
 
 #event-income {
-  color: #2196f3;
-}
-
-#event-expense {
-  color: #f44336;
-}
-
-#event-balance {
-  color: #4caf50;
+  color: black;
+  font-weight: bold;
 }
 
 /* スマホサイズのスタイル */
