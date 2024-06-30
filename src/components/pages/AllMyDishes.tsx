@@ -39,12 +39,11 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
   
   useEffect(() => {
-   
     getDishes();
-    getDish();
     
+    console.log("dishes", dishes);
+    console.log("dishData", dishData);
   }, []);
-
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchIngredient, setSearchIngredient] = useState<string>("");
@@ -61,11 +60,11 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     },
     [dishes, onSelectDish, onOpen]
   );
-  
 
   const handleSearchButtonClick = useCallback(async () => {
     const results = await handleIngredientSearch(searchIngredient);
     setNoSearchResults(results.length === 0 && searchIngredient.trim() !== "");
+    setCurrentPage(1); // 検索後にページをリセット
   }, [handleIngredientSearch, searchIngredient]);
 
   const handleNextPage = () => {
@@ -88,14 +87,13 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         <Input
           placeholder="材料で検索"
           value={searchIngredient}
-          onChange={(e) => setSearchIngredient(e.target.value)}
+          onChange={(e:any) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
-        <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
+          <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
             <SearchIcon />
             検索
           </Button>
-
         </InputRightElement>
       </InputGroup>
       {loading ? (
@@ -103,15 +101,15 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           <Spinner />
         </Center>
       ) : (
-        <Wrap p={{ base: 4, md: 10 }} justify="center">
+        <Wrap p={{ base: 4, md: 10 }} justify="flex-start">
           {noSearchResults ? (
             <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
               <p>該当するデータがありません。</p>
             </Center>
           ) : (
             <>
-              {searchedDishes.length > 0 ? (
-                searchedDishes.map((dish) => (
+              {selectedDishes.length > 0 ? (
+                selectedDishes.map((dish) => (
                   <WrapItem key={dish.id} mx="auto">
                     <DishCard
                       id={dish.id}
@@ -123,29 +121,14 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
                   </WrapItem>
                 ))
               ) : (
-               dishes.length > 0 ? (
-                  dishes.map((dish: any) => (
-                    <WrapItem key={dish.id} mx="auto">
-                      <DishCard
-                        id={dish.id}
-                        imageUrl={dish.image_path}
-                        menuType="Japanese"
-                        dishName={dish.name}
-                        onClick={onClickDish}
-                      />
-                    </WrapItem>
-                  ))
-                ) : (
-                  <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                    <p>登録している料理はありません。</p>
-                  </Center>
-                )
+                <Center h="50vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                  <p>登録している料理はありません。</p>
+                </Center>
               )}
             </>
           )}
         </Wrap>
       )}
-
       <Center mt={4}>
         <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
         <Button onClick={handleNextPage} isDisabled={startIndex + itemsPerPage >= currentDishes.length}>次のページ</Button>
