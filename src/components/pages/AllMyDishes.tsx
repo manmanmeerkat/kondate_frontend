@@ -45,9 +45,12 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     
   }, []);
 
+
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
   const onClickDish = useCallback(
     (id: number) => {
@@ -64,6 +67,18 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     const results = await handleIngredientSearch(searchIngredient);
     setNoSearchResults(results.length === 0 && searchIngredient.trim() !== "");
   }, [handleIngredientSearch, searchIngredient]);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const currentDishes = searchedDishes.length > 0 ? searchedDishes : dishes;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const selectedDishes = currentDishes.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div>
@@ -130,6 +145,11 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           )}
         </Wrap>
       )}
+
+      <Center mt={4}>
+        <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
+        <Button onClick={handleNextPage} isDisabled={startIndex + itemsPerPage >= currentDishes.length}>次のページ</Button>
+      </Center>
       <DishDetailModal
         dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; description: string; reference_url: string } | null}
         isOpen={isOpen}
