@@ -1,7 +1,9 @@
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
-import React, { useEffect, useState } from 'react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import axios from 'axios';
 import {
     Modal,
     ModalOverlay,
@@ -21,8 +23,6 @@ import {
 import { MdRestaurantMenu } from 'react-icons/md';
 import "../../menuCalendar.css";
 import { EventContentArg } from '@fullcalendar/core';
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
-import axios from 'axios';
 
 const MenuCalendar = () => {
     const [events, setEvents] = useState([{ title: '', date: '' }]);
@@ -30,62 +30,66 @@ const MenuCalendar = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedEvents, setSelectedEvents] = useState<{ title: string, date: string }[]>([]);
 
-    const renderEventContent = (eventInfo: EventContentArg) => {
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            event.preventDefault();
+            event.returnValue = '';
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
+    const renderEventContent = useCallback((eventInfo: EventContentArg) => {
         return (
             <div className='money' id="event-income">
                 <b>{eventInfo.timeText}</b>
                 <i>{eventInfo.event.title}</i>
             </div>
         );
-    };
+    }, []);
 
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    
-    const handleDatesSet = (datesetInfo: any) => {
-        setStartDate(datesetInfo.view.currentStart)
-        setEndDate(datesetInfo.view.currentEnd)
-
-        //startDateをYYYY-MM-DDの形に変換
+    const handleDatesSet = useCallback(async (datesetInfo: any) => {
         const startDate = datesetInfo.view.currentStart.toISOString().split('T')[0];
-        //endDateをYYYY-MM-DDの形に変換
         const endDate = datesetInfo.view.currentEnd.toISOString().split('T')[0];
 
-        axios.get('/api/get-ingredients-list', {
-            withCredentials: true,
-            params: {
-              start_date: startDate,
-              end_date: endDate,
-            },
-          })
-          .then(response => {
+        try {
+            const response = await axios.get('/api/get-ingredients-list', {
+                withCredentials: true,
+                params: {
+                    start_date: startDate,
+                    end_date: endDate,
+                },
+            });
+
             const fetchedEvents = response.data.menuData.map((item: any) => ({
                 title: item.dish_name,
                 date: item.date
             }));
+
             setEvents(fetchedEvents);
-          })
-          .catch(error => {
+        } catch (error) {
             console.error(error);
-          });
-    }
+        }
+    }, []);
 
-    // useEffect(() => { 
-    //     handleDatesSet({ view: { currentStart: startDate, currentEnd: endDate } });
-    // }, []);
-
-    const handleDateClick = (clickInfo: DateClickArg) => {
+    const handleDateClick = useCallback((clickInfo: DateClickArg) => {
         setSelectedDate(clickInfo.dateStr);
         const filteredEvents = events.filter(event => event.date === clickInfo.dateStr);
-        setSelectedEvents(filteredEvents as any);
+        setSelectedEvents(filteredEvents);
         onOpen();  // モーダルを開く
-    };
+    }, [events, onOpen]);
 
-    const getDayOfWeek = (dateStr: string) => {
-        const date = new Date(dateStr);
-        const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
-        return daysOfWeek[date.getDay()];
-    };
+    const getDayOfWeek = useMemo(() => {
+        return (dateStr: string) => {
+            const date = new Date(dateStr);
+            const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+            return daysOfWeek[date.getDay()];
+        };
+    }, []);
 
     return (
         <div className="menu-calendar">
