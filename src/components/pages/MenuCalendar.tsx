@@ -70,9 +70,9 @@ const MenuCalendar = () => {
           });
     }
 
-    useEffect(() => { 
-        handleDatesSet({ view: { currentStart: startDate, currentEnd: endDate } });
-    }, []);
+    // useEffect(() => { 
+    //     handleDatesSet({ view: { currentStart: startDate, currentEnd: endDate } });
+    // }, []);
 
     const handleDateClick = (clickInfo: DateClickArg) => {
         setSelectedDate(clickInfo.dateStr);
