@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputRightElement,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import { useDishData } from "../../hooks/useDishData";
 import { useAllMyDishes } from "../../hooks/useAllMyDishes";
@@ -76,8 +77,10 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   };
 
   const currentDishes = searchedDishes.length > 0 ? searchedDishes : dishes;
+  const totalItems = currentDishes.length;
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const selectedDishes = currentDishes.slice(startIndex, startIndex + itemsPerPage);
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const selectedDishes = currentDishes.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -130,8 +133,11 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         </Wrap>
       )}
       <Center mt={4}>
+        <Text>{`${startIndex + 1} - ${endIndex} 件目を表示 (全 ${totalItems} 件)`}</Text>
+      </Center>
+      <Center mt={2}>
         <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
-        <Button onClick={handleNextPage} isDisabled={startIndex + itemsPerPage >= currentDishes.length}>次のページ</Button>
+        <Button onClick={handleNextPage} isDisabled={endIndex >= totalItems}>次のページ</Button>
       </Center>
       <DishDetailModal
         dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; description: string; reference_url: string } | null}
