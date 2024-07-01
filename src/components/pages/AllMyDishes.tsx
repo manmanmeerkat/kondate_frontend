@@ -76,6 +76,10 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
   const currentDishes = searchedDishes.length > 0 ? searchedDishes : dishes;
   const totalItems = currentDishes.length;
   const startIndex = (currentPage - 1) * itemsPerPage;

@@ -23,24 +23,16 @@
 }
 
 /* カスタムイベントの見た目ここから */
-.money {
+.menu-title {
   white-space: nowrap; /* テキストを折り返さない */
   overflow: hidden; /* はみ出したテキストを隠す */
   text-overflow: ellipsis; /* はみ出したテキストの代わりに省略記号を表示 */
 }
 
-#event-income {
-  color: #2196f3;
+#menu {
+  color: black;
+  font-weight: bold;
 }
-
-#event-expense {
-  color: #f44336;
-}
-
-#event-balance {
-  color: #4caf50;
-}
-
 /* スマホサイズのスタイル */
 @media (max-width: 600px) {
   .menu-calendar {
