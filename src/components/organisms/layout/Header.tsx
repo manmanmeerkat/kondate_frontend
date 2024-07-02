@@ -78,7 +78,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-      <Flex as="nav" bg="green" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
+      <Flex as="nav" bg="teal" color="white" align="center" justify="space-between" padding={{ base: 3, md: 5 }}>
         <MenuIconButton onOpen={onOpen} />
 
         <Flex align="center" as="a" mr={8} _hover={{ cursor: 'pointer' }} onClick={onClickHome}>

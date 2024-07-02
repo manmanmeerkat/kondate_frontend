@@ -10,7 +10,6 @@ import {
   InputRightElement,
   Button,
   Text,
-  Box,
 } from "@chakra-ui/react";
 import { useDishData } from "../../hooks/useDishData";
 import { useAllMyDishes } from "../../hooks/useAllMyDishes";
@@ -88,7 +87,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const selectedDishes = currentDishes.slice(startIndex, endIndex);
 
   return (
-    <Box backgroundColor="orange.200" minHeight="100vh"> {/* minHeightを設定 */}
+    <div>
       <Header />
       <GenreButton />
       <InputGroup mt={4} mx="auto" w={{ base: "80%", md: "60%" }}>
@@ -98,7 +97,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           onChange={(e:any) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
-          <Button colorScheme="green" onClick={handleSearchButtonClick} size="sm">
+          <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
             <SearchIcon />
             検索
           </Button>
@@ -150,6 +149,6 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         onClose={onClose}
         id={selectedDishId}
       />
-    </Box>
+    </div>
   );
 });
