@@ -60,17 +60,19 @@ const MenuCalendar = () => {
         const endDate = datesetInfo.view.currentEnd.toISOString().split('T')[0];
 
         try {
+            
+            const csrfToken = await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
+        
+
             const response = await axios.get('/api/get-ingredients-list', {
                 withCredentials: true,
                 params: {
                     start_date: startDate,
                     end_date: endDate,
                 },
-                //ユーザーのidを送信
                 headers: {
-                    Authorization: `Bearer ${user?.id}`,
-                },
-
+                    Authorization: `Bearer ${csrfToken}`,
+                  },
             });
 
             const fetchedEvents = response.data.menuData.map((item: any) => ({
