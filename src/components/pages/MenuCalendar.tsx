@@ -23,12 +23,15 @@ import {
 import { MdRestaurantMenu } from 'react-icons/md';
 import "../../menuCalendar.css";
 import { EventContentArg } from '@fullcalendar/core';
+import { useFetchUserData } from '../../hooks/useFetchUserData';
 
 const MenuCalendar = () => {
     const [events, setEvents] = useState([{ title: '', date: '' }]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedEvents, setSelectedEvents] = useState<{ title: string, date: string }[]>([]);
+    const { user } = useFetchUserData();
+
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -57,18 +60,17 @@ const MenuCalendar = () => {
         const endDate = datesetInfo.view.currentEnd.toISOString().split('T')[0];
 
         try {
-            const csrfResponse = await axios.get('/api/sanctum/csrf-cookie');
-            const csrfToken = csrfResponse.data.csrfToken;
-
             const response = await axios.get('/api/get-ingredients-list', {
                 withCredentials: true,
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                },
                 params: {
                     start_date: startDate,
                     end_date: endDate,
                 },
+                //ユーザーのidを送信
+                headers: {
+                    Authorization: `Bearer ${user?.id}`,
+                },
+
             });
 
             const fetchedEvents = response.data.menuData.map((item: any) => ({
