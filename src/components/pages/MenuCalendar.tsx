@@ -61,9 +61,6 @@ const MenuCalendar = () => {
         const endDate = datesetInfo.view.currentEnd.toISOString().split('T')[0];
 
         try {
-            const csrfResponse = await axios.get('/api/sanctum/csrf-cookie');
-            const csrfToken = csrfResponse.data.csrfToken;
-
             const response = await axios.get('/api/get-ingredients-list', {
                 withCredentials: true,
                 params: {
@@ -71,7 +68,6 @@ const MenuCalendar = () => {
                     end_date: endDate,
                 },
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken,
                     'Authorization': `Bearer ${authToken}`,
                   },
             });
