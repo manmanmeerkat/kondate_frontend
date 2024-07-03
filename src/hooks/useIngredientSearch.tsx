@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Dish } from '../types/Dish';
+import config from '../components/pages/config/production';
 
 export const useIngredientSearch = (endpoint: string, user_id: number | undefined) => {
   const [searchedDishes, setSearchedDishes] = useState<Dish[]>([]);
@@ -13,7 +14,7 @@ export const useIngredientSearch = (endpoint: string, user_id: number | undefine
       } else {
         // ユーザーがログインしている場合にのみ検索を行う
         if (user_id) {
-          const response = await fetch(`/api/${endpoint}/search?ingredient=${searchIngredient}&user_id=${user_id}`);
+          const response = await fetch(`${config.API_ENDPOINT}/api/${endpoint}/search?ingredient=${searchIngredient}&user_id=${user_id}`);
           const data = await response.json();
 
           if (response.ok) {
