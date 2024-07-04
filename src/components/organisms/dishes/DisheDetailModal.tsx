@@ -211,7 +211,7 @@ if (selectedDate && typeof selectedDate === 'object' && 'selectedDate' in select
      dispatch(setMenu(updatedMenu));
   } catch (error) {
     console.error('メニューの登録に失敗しました。', error);
-    showMessage({ title: 'メニューの登録に失敗しました。', status: 'error' });
+    showMessage({ title: 'こんだて作成モードにしてください。', status: 'error' });
   } finally {
     setLoading(false); 
   }

@@ -39,7 +39,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = memo((props) => {
                 handleToggleMenu(); // こんだて作成の処理を実行
                 onClose(); // ドロワーを閉じる
               }}>
-                こんだて作成
+                こんだて作成モード
               </Button>
               <Button w="100%" variant="solid" colorScheme="green" onClick={onClickCreate}> {/* 新規登録ボタンの色を緑に設定 */}
                 新規登録

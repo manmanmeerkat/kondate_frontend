@@ -94,7 +94,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
           {!isMobile && (
             <Box pr={4} onClick={handleToggleMenu}>
-              <Link>こんだて作成</Link>
+              <Link>こんだて作成モード</Link>
             </Box>
           )}
 
