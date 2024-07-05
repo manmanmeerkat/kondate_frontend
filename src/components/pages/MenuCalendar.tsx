@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import jaLocale from '@fullcalendar/core/locales/ja';
@@ -23,7 +23,6 @@ import {
 import { MdRestaurantMenu } from 'react-icons/md';
 import "../../menuCalendar.css";
 import { EventContentArg } from '@fullcalendar/core';
-import { useFetchUserData } from '../../hooks/useFetchUserData';
 import useAuthToken from '../../hooks/useAuthToken';
 
 const MenuCalendar = () => {
@@ -87,7 +86,7 @@ const MenuCalendar = () => {
         setSelectedDate(clickInfo.dateStr);
         const filteredEvents = events.filter(event => event.date === clickInfo.dateStr);
         setSelectedEvents(filteredEvents);
-        onOpen();  // モーダルを開く
+        onOpen();  
     }, [events, onOpen]);
 
     const getDayOfWeek = useMemo(() => {
