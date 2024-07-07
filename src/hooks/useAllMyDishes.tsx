@@ -13,12 +13,14 @@ export const useAllMyDishes = () => {
   const fetchDishes = useCallback(async (endpoint: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${config.API_ENDPOINT}/api/${endpoint}`, {
+      const response = await axios.get(`${config.API_ENDPOINT}/${endpoint}`, {
         withCredentials: true,
       });
-      console.log("APIからのレスポンス:", response.data); 
-      setDishes(response.data); 
-      return response.data;
+      console.log("APIからのレスポンス:", response.data);
+      // APIレスポンスが { dishes: [...] } 形式の場合
+      const fetchedDishes = response.data.dishes || [];
+      setDishes(fetchedDishes);
+      return fetchedDishes;
     } catch (error) {
       showMessage({ title: "データ取得に失敗しました", status: "error" });
       return [];
@@ -26,7 +28,7 @@ export const useAllMyDishes = () => {
       setLoading(false);
     }
   }, [showMessage]);
-  
+
   // 全てのメニューを取得
   const getDishes = useCallback(() => fetchDishes("all-my-dish"), [fetchDishes]);
 
