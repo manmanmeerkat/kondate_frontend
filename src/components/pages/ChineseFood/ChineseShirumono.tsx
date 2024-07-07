@@ -22,7 +22,7 @@ import { DishCard } from "../../organisms/dishes/DishCard";
 import { Dish } from "../../../types/Dish";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
-import { useChineseSyusai } from "../../../hooks/useFetchChineseData";
+import { useChineseShirumono } from "../../../hooks/useFetchChineseData";
 import { DishDetailModal } from "../../organisms/dishes/DisheDetailModal";
 
 interface ChineseProps {
@@ -34,13 +34,13 @@ interface ChineseProps {
   reference_url?: string;
 }
 
-export const ChineseSyusai: React.FC<ChineseProps> = memo(() => {
+export const ChineseShirumono: React.FC<ChineseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getChineseSyusai, dishes, loading } = useAllMyDishes();
-  const { data } = useChineseSyusai();
+  const { getChineseShirumono, dishes, loading } = useAllMyDishes();
+  const { data } = useChineseShirumono();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("chinese-syusai", user?.id);
+  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("chinese-shirumono", user?.id);
   const navigate = useNavigate();
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -50,8 +50,8 @@ export const ChineseSyusai: React.FC<ChineseProps> = memo(() => {
   const itemsPerPage = 8;
 
   useEffect(() => {
-    getChineseSyusai();
-  }, [getChineseSyusai]);
+    getChineseShirumono();
+  }, [getChineseShirumono]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -126,7 +126,7 @@ export const ChineseSyusai: React.FC<ChineseProps> = memo(() => {
                     <DishCard
                       id={dish.id}
                       imageUrl={dish.image_path}
-                      menuType="ChineseSyusai"
+                      menuType="ChineseShirumono"
                       dishName={dish.name}
                       onClick={onClickDish}
                     />
