@@ -17,7 +17,7 @@ export const useAllMyDishes = () => {
         withCredentials: true,
       });
       setDishes(response.data);
-      return response.data.dishes;
+      return response.data;
     } catch (error) {
       showMessage({ title: "データ取得に失敗しました", status: "error" });
       return [];
