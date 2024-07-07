@@ -13,7 +13,7 @@ export const useAllMyDishes = () => {
   const fetchDishes = useCallback(async (endpoint: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${config.API_ENDPOINT}/${endpoint}`, {
+      const response = await axios.get(`${config.API_ENDPOINT}/api/${endpoint}`, {
         withCredentials: true,
       });
       console.log("APIからのレスポンス:", response.data);
