@@ -3,14 +3,8 @@ import { useCallback, useState } from "react";
 import { useMessage } from "./useMessage";
 import config from "../components/pages/config/production";
 import useAuthToken from "./useAuthToken";
+import { Dish } from "../types/Dish";
 
-// 型定義
-type Dish = {
-  // 必要な属性をここに追加
-  id: number;
-  name: string;
-  // ...
-};
 
 type Category = "japanese" | "western" | "chinese" | "others";
 type Subcategory = "syusai" | "fukusai" | "shirumono" | "others" | "";
