@@ -28,6 +28,7 @@ export const useAllMyDishes = () => {
 
   // 全てのメニューを取得
   const getDishes = useCallback(() => fetchDishes("all-my-dish"), [fetchDishes]);
+  console.log(dishes);
 
   // 和食カテゴリ
   const getJapanese = useCallback(() => fetchDishes("japanese"), [fetchDishes]);

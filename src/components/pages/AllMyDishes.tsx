@@ -22,6 +22,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { Header } from "../organisms/layout/Header";
 import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 import { useFetchUserData } from "../../hooks/useFetchUserData";
+import { Dish } from "../../types/Dish";
 
 interface AllMyDishesProps {
   id?: number;
@@ -34,18 +35,15 @@ interface AllMyDishesProps {
 
 export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getDishes, dishes, loading } = useAllMyDishes();
+  const { getDishes, dishes: apiDishes, loading } = useAllMyDishes();
   const { onSelectDish, selectedDish } = useSelectDish();
   const { getDish, dishData } = useDishData();
   const { user } = useFetchUserData();
   const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
-  
+
   useEffect(() => {
     getDishes();
-    
-    console.log("dishes", dishes);
-    console.log("dishData", dishData);
-  }, []);
+  }, [getDishes]);
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchIngredient, setSearchIngredient] = useState<string>("");
@@ -55,18 +53,22 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
 
   const onClickDish = useCallback(
     (id: number) => {
-      if (dishes !== null) {
-        onSelectDish({ id, dishes, onOpen });
+      if (Array.isArray(apiDishes)) {
+        onSelectDish({ id, dishes: apiDishes, onOpen });
         setSelectedDishId(id);
       }
     },
-    [dishes, onSelectDish, onOpen]
+    [apiDishes, onSelectDish, onOpen]
   );
 
   const handleSearchButtonClick = useCallback(async () => {
     const results = await handleIngredientSearch(searchIngredient);
-    setNoSearchResults(results.length === 0 && searchIngredient.trim() !== "");
-    setCurrentPage(1); // 検索後にページをリセット
+    if (results.length === 0 && searchIngredient.trim() !== "") {
+      setNoSearchResults(true);
+    } else {
+      setNoSearchResults(false);
+    }
+    setCurrentPage(1);
   }, [handleIngredientSearch, searchIngredient]);
 
   const handleNextPage = () => {
@@ -81,7 +83,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
-  const currentDishes = searchedDishes.length > 0 ? searchedDishes : dishes;
+  const currentDishes: Dish[] = searchIngredient.length > 0 ? (Array.isArray(searchedDishes) ? searchedDishes : []) : (Array.isArray(apiDishes) ? apiDishes : []);
   const totalItems = currentDishes.length;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
@@ -95,7 +97,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         <Input
           placeholder="材料で検索"
           value={searchIngredient}
-          onChange={(e:any) => setSearchIngredient(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchIngredient(e.target.value)}
         />
         <InputRightElement width="4.5rem">
           <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
@@ -137,13 +139,17 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           )}
         </Wrap>
       )}
-      <Center mt={1}>
-        <Text>{`${startIndex + 1} - ${endIndex} 件目を表示 (全 ${totalItems} 件)`}</Text>
-      </Center>
-      <Center mt={2}>
-        <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
-        <Button onClick={handleNextPage} isDisabled={endIndex >= totalItems}>次のページ</Button>
-      </Center>
+      {!noSearchResults && (
+        <>
+          <Center mt={1}>
+            <Text>{`${startIndex + 1} - ${endIndex} 件目を表示 (全 ${totalItems} 件)`}</Text>
+          </Center>
+          <Center mt={2}>
+            <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
+            <Button onClick={handleNextPage} isDisabled={endIndex >= totalItems}>次のページ</Button>
+          </Center>
+        </>
+      )}
       <DishDetailModal
         dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; description: string; reference_url: string } | null}
         isOpen={isOpen}
