@@ -13,11 +13,10 @@ export const useAllMyDishes = () => {
   const fetchDishes = useCallback(async (endpoint: string) => {
     setLoading(true);
     try {
-      const response = await axios.get<{ dishes: Dish[] }>(`${config.API_ENDPOINT}/api/${endpoint}`, {
+      const response = await axios.get(`${config.API_ENDPOINT}/api/${endpoint}`, {
         withCredentials: true,
       });
-      setDishes(response.data.dishes);
-      console.log(response.data.dishes);
+      setDishes(response.data);
       return response.data.dishes;
     } catch (error) {
       showMessage({ title: "データ取得に失敗しました", status: "error" });
