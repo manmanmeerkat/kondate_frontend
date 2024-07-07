@@ -110,7 +110,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
         </Center>
       ) : (
         <Wrap p={{ base: 4, md: 10 }} justify="flex-start">
-         {noSearchResults ? (
+          {noSearchResults ? (
             <Flex h="50vh" justify="center" align="center" w="100%">
               <Text textAlign="center">該当するデータがありません。</Text>
             </Flex>
@@ -137,17 +137,13 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           )}
         </Wrap>
       )}
-      {!noSearchResults && (
-        <>
-          <Center mt={1}>
-            <Text>{`${startIndex + 1} - ${endIndex} 件目を表示 (全 ${totalItems} 件)`}</Text>
-          </Center>
-          <Center mt={2}>
-            <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
-            <Button onClick={handleNextPage} isDisabled={endIndex >= totalItems}>次のページ</Button>
-          </Center>
-        </>
-      )}
+      <Center mt={1}>
+        <Text>{`${startIndex + 1} - ${endIndex} 件目を表示 (全 ${totalItems} 件)`}</Text>
+      </Center>
+      <Center mt={2}>
+        <Button onClick={handlePrevPage} isDisabled={currentPage === 1} mr={2}>前のページ</Button>
+        <Button onClick={handleNextPage} isDisabled={endIndex >= totalItems}>次のページ</Button>
+      </Center>
       <DishDetailModal
         dish={selectedDish as { id: number; name: string; genre_id: number; category_id: number; description: string; reference_url: string } | null}
         isOpen={isOpen}

@@ -1,31 +1,23 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useMessage } from "./useMessage";
-import config from "../components/pages/config/production";
-import useAuthToken from "./useAuthToken";
 import { Dish } from "../types/Dish";
+import config from "../components/pages/config/production";
 
-
-type Category = "japanese" | "western" | "chinese" | "others";
-type Subcategory = "syusai" | "fukusai" | "shirumono" | "others" | "";
 
 export const useAllMyDishes = () => {
   const { showMessage } = useMessage();
-  const authToken = useAuthToken();
   const [loading, setLoading] = useState(false);
   const [dishes, setDishes] = useState<Dish[]>([]);
 
   const fetchDishes = useCallback(async (endpoint: string) => {
     setLoading(true);
     try {
-      const response = await axios.get<{ dishes: Dish[] }>(`${config.API_ENDPOINT}/api/${endpoint}`, {
+      const response = await axios.get<{ dishes: Dish[] }>(`${config.API_ENDPOINT}/${endpoint}`, {
         withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
       });
       setDishes(response.data.dishes);
-      console.log("response", response);
+      console.log(response.data.dishes);
       return response.data.dishes;
     } catch (error) {
       showMessage({ title: "データ取得に失敗しました", status: "error" });
@@ -33,39 +25,61 @@ export const useAllMyDishes = () => {
     } finally {
       setLoading(false);
     }
-  }, [authToken, showMessage]);
+  }, [showMessage]);
 
+  // 全てのメニューを取得
   const getDishes = useCallback(() => fetchDishes("all-my-dish"), [fetchDishes]);
 
-  const getCategoryDishes = useCallback(
-    (category: Category, subcategory: Subcategory = "") => {
-      const endpoint = subcategory
-        ? `${category}_${subcategory}`
-        : category;
-      return fetchDishes(endpoint);
-    },
-    [fetchDishes]
-  );
+  // 和食カテゴリ
+  const getJapanese = useCallback(() => fetchDishes("japanese"), [fetchDishes]);
+  const getJapaneseSyusai = useCallback(() => fetchDishes("japanese_syusai"), [fetchDishes]);
+  const getJapaneseFukusai = useCallback(() => fetchDishes("japanese_fukusai"), [fetchDishes]);
+  const getJapaneseShirumono = useCallback(() => fetchDishes("japanese_shirumono"), [fetchDishes]);
+  const getJapaneseOthers = useCallback(() => fetchDishes("japanese_others"), [fetchDishes]);
 
-  // カテゴリとサブカテゴリの組み合わせを生成
-  const categories: Category[] = ["japanese", "western", "chinese", "others"];
-  const subcategories: Subcategory[] = ["syusai", "fukusai", "shirumono", "others", ""];
+  // 洋食カテゴリ
+  const getWestern = useCallback(() => fetchDishes("western"), [fetchDishes]);
+  const getWesternSyusai = useCallback(() => fetchDishes("western_syusai"), [fetchDishes]);
+  const getWesternFukusai = useCallback(() => fetchDishes("western_fukusai"), [fetchDishes]);
+  const getWesternShirumono = useCallback(() => fetchDishes("western_shirumono"), [fetchDishes]);
+  const getWesternOthers = useCallback(() => fetchDishes("western_others"), [fetchDishes]);
 
-  // 動的に関数を生成
-  const dishFunctions = categories.reduce((acc, category) => {
-    subcategories.forEach((subcategory) => {
-      const functionName = subcategory
-        ? `get${category.charAt(0).toUpperCase() + category.slice(1)}${subcategory.charAt(0).toUpperCase() + subcategory.slice(1)}`
-        : `get${category.charAt(0).toUpperCase() + category.slice(1)}`;
-      
-      acc[functionName] = () => getCategoryDishes(category, subcategory);
-    });
-    return acc;
-  }, {} as Record<string, () => Promise<Dish[]>>);
+  // 中華カテゴリ
+  const getChinese = useCallback(() => fetchDishes("chinese"), [fetchDishes]);
+  const getChineseSyusai = useCallback(() => fetchDishes("chinese_syusai"), [fetchDishes]);
+  const getChineseFukusai = useCallback(() => fetchDishes("chinese_fukusai"), [fetchDishes]);
+  const getChineseShirumono = useCallback(() => fetchDishes("chinese_shirumono"), [fetchDishes]);
+  const getChineseOthers = useCallback(() => fetchDishes("chinese_others"), [fetchDishes]);
+
+  // その他カテゴリ
+  const getOthers = useCallback(() => fetchDishes("others"), [fetchDishes]);
+  const getOthersSyusai = useCallback(() => fetchDishes("others_syusai"), [fetchDishes]);
+  const getOthersFukusai = useCallback(() => fetchDishes("others_fukusai"), [fetchDishes]);
+  const getOthersShirumono = useCallback(() => fetchDishes("others_shirumono"), [fetchDishes]);
+  const getOthersOthers = useCallback(() => fetchDishes("others_others"), [fetchDishes]);
 
   return {
     getDishes,
-    ...dishFunctions,
+    getJapanese,
+    getJapaneseSyusai,
+    getJapaneseFukusai,
+    getJapaneseShirumono,
+    getJapaneseOthers,
+    getWestern,
+    getWesternSyusai,
+    getWesternFukusai,
+    getWesternShirumono,
+    getWesternOthers,
+    getChinese,
+    getChineseSyusai,
+    getChineseFukusai,
+    getChineseShirumono,
+    getChineseOthers,
+    getOthers,
+    getOthersSyusai,
+    getOthersFukusai,
+    getOthersShirumono,
+    getOthersOthers,
     loading,
     dishes
   };
