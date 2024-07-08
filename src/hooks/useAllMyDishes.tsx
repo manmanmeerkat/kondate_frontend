@@ -2,21 +2,30 @@ import axios from "axios"
 import { useCallback, useState } from "react"
 
 import { useMessage } from "./useMessage"
+import config from "../components/pages/config/production"
+import useAuthToken from "./useAuthToken"
 export const useAllMyDishes = () => {
     const { showMessage } = useMessage()
-
+    const authToken = useAuthToken();
     const [loading, setLoading] = useState(false);
     const [dishes, setDishes] = useState([]);
+
+
 
     //全てのメニューを取得
     const getDishes = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8000/api/all-my-dish", {
-                withCredentials: true,
+       
+            const response = await axios.get('/api/all-my-dish', {
+                withCredentials: true ,
+                headers: {
+                    Authorization: `Bearer ${authToken}`
+                }
+          
             });
             setDishes(response.data.dishes);
-            console.log(response.data.dishes);
+            console.log("response",response);
         } catch (error) {
             showMessage({ title: "データ取得に失敗しました", status: "error" });
         } finally {
@@ -29,7 +38,7 @@ export const useAllMyDishes = () => {
     //ジャンルが"和食"のデータを全て取得
     const getJapanese = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/japanese/")
+        axios.get(`${config.API_ENDPOINT}/api/japanese/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -40,7 +49,7 @@ export const useAllMyDishes = () => {
 
     const getJapaneseSyusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/japanese_syusai/")
+        axios.get(`${config.API_ENDPOINT}/api/japanese_syusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -51,7 +60,7 @@ export const useAllMyDishes = () => {
 
     const getJapaneseFukusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/japanese_fukusai/")
+        axios.get(`${config.API_ENDPOINT}/api/japanese_fukusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -62,7 +71,7 @@ export const useAllMyDishes = () => {
 
     const getJapaneseShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/japanese_shirumono/")
+        axios.get(`${config.API_ENDPOINT}/api/japanese_shirumono/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -73,7 +82,7 @@ export const useAllMyDishes = () => {
 
     const getJapaneseOthers = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/japanese_others/")
+        axios.get(`${config.API_ENDPOINT}/api/japanese_others/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -85,7 +94,7 @@ export const useAllMyDishes = () => {
     //ジャンルが"洋食"のデータを全て取得
     const getWestern = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/western/")
+        axios.get(`${config.API_ENDPOINT}/api/western/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -96,7 +105,7 @@ export const useAllMyDishes = () => {
 
     const getWesternSyusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/western_syusai/")
+        axios.get(`${config.API_ENDPOINT}/api/western_syusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -107,7 +116,7 @@ export const useAllMyDishes = () => {
 
     const getWesternFukusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/western_fukusai/")
+        axios.get(`${config.API_ENDPOINT}/api/western_fukusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -118,7 +127,7 @@ export const useAllMyDishes = () => {
 
     const getWesternShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/western_shirumono/")
+        axios.get(`${config.API_ENDPOINT}/api/western_shirumono/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -129,7 +138,7 @@ export const useAllMyDishes = () => {
 
     const getWesternOthers = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/western_others/")
+        axios.get(`${config.API_ENDPOINT}/api/western_others/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -141,7 +150,7 @@ export const useAllMyDishes = () => {
     //ジャンルが"中華"のデータを全て取得
     const getChinese = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/chinese/")
+        axios.get(`${config.API_ENDPOINT}/api/chinese/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -152,7 +161,7 @@ export const useAllMyDishes = () => {
 
     const getChineseSyusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/chinese_syusai/")
+        axios.get(`${config.API_ENDPOINT}/api/chinese_syusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -163,7 +172,7 @@ export const useAllMyDishes = () => {
 
     const getChineseFukusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/chinese_fukusai/")
+        axios.get(`${config.API_ENDPOINT}/api/chinese_fukusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -174,7 +183,7 @@ export const useAllMyDishes = () => {
 
     const getChineseShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/chinese_shirumono/")
+        axios.get(`${config.API_ENDPOINT}/api/chinese_shirumono/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -185,7 +194,7 @@ export const useAllMyDishes = () => {
 
     const getChineseOthers = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/chinese_others/")
+        axios.get(`${config.API_ENDPOINT}/api/chinese_others/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -196,7 +205,7 @@ export const useAllMyDishes = () => {
 
     const getOthers = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/others/")
+        axios.get(`${config.API_ENDPOINT}/api/others/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -207,7 +216,7 @@ export const useAllMyDishes = () => {
 
     const getOthersSyusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/others_syusai/")
+        axios.get(`${config.API_ENDPOINT}/api/others_syusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -218,7 +227,7 @@ export const useAllMyDishes = () => {
 
     const getOthersFukusai = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/others_fukusai/")
+        axios.get(`${config.API_ENDPOINT}/api/others_fukusai/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -229,7 +238,7 @@ export const useAllMyDishes = () => {
 
     const getOthersShirumono = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/others_shirumono/")
+        axios.get(`${config.API_ENDPOINT}/api/others_shirumono/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
@@ -240,7 +249,7 @@ export const useAllMyDishes = () => {
 
     const getOthersOthers = useCallback(() => {
         setLoading(true)
-        axios.get("http://localhost:8000/api/others_others/")
+        axios.get(`${config.API_ENDPOINT}/api/others_others/`)
         .then((res) => setDishes(res.data))
         .catch(() => {
             showMessage({ title: "データ取得に失敗しました", status:"error" })
