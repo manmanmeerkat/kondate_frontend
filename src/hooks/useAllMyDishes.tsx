@@ -1,88 +1,256 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
-import { useMessage } from "./useMessage";
-import { Dish } from "../types/Dish";
-import config from "../components/pages/config/production";
+import axios from "axios"
+import { useCallback, useState } from "react"
 
-
+import { useMessage } from "./useMessage"
 export const useAllMyDishes = () => {
-  const { showMessage } = useMessage();
-  const [loading, setLoading] = useState(false);
-  const [dishes, setDishes] = useState<Dish[]>([]);
+    const { showMessage } = useMessage()
 
-  const fetchDishes = useCallback(async (endpoint: string) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${config.API_ENDPOINT}/api/${endpoint}`, {
-        withCredentials: true,
-      });
-      console.log("APIからのレスポンス:", response.data);
-      // APIレスポンスが { dishes: [...] } 形式の場合
-      const fetchedDishes = response.data.dishes || [];
-      setDishes(fetchedDishes);
-      return fetchedDishes;
-    } catch (error) {
-      showMessage({ title: "データ取得に失敗しました", status: "error" });
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  }, [showMessage]);
+    const [loading, setLoading] = useState(false);
+    const [dishes, setDishes] = useState([]);
 
-  // 全てのメニューを取得
-  const getDishes = useCallback(() => fetchDishes("all-my-dish"), [fetchDishes]);
+    //全てのメニューを取得
+    const getDishes = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get("http://localhost:8000/api/all-my-dish", {
+                withCredentials: true,
+            });
+            setDishes(response.data.dishes);
+            console.log(response.data.dishes);
+        } catch (error) {
+            showMessage({ title: "データ取得に失敗しました", status: "error" });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+    
 
-  // 和食カテゴリ
-  const getJapanese = useCallback(() => fetchDishes("japanese"), [fetchDishes]);
-  const getJapaneseSyusai = useCallback(() => fetchDishes("japanese_syusai"), [fetchDishes]);
-  const getJapaneseFukusai = useCallback(() => fetchDishes("japanese_fukusai"), [fetchDishes]);
-  const getJapaneseShirumono = useCallback(() => fetchDishes("japanese_shirumono"), [fetchDishes]);
-  const getJapaneseOthers = useCallback(() => fetchDishes("japanese_others"), [fetchDishes]);
 
-  // 洋食カテゴリ
-  const getWestern = useCallback(() => fetchDishes("western"), [fetchDishes]);
-  const getWesternSyusai = useCallback(() => fetchDishes("western_syusai"), [fetchDishes]);
-  const getWesternFukusai = useCallback(() => fetchDishes("western_fukusai"), [fetchDishes]);
-  const getWesternShirumono = useCallback(() => fetchDishes("western_shirumono"), [fetchDishes]);
-  const getWesternOthers = useCallback(() => fetchDishes("western_others"), [fetchDishes]);
+    //ジャンルが"和食"のデータを全て取得
+    const getJapanese = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/japanese/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
 
-  // 中華カテゴリ
-  const getChinese = useCallback(() => fetchDishes("chinese"), [fetchDishes]);
-  const getChineseSyusai = useCallback(() => fetchDishes("chinese_syusai"), [fetchDishes]);
-  const getChineseFukusai = useCallback(() => fetchDishes("chinese_fukusai"), [fetchDishes]);
-  const getChineseShirumono = useCallback(() => fetchDishes("chinese_shirumono"), [fetchDishes]);
-  const getChineseOthers = useCallback(() => fetchDishes("chinese_others"), [fetchDishes]);
+    const getJapaneseSyusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/japanese_syusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
 
-  // その他カテゴリ
-  const getOthers = useCallback(() => fetchDishes("others"), [fetchDishes]);
-  const getOthersSyusai = useCallback(() => fetchDishes("others_syusai"), [fetchDishes]);
-  const getOthersFukusai = useCallback(() => fetchDishes("others_fukusai"), [fetchDishes]);
-  const getOthersShirumono = useCallback(() => fetchDishes("others_shirumono"), [fetchDishes]);
-  const getOthersOthers = useCallback(() => fetchDishes("others_others"), [fetchDishes]);
+    const getJapaneseFukusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/japanese_fukusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
 
-  return {
-    getDishes,
-    getJapanese,
-    getJapaneseSyusai,
-    getJapaneseFukusai,
-    getJapaneseShirumono,
-    getJapaneseOthers,
-    getWestern,
-    getWesternSyusai,
-    getWesternFukusai,
-    getWesternShirumono,
-    getWesternOthers,
-    getChinese,
-    getChineseSyusai,
-    getChineseFukusai,
-    getChineseShirumono,
-    getChineseOthers,
-    getOthers,
-    getOthersSyusai,
-    getOthersFukusai,
-    getOthersShirumono,
-    getOthersOthers,
-    loading,
-    dishes
-  };
-};
+    const getJapaneseShirumono = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/japanese_shirumono/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getJapaneseOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/japanese_others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    //ジャンルが"洋食"のデータを全て取得
+    const getWestern = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/western/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getWesternSyusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/western_syusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getWesternFukusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/western_fukusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getWesternShirumono = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/western_shirumono/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getWesternOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/western_others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    //ジャンルが"中華"のデータを全て取得
+    const getChinese = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/chinese/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getChineseSyusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/chinese_syusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getChineseFukusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/chinese_fukusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getChineseShirumono = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/chinese_shirumono/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getChineseOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/chinese_others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getOthersSyusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/others_syusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getOthersFukusai = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/others_fukusai/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getOthersShirumono = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/others_shirumono/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+    const getOthersOthers = useCallback(() => {
+        setLoading(true)
+        axios.get("http://localhost:8000/api/others_others/")
+        .then((res) => setDishes(res.data))
+        .catch(() => {
+            showMessage({ title: "データ取得に失敗しました", status:"error" })
+        }).finally(() => {
+            setLoading(false)
+        });
+    }, []);
+
+
+    return { getDishes, getJapanese, getJapaneseSyusai, getJapaneseFukusai, getJapaneseShirumono,getJapaneseOthers,
+        getWestern, getWesternSyusai, getWesternFukusai, getWesternShirumono, getWesternOthers,
+        getChinese, getChineseShirumono, getChineseSyusai, getChineseFukusai,getChineseOthers, getOthers, getOthersSyusai, getOthersFukusai, getOthersShirumono, getOthersOthers, loading, dishes }
+}
