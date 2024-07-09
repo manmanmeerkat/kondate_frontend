@@ -27,8 +27,6 @@ import { OthersShirumono } from "../pages/OthersFood/OthersShirumono";
 import { OthersOthers } from "../pages/OthersFood/OthersOthers";
 import { LoginPage } from "../pages/Auth/LoginPage";
 import { UsersList } from "../pages/Admin/UsersList";
-import { AllDishImage } from "../pages/Admin/AllDishImage";
-import { Calendar } from "../pages/Calendar";
 import MenuForDate from "../pages/MenuForDate";
 import { IngredientsList } from "../pages/IngredientLists";
 import { DeleteAccountButton } from "../pages/DeleteAccountButton";
