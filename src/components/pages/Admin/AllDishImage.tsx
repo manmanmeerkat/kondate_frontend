@@ -50,7 +50,6 @@ export const AllDishImage: React.FC<AllMyDishesProps> = memo(() => {
     },
     [dishes, onSelectDish, onOpen]
   );
-console.log("ヂュエル"  ,dishes);
   const handleSearchButtonClick = useCallback(async () => {
     const results = await handleIngredientSearch(searchIngredient);
     setNoSearchResults(results.length === 0 && searchIngredient.trim() !== "");
