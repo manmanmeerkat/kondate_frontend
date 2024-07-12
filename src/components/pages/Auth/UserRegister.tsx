@@ -151,7 +151,7 @@ export const UserRegister: React.FC = () => {
       } else {
         console.error('ユーザー登録エラー:', error.response?.data);
       }
-      setLoading(false); // ローディングを終了
+      setLoading(false); 
     }
   };
   
