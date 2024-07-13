@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import config from '../components/pages/config/production';
 
 // レシピの材料の型を定義
 interface Ingredient {
