@@ -125,7 +125,7 @@ export const IngredientsList: React.FC = () => {
         return;
       }
 
-      setIsLoading(true); // ロード開始
+      setIsLoading(true); 
 
   
      // バックエンドに日付範囲を送信し、結果を取得
@@ -151,7 +151,7 @@ export const IngredientsList: React.FC = () => {
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
-    setIsLoading(false); // ロード終了
+    setIsLoading(false); 
   }
 };
   
