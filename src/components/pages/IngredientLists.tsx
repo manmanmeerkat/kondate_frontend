@@ -96,7 +96,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
           </Button>
         </Flex>
       </Stack>
-      {isLoading && ( // ロード中の場合にのみスピナーを表示
+      {isLoading && (
         <Flex justify="center">
           <Spinner color="teal.500" thickness="4px" size="xl" mt={4} />
         </Flex>
