@@ -90,7 +90,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
             mt={{ base: 0, md: 0 }}
             ml={{ base: 0, md: 2 }}
             onClick={handleSearch}
-            width={{ base: 'auto', md: '150px' }} // スマホ画面の横幅を150pxに設定
+            width={{ base: 'auto', md: '150px' }} 
           >
             表示
           </Button>
