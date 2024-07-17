@@ -32,7 +32,7 @@ export const UserRegister: React.FC = () => {
 
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false); // 初期値をfalseに設定
+  const [loading, setLoading] = useState<boolean>(false); 
   const [emailExistsError, setEmailExistsError] = useState<string | null>(null);
   const { setCookie } = useCookie();
   
