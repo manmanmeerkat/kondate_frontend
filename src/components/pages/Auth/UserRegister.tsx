@@ -137,7 +137,7 @@ export const UserRegister: React.FC = () => {
       const userId = response.data.userId;
       // ローカルストレージの代わりにトークンを保存する処理を呼び出す
       await handleRegistrationSuccess(token);
-      setLoading(false); // ローディングを終了
+      setLoading(false); 
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
         // バリデーションエラーがある場合
