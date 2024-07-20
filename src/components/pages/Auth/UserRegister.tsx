@@ -121,7 +121,7 @@ export const UserRegister: React.FC = () => {
     e.preventDefault();
   
     try {
-      setLoading(true); // ローディングを開始
+      setLoading(true); 
       const response = await axios.post<{ token: string; userId: string }>(
         `/api/register`,
         formData,
