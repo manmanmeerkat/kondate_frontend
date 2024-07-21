@@ -77,7 +77,6 @@ console.log('selectedDateRedux:', selectedDateRedux);
             customInput={
               <Box
                 as={Button}
-                // bg="white"
                 _hover={{ cursor: 'pointer' }}
                 _focus={{ outline: 'none' }}
                 _active={{ outline: 'none' }}
