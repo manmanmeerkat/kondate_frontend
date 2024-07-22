@@ -73,7 +73,6 @@ console.log('selectedDateRedux:', selectedDateRedux);
             locale={ja}
             className="compact-datepicker"
             placeholderText='日付を選択してください'
-            //マウスホバーしたらポインターになる
             customInput={
               <Box
                 as={Button}
