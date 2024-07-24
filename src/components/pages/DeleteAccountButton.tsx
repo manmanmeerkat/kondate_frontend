@@ -104,7 +104,7 @@ export const DeleteAccountButton = () => {
     } finally {
       setIsDeleting(false);
       setIsConfirming(false);
-      setPassword(''); // パスワードをリセット
+      setPassword(''); 
     }
   };
   
