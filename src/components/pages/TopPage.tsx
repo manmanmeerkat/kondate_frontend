@@ -63,7 +63,7 @@ export const TopPage = memo(() => {
         p="2"
         color="teal"
       >
-        © 2023 manmanmeerkat
+        © 2024 こんだてずかん
       </Box>
     </div>
   );
