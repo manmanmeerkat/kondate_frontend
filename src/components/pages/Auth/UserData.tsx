@@ -8,7 +8,7 @@ interface UserData {
 }
 
 export const GetUserData = () => {
-  const [userData, setUserData] = useState<UserData | null>(null); // ユーザー情報を格納するステート
+  const [userData, setUserData] = useState<UserData | null>(null); 
 
   useEffect(() => {
     // トークンをローカルストレージから取得
