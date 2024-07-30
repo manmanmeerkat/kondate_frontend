@@ -15,7 +15,7 @@ export const DishCard = memo((props: DishCardProps) => {
 
   return (
     <Box
-      w={{ base: "160px", md: "260px" }}  // baseがスマホ、mdが中サイズ以上
+      w={{ base: "160px", md: "260px" }}  
       h={{ base: "200px", md: "320px" }}
       bg="white"
       borderRadius="10px"
