@@ -123,7 +123,7 @@ export const Header: React.FC<HeaderProps> = () => {
             iconColor="teal"
             cursor="pointer"
             userSelect="none" // テキスト選択を無効にする
-            position="absolute" // 要素の位置を絶対位置に設定
+            position="absolute" 
             right={{ base: '20px', md: '30px' }} // スマホ画面では右端、デスクトップ画面ではデフォルト位置
             zIndex="1" // アイコンがセレクトボックスの上に表示されるようにzインデックスを設定
             top="50%" // 上端を中央に配置
