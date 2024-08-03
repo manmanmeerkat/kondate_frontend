@@ -126,8 +126,8 @@ export const Header: React.FC<HeaderProps> = () => {
             position="absolute" 
             right={{ base: '20px', md: '30px' }} // スマホ画面では右端、デスクトップ画面ではデフォルト位置
             zIndex="1" // アイコンがセレクトボックスの上に表示されるようにzインデックスを設定
-            top="50%" // 上端を中央に配置
-            transform="translateY(-50%)" // 上下中央に配置
+            top="50%" 
+            transform="translateY(-50%)" 
           >
             {selectedOption === '' && <option value="" disabled></option>}
             <option value="changePassword" style={{ backgroundColor: 'teal', color: 'white' }}> 　パスワード変更　 </option>
