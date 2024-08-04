@@ -38,7 +38,7 @@ const useDishIngredients = (dishId: number | null): UseDishIngredients => {
 
       fetchIngredients();
     }
-  }, [dishId]); // dishId が変更されたときのみ再実行
+  }, [dishId]);
 
   return { ingredients, loading };
 };
