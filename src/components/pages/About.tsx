@@ -5,7 +5,7 @@ export const About = memo(() => {
   return (
     <Box p={4} shadow="md" borderWidth="1px" borderRadius="md">
       <Heading as="h1" size="lg" mb={4}>
-        こんだてずかんについて
+        こんだてずかんとは
       </Heading>
       <Text>
         このアプリは、自分が作った料理を記録して管理するためのアプリです。
