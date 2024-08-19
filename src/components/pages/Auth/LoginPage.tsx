@@ -10,6 +10,7 @@ import {
   Button,
   Flex,
   useToast,
+  Spinner,
 } from '@chakra-ui/react';
 import config from '../config/production';
 import { useCookie } from '../../../hooks/useCookie';
@@ -34,6 +35,7 @@ export const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [csrfLoading, setCsrfLoading] = useState<boolean>(true); // CSRFトークン取得中の状態管理
   const [csrfToken, setCsrfToken] = useState<string>('');
   const { setCookie } = useCookie();
   const toast = useToast();
@@ -50,10 +52,12 @@ export const LoginPage: React.FC = () => {
         console.log('CSRFトークンを取得しました', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得に失敗しました', error);
+      } finally {
+        setCsrfLoading(false); // CSRFトークン取得完了
       }
     };
 
-    fetchCsrfToken(); // 非同期処理の完了を待つ
+    fetchCsrfToken();
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,10 +68,20 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (csrfLoading) {
+      toast({
+        title: '準備中',
+        description: '少々お待ちください。',
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-   
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
@@ -117,6 +131,14 @@ export const LoginPage: React.FC = () => {
   const handleGoToHome = () => {
     navigate('/');
   };
+
+  if (csrfLoading) {
+    return (
+      <Flex height="100vh" alignItems="center" justifyContent="center">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
