@@ -20,40 +20,50 @@ import config from './config/production';
 import useAuthToken from '../../hooks/useAuthToken';
 
 export const DeleteAccountButton = () => {
+  // モーダルの表示状態
   const [isConfirming, setIsConfirming] = useState(false);
+  // 削除処理のローディング状態
   const [isDeleting, setIsDeleting] = useState(false);
+  // パスワードの状態
   const [password, setPassword] = useState('');
+  // パスワードエラーの状態
   const [passwordError, setPasswordError] = useState('');
+  // ナビゲーションのためのフック
   const navigate = useNavigate();
+  // CSRFトークンの状態（未使用のようですが、APIリクエスト時に使う可能性があるため保持しています）
   const [csrfToken, setCsrfToken] = useState<string>('');
+  // トースト通知のためのフック
   const toast = useToast();
+  // 認証トークンのフック
   const authToken = useAuthToken();  
 
+  // 削除ボタンがクリックされたときにモーダルを表示する処理
   const handleDeleteClick = () => {
     setIsConfirming(true);
   };
 
+  // モーダルが閉じられたときの処理（パスワードとエラーメッセージのリセットも行う）
   const handleCancelClick = () => {
     setIsConfirming(false);
-    setPassword(''); // モーダルが閉じられたときにパスワードをリセット
-    setPasswordError(''); // エラーメッセージもリセット
+    setPassword('');
+    setPasswordError('');
   };
 
+  // アカウント削除を確認する処理
   const handleConfirmDelete = async () => {
     try {
       setIsDeleting(true);
   
       // バックエンドに削除リクエストとパスワードを送信
       await axios.delete(`${config.API_ENDPOINT}/api/users/self`, {
-     
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
-        data: { password }, // パスワードをリクエストのデータとして送信
+        data: { password }, // パスワードをリクエストデータとして送信
       });
   
-      // アカウント削除が成功した場合のトースター表示
+      // 削除成功時のトースト表示
       toast({
         title: '成功',
         description: 'アカウントを削除しました',
@@ -62,17 +72,19 @@ export const DeleteAccountButton = () => {
         isClosable: true,
       });
   
+      // ログアウトページにリダイレクト
       navigate('/logout');
   
-      // ユーザーをホーム画面にリダイレクト
+      // ホーム画面にリダイレクト
       navigate('/');
   
     } catch (error: any) {
       console.error('Error deleting user:', error);
   
+      // エラーハンドリング
       if (error.response) {
         if (error.response.status === 401) {
-          // パスワードが違う場合のエラー
+          // パスワードが正しくない場合のエラー処理
           toast({
             title: 'エラー',
             description: 'パスワードが正しくありません',
@@ -81,7 +93,7 @@ export const DeleteAccountButton = () => {
             isClosable: true,
           });
         } else {
-          // その他のエラーに対するトースト表示などの処理
+          // その他のエラー処理
           toast({
             title: 'エラー',
             description: 'アカウント削除に失敗しました',
@@ -104,11 +116,9 @@ export const DeleteAccountButton = () => {
     } finally {
       setIsDeleting(false);
       setIsConfirming(false);
-      setPassword(''); 
+      setPassword('');
     }
   };
-  
-  
 
   return (
     <VStack align="center" spacing={4}>
@@ -119,6 +129,7 @@ export const DeleteAccountButton = () => {
         {isDeleting ? <Spinner size="sm" /> : 'アカウント削除'}
       </Button>
 
+      {/* 削除確認モーダル */}
       <Modal isOpen={isConfirming} onClose={handleCancelClick} size="md">
         <ModalOverlay />
         <ModalContent>
@@ -152,6 +163,7 @@ export const DeleteAccountButton = () => {
         </ModalContent>
       </Modal>
 
+      {/* 戻るボタン */}
       <Button colorScheme="gray" onClick={() => navigate(-1)}>
         戻る
       </Button>

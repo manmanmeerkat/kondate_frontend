@@ -12,7 +12,6 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { useDishData } from "../../hooks/useDishData";
 import { useAllMyDishes } from "../../hooks/useAllMyDishes";
 import { DishCard } from "../organisms/dishes/DishCard";
 import { useSelectDish } from "../../hooks/useSelectDish";
@@ -34,13 +33,23 @@ interface AllMyDishesProps {
 }
 
 export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
+  // モーダルの表示制御
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // 料理データの取得とローディング状態
   const { getDishes, dishes: apiDishes, loading } = useAllMyDishes();
+
+  // 選択したdishの管理
   const { onSelectDish, selectedDish } = useSelectDish();
-  const { getDish, dishData } = useDishData();
+  // const { getDish, dishData } = useDishData();
+
+  // ユーザーデータの取得
   const { user } = useFetchUserData();
+
+  // 材料での検索結果と検索処理
   const { searchedDishes, handleIngredientSearch } = useIngredientSearch("all-dish", user?.id);
 
+  // 初回レンダリング時に料理データを取得
   useEffect(() => {
     getDishes();
   }, [getDishes]);
@@ -49,8 +58,9 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 4; // 1ページあたりのアイテム数
 
+  // 料理がクリックされたときの処理
   const onClickDish = useCallback(
     (id: number) => {
       if (Array.isArray(apiDishes)) {
@@ -61,6 +71,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     [apiDishes, onSelectDish, onOpen]
   );
 
+  // 検索ボタンがクリックされたときの処理
   const handleSearchButtonClick = useCallback(async () => {
     const results = await handleIngredientSearch(searchIngredient);
     if (results.length === 0 && searchIngredient.trim() !== "") {
@@ -68,21 +79,25 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
     } else {
       setNoSearchResults(false);
     }
-    setCurrentPage(1);
+    setCurrentPage(1); // 検索後は1ページ目にリセット
   }, [handleIngredientSearch, searchIngredient]);
 
+  // 次のページに移動する処理
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
+  // 前のページに移動する処理
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  // ページ変更時にスクロール位置をトップに戻す
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
+  // 現在表示中の料理のリストを取得
   const currentDishes: Dish[] = searchIngredient.length > 0 ? (Array.isArray(searchedDishes) ? searchedDishes : []) : (Array.isArray(apiDishes) ? apiDishes : []);
   const totalItems = currentDishes.length;
   const startIndex = (currentPage - 1) * itemsPerPage;

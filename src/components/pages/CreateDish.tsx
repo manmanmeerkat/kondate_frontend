@@ -52,24 +52,8 @@ export const CreateDish = () => {
 
   const navigate = useNavigate();
   const toast = useToast();
-  const [csrfToken, setCsrfToken] = useState('');
   const [isLoading, setIsLoading] = useState(true); 
   const userId = useUserId();
-console.log('userId', userId);
-  // useEffect(() => {
-  //   const fetchCsrfToken = async () => {
-  //     try {
-  //       const csrfResponse = await axios.get('/api/sanctum/csrf-cookie');
-  //       const csrfToken = csrfResponse.data.csrfToken;
-  //       setCsrfToken(csrfToken);
-  //     } catch (error) {
-  //       console.error('CSRFトークンの取得エラー:', error);
-  //     }
-  //   };
-
-  //   fetchCsrfToken();
-  // }, []);
-
   
   useEffect(() => {
 
@@ -173,8 +157,6 @@ console.log('userId', userId);
     setIsLoading(true);
 
     try {
-      // await axios.get('/api/sanctum/csrf-cookie', { withCredentials: true });
-      // const xsrfToken = getCookie('XSRF-TOKEN');
 
       let imagePath = formData.image_path;
         console.log('formData', formData);
@@ -218,7 +200,6 @@ console.log('userId', userId);
         formDataToSend,
         {
           headers: {
-            // 'X-XSRF-TOKEN': xsrfToken,
             'Content-Type': 'application/json',
           },
           withCredentials: true,
