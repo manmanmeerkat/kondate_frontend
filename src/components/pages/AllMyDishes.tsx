@@ -89,10 +89,6 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
   const selectedDishes = currentDishes.slice(startIndex, endIndex);
 
-  console.log("apiDishes", apiDishes);
-  console.log("currentDishes", currentDishes);
-  console.log("selectedDishes", selectedDishes);
-
   return (
     <div>
       <Header />
