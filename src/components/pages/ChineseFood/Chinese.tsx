@@ -35,57 +35,64 @@ interface ChineseProps {
 }
 
 export const Chinese: React.FC<ChineseProps> = memo(() => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getChinese, dishes, loading } = useAllMyDishes();
-  const { data } = useChineseDishes();
-  const { onSelectDish, selectedDish } = useSelectDish();
-  const { user } = useFetchUserData();
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("chinese-food", user?.id);
-  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure(); // モーダルの開閉状態を管理
+  const { getChinese, dishes, loading } = useAllMyDishes(); // 中華料理のデータ取得フック
+  const { data } = useChineseDishes(); // 中華料理のデータを取得
+  const { onSelectDish, selectedDish } = useSelectDish(); // 料理を選択するフック
+  const { user } = useFetchUserData(); // ユーザー情報を取得
+  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("chinese-food", user?.id); // 材料検索フック
+  const navigate = useNavigate(); // React Router のナビゲート
 
-  const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [Dishes, setDishes] = useState<Dish[]>([]);
-  const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のID
+  const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワード
+  const [Dishes, setDishes] = useState<Dish[]>([]); // 検索結果として表示する料理のリスト
+  const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
+  const [currentPage, setCurrentPage] = useState(1); // 現在のページ
+  const itemsPerPage = 8; // 1ページあたりのアイテム数
 
+  // コンポーネントがマウントされたときに中華料理のデータを取得
   useEffect(() => {
     getChinese();
   }, [getChinese]);
 
+  // ページが変更されたときにスクロールをトップに移動
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
+  // 検索ボタンがクリックされたときの処理
   const handleSearchButtonClick = useCallback(async () => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
-      setNoSearchResults(true);
+      setNoSearchResults(true); // 検索結果がない場合のフラグを設定
       console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
-      setDishes(results);
+      setDishes(results); // 検索結果を設定
     }
-    setCurrentPage(1);
+    setCurrentPage(1); // 検索後はページを1にリセット
   }, [handleIngredientSearch, searchKeyword]);
 
+  // 料理がクリックされたときの処理
   const onClickDish = useCallback(
     (id: number) => {
-      onSelectDish({ id, dishes, onOpen });
+      onSelectDish({ id, dishes, onOpen }); // 選択された料理を設定し、モーダルを開く
       setSelectedDishId(id);
     },
     [dishes, onSelectDish, onOpen]
   );
 
+  // 次のページに進む処理
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
+  // 前のページに戻る処理
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  // 現在の検索キーワードに基づいて表示する料理を決定
   const currentDishes = searchKeyword.trim() === "" ? data : Dishes;
   const totalItems = currentDishes.length;
   const startIndex = (currentPage - 1) * itemsPerPage;

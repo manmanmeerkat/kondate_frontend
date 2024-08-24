@@ -1,5 +1,3 @@
-// src/store/actions.ts
-
 export interface SetSelectedDateAction {
     type: 'SET_SELECTED_DATE';
     payload: Date;
