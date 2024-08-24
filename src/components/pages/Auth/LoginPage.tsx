@@ -30,14 +30,15 @@ export const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
-  });
+  }); // フォームデータを管理するステート
 
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [csrfToken, setCsrfToken] = useState<string>('');
-  const { setCookie } = useCookie();
-  const toast = useToast();
+  const navigate = useNavigate(); // ルーティング用のフック
+  const [isLoading, setIsLoading] = useState<boolean>(false); // ローディング状態を管理するステート
+  const [csrfToken, setCsrfToken] = useState<string>(''); // CSRFトークンを管理するステート
+  const { setCookie } = useCookie(); // クッキーを設定するカスタムフック
+  const toast = useToast(); // トースト通知用のフック
 
+  // コンポーネントの初回レンダリング時にCSRFトークンを取得する
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
@@ -45,29 +46,31 @@ export const LoginPage: React.FC = () => {
           withCredentials: true,
         });
         const csrfToken = response.data.csrfToken;
-        setCsrfToken(csrfToken);
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        setCsrfToken(csrfToken); // 取得したCSRFトークンをステートに設定
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken; // axiosのデフォルトヘッダーにCSRFトークンを設定
         console.log('CSRFトークンを取得しました', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得に失敗しました', error);
       }
     };
 
-    fetchCsrfToken(); // 非同期処理の完了を待つ
+    fetchCsrfToken(); // 非同期処理を実行してCSRFトークンを取得
   }, []);
 
+  // フォーム入力の変更を処理する関数
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value }); // 入力された値でフォームデータを更新
   };
 
+  // フォームの送信を処理する関数
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault(); // デフォルトのフォーム送信動作をキャンセル
 
-    setIsLoading(true);
+    setIsLoading(true); // ローディング状態をtrueに設定
 
     try {
-   
+      // ログインリクエストを送信
       const response = await axios.post<UserData>(
         `${config.API_ENDPOINT}/api/login`,
         formData,
@@ -80,12 +83,13 @@ export const LoginPage: React.FC = () => {
       );
 
       const { token, userId, message, role } = response.data;
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // axiosのデフォルトヘッダーにトークンを設定
 
-      setCookie('authToken', token, 7); // 有効期限を7日に設定
+      setCookie('authToken', token, 7); // クッキーにトークンを7日間保持
 
       console.log(userId, token, role);
 
+      // 成功メッセージをトーストで表示
       toast({
         title: 'ログインしました',
         description: message,
@@ -94,6 +98,7 @@ export const LoginPage: React.FC = () => {
         isClosable: true,
       });
 
+      // ユーザーの役割に応じてページを遷移
       if (role === 'admin') {
         navigate('/admin');
       } else {
@@ -102,6 +107,7 @@ export const LoginPage: React.FC = () => {
     } catch (error: any) {
       console.error('ログインエラー:', error.response?.data);
 
+      // エラーメッセージをトーストで表示
       toast({
         title: 'ログインエラー',
         description: error.response?.data?.message || 'ログインに失敗しました。',
@@ -110,16 +116,18 @@ export const LoginPage: React.FC = () => {
         isClosable: true,
       });
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // ローディング状態をfalseにリセット
     }
   };
 
+  // トップページに戻る処理
   const handleGoToHome = () => {
     navigate('/');
   };
 
   return (
     <Flex height="100vh" alignItems="center" justifyContent="center">
+      {/* ログインフォーム */}
       <Box p="4" borderWidth="1px" borderRadius="lg" boxShadow="lg" background="white" width={{ base: '90%', md: '400px' }}>
         <Heading size="lg" textAlign="center" mb="4">
           ログイン
