@@ -25,16 +25,14 @@ import "../../menuCalendar.css";
 import { EventContentArg } from '@fullcalendar/core';
 import useAuthToken from '../../hooks/useAuthToken';
 
-// メニューカレンダーコンポーネント
 const MenuCalendar = () => {
-    // イベントの状態を管理
-    const [events, setEvents] = useState<{ title: string, date: string }[]>([]);
-    const { isOpen, onOpen, onClose } = useDisclosure(); // モーダルの表示状態を管理
-    const [selectedDate, setSelectedDate] = useState<string>(''); // 選択された日付を管理
-    const [selectedEvents, setSelectedEvents] = useState<{ title: string, date: string }[]>([]); // 選択された日付のイベントを管理
-    const authToken = useAuthToken(); // 認証トークンを取得
+    const [events, setEvents] = useState([{ title: '', date: '' }]);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedEvents, setSelectedEvents] = useState<{ title: string, date: string }[]>([]);
+    const authToken = useAuthToken();
 
-    // ページロード時にイベントリスナーを設定
+
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
             event.preventDefault();
@@ -48,7 +46,6 @@ const MenuCalendar = () => {
         };
     }, []);
 
-    // イベントの内容をカスタマイズ
     const renderEventContent = useCallback((eventInfo: EventContentArg) => {
         return (
             <div className='menu-title' id="menu">
@@ -58,7 +55,6 @@ const MenuCalendar = () => {
         );
     }, []);
 
-    // カレンダーの範囲が変更されたときに呼び出される
     const handleDatesSet = useCallback(async (datesetInfo: any) => {
         const startDate = datesetInfo.view.currentStart.toISOString().split('T')[0];
         const endDate = datesetInfo.view.currentEnd.toISOString().split('T')[0];
@@ -72,7 +68,7 @@ const MenuCalendar = () => {
                 },
                 headers: {
                     'Authorization': `Bearer ${authToken}`,
-                },
+                  },
             });
 
             const fetchedEvents = response.data.menuData.map((item: any) => ({
@@ -84,9 +80,8 @@ const MenuCalendar = () => {
         } catch (error) {
             console.error(error);
         }
-    }, [authToken]);
+    }, []);
 
-    // 日付クリック時の処理
     const handleDateClick = useCallback((clickInfo: DateClickArg) => {
         setSelectedDate(clickInfo.dateStr);
         const filteredEvents = events.filter(event => event.date === clickInfo.dateStr);
@@ -94,7 +89,6 @@ const MenuCalendar = () => {
         onOpen();  
     }, [events, onOpen]);
 
-    // 曜日を取得するメモ化された関数
     const getDayOfWeek = useMemo(() => {
         return (dateStr: string) => {
             const date = new Date(dateStr);

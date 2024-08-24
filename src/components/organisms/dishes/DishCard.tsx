@@ -43,7 +43,7 @@ export const DishCard = memo((props: DishCardProps) => {
         whiteSpace="nowrap"  // テキストを折り返さず一行で表示
         maxWidth="100%"  // 最大幅を100%に設定
       >
-        {dishName}  // 料理名を表示
+        {dishName}  
       </Text>
     </Box>
   );
