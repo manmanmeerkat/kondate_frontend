@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import useUserId from './useUserId';
+import { Dish } from '../types/Dish';
 
 // 日本料理データを取得するカスタムフック
 const useFetchJapaneseData = (endpoint: string) => {
   // ユーザーIDを取得するカスタムフック
   const userId = useUserId();
   // データを管理するステート
-  const [data, setData] = useState<string[]>([]);
+  const [data, setData] = useState<Dish[]>([]);
 
   // データ取得関数
   const fetchData = useCallback(async () => {

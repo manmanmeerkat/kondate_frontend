@@ -22,6 +22,7 @@ interface FormData {
   password_confirmation: string;
 }
 
+// ユーザー登録コンポーネント
 export const UserRegister: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -33,14 +34,14 @@ export const UserRegister: React.FC = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false); 
-  const [emailExistsError, setEmailExistsError] = useState<string | null>(null);
-  const { setCookie } = useCookie();
+  const [emailExistsError, setEmailExistsError] = useState<string | null>(null); 
+  const { setCookie } = useCookie(); 
   
+  const navigate = useNavigate(); // ルーティング用のフック
+  const toast = useToast(); // トースト通知用のフック
+  const [csrfToken, setCsrfToken] = useState<string>(''); // CSRFトークンを管理するステート
 
-  const navigate = useNavigate();
-  const toast = useToast();
-  const [csrfToken, setCsrfToken] = useState<string>('');
-
+  // コンポーネントの初回レンダリング時にフォームデータを初期化
   useEffect(() => {
     setFormData({
       name: '',
@@ -50,6 +51,7 @@ export const UserRegister: React.FC = () => {
     });
   }, []);
 
+  // 初回レンダリング時にCSRFトークンを取得
   useEffect(() => {
     const fetchCsrfToken = async () => {
       try {
@@ -65,47 +67,45 @@ export const UserRegister: React.FC = () => {
       }
     };
 
-    fetchCsrfToken();
+    fetchCsrfToken(); 
   }, []);
 
+  // フォーム入力の変更を処理する関数
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
+    // メールアドレスのバリデーション
     if (name === 'email') {
       const isValidEmail = validateEmail(value);
       setEmailError(isValidEmail ? null : '正しいEメールアドレスの形式ではありません');
     }
 
+    // パスワードのバリデーション
     if (name === 'password') {
       const isValidPassword = validatePassword(value);
       setPasswordError(isValidPassword ? null : '半角英数字で８文字以上入力してください');
     }
   };
 
+  // メールアドレスのバリデーション関数
   const validateEmail = (email: string): boolean => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
   };
 
+  // パスワードのバリデーション関数
   const validatePassword = (password: string): boolean => {
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
     return passwordPattern.test(password);
   };
 
+  // ユーザー登録成功時の処理
   const handleRegistrationSuccess = async (token: string) => {
-    // ローカルストレージの代わりに適切な手段でトークンを保存する
-    // try {
-    //   // 例: クッキーにトークンを保存
-    //   // document.cookie = `token=${token}; path=/`;
-    //   // または、HTTPヘッダーにトークンを含める
-    //   // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    // } catch (error) {
-    //   console.error('トークンの保存に失敗しました', error);
-    // }
   
     setCookie('authToken', token, 7); // 有効期限を7日に設定
 
+    // 成功メッセージをトーストで表示
     toast({
       title: 'ユーザー登録が完了しました',
       description: 'ようこそ！',
@@ -114,14 +114,16 @@ export const UserRegister: React.FC = () => {
       isClosable: true,
     });
   
+    // 登録完了後に料理一覧ページに遷移
     navigate('/all_my_dishes');
   };
 
+  // フォームの送信を処理する関数
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault(); 
   
     try {
-      setLoading(true); 
+      setLoading(true); // ローディング状態をtrueに設定
       const response = await axios.post<{ token: string; userId: string }>(
         `/api/register`,
         formData,
@@ -135,8 +137,8 @@ export const UserRegister: React.FC = () => {
   
       const token = response.data.token;
       const userId = response.data.userId;
-      // ローカルストレージの代わりにトークンを保存する処理を呼び出す
-      await handleRegistrationSuccess(token);
+  
+      await handleRegistrationSuccess(token); // 成功時の処理を呼び出す
       setLoading(false); 
     } catch (error: any) {
       if (error.response && error.response.status === 422) {
@@ -145,7 +147,6 @@ export const UserRegister: React.FC = () => {
   
         // メールアドレスの重複エラーがあるか確認
         if (validationErrors && validationErrors.email) {
-          // すでに登録されているメールアドレスのエラーがある場合の処理
           setEmailError('このメールアドレスは既に登録されています');
         }
       } else {
@@ -155,7 +156,7 @@ export const UserRegister: React.FC = () => {
     }
   };
   
-
+  // トップページに戻る処理
   const handleGoToHome = () => {
     navigate('/');
   };

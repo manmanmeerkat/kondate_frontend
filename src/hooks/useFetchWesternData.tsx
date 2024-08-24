@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import useUserId from './useUserId';
+import { Dish } from '../types/Dish';
 
 // 指定されたエンドポイントからデータを取得するカスタムフック
 const useFetchWesternData = (endpoint: string) => {
   // ユーザーIDを取得するフック
   const userId = useUserId();
   // データの状態管理
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Dish[]>([]);
 
   // データを取得する非同期関数
   const fetchData = useCallback(async () => {

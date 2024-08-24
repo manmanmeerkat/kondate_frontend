@@ -122,7 +122,7 @@ export const ChineseFukusai: React.FC<ChineseProps> = memo(() => {
           ) : (
             <>
               <Wrap p={{ base: 4, md: 10 }}>
-                {selectedDishes.map((dish: Dish) => (
+                {selectedDishes.map((dish:Dish) => (
                   <WrapItem key={dish.id} mx="auto">
                     <DishCard
                       id={dish.id}

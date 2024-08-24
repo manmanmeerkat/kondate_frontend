@@ -3,22 +3,25 @@ import { Button, Menu, MenuButton, MenuList, Box, MenuItem } from "@chakra-ui/re
 import { useNavigate } from "react-router-dom";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
+
 export const GenreButton = memo(() => {
   const navigate = useNavigate();
 
+  // 各ジャンルがクリックされたときに呼ばれる関数
   const onGenreClick = (genre: string) => {
     navigate(`/${genre}`);
   };
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center" mt={4} marginX={1}>
+      {/* 和食のメニュー */}
       <Menu isLazy>
         <MenuButton
           as={Button}
-          rightIcon={<ChevronDownIcon />}
-          colorScheme="teal"
-          variant="outline"
-          mr={1} 
+          rightIcon={<ChevronDownIcon />} // ボタンの右側に下矢印アイコンを表示
+          colorScheme="teal"  // ボタンのカラースキームをティール色に設定
+          variant="outline"  // ボタンのスタイルをアウトラインに設定
+          mr={1}  
         >
           和食
         </MenuButton>
@@ -31,13 +34,14 @@ export const GenreButton = memo(() => {
         </MenuList>
       </Menu>
       
+      {/* 洋食のメニュー */}
       <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
           colorScheme="teal"
           variant="outline"
-          mr={1} 
+          mr={1}
         >
           洋食
         </MenuButton>
@@ -50,13 +54,14 @@ export const GenreButton = memo(() => {
         </MenuList>
       </Menu>
       
+      {/* 中華のメニュー */}
       <Menu isLazy>
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
           colorScheme="teal"
           variant="outline"
-          mr={1} 
+          mr={1}
         >
           中華
         </MenuButton>
@@ -69,6 +74,7 @@ export const GenreButton = memo(() => {
         </MenuList>
       </Menu>
       
+      {/* その他の料理のメニュー */}
       <Menu isLazy>
         <MenuButton
           as={Button}
