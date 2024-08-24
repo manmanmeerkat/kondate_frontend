@@ -18,8 +18,11 @@ interface UseDishIngredients {
   loading: boolean;
 }
 
+// 特定のレシピの材料を取得するカスタムフック
 const useDishIngredients = (dishId: number | null): UseDishIngredients => {
+  // 材料を管理するステート
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  // ローディング状態を管理するステート
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,10 +30,13 @@ const useDishIngredients = (dishId: number | null): UseDishIngredients => {
     if (dishId) {
       const fetchIngredients = async () => {
         try {
-          const response: AxiosResponse<DishIngredientsResponse> = await axios.get('/api/dishes/${dishId}/ingredients');
+          // APIリクエストを送信して材料を取得
+          const response: AxiosResponse<DishIngredientsResponse> = await axios.get(`/api/dishes/${dishId}/ingredients`);
+          // 取得した材料をステートに設定
           setIngredients(response.data.ingredients);
           setLoading(false);
         } catch (error) {
+          // エラーが発生した場合のログ
           console.error('エラー:', error);
           setLoading(false);
         }
@@ -40,6 +46,7 @@ const useDishIngredients = (dishId: number | null): UseDishIngredients => {
     }
   }, [dishId]);
 
+  // 材料とローディング状態を返す
   return { ingredients, loading };
 };
 
