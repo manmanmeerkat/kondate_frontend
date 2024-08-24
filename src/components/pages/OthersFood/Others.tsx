@@ -15,7 +15,6 @@ import {
 import { useAllMyDishes } from "../../../hooks/useAllMyDishes";
 import { useSelectDish } from "../../../hooks/useSelectDish";
 import { useIngredientSearch } from "../../../hooks/useIngredientSearch";
-import { useNavigate } from "react-router-dom";
 import { GenreButton } from "../../molecules/GenreButton";
 import { Header } from "../../organisms/layout/Header";
 import { DishCard } from "../../organisms/dishes/DishCard";
@@ -64,7 +63,6 @@ export const Others: React.FC<OthersProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword); // 材料で検索
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false); // 検索結果がある場合
       setDishes(results); // フィルタリングされた料理リストを更新

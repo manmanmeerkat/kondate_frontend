@@ -25,7 +25,6 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useFetchUserData } from "../../../hooks/useFetchUserData";
 import { useJapaneseShirumono } from "../../../hooks/useFetchJapaneseData";
 
-// JapaneseShirumonoコンポーネントの型定義
 interface JapaneseProps {
   id?: number;
   name?: string;
@@ -35,15 +34,13 @@ interface JapaneseProps {
   reference_url?: string;
 }
 
-// メモ化された JapaneseShirumono コンポーネント
 export const JapaneseShirumono: React.FC<JapaneseProps> = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure(); // モーダルの開閉状態を管理
   const { getJapaneseShirumono, dishes, loading } = useAllMyDishes(); // 日本の汁物データ取得フック
   const { data } = useJapaneseShirumono(); // 日本の汁物データを取得
   const { onSelectDish, selectedDish } = useSelectDish(); // 料理選択のフック
   const { user } = useFetchUserData(); // ユーザーデータを取得
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("japanese-shirumono", user?.id); // 材料検索のフック
-  const navigate = useNavigate(); // ルーティングのナビゲート機能
+  const { handleIngredientSearch } = useIngredientSearch("japanese-shirumono", user?.id); // 材料検索のフック
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のIDを管理
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワードを管理
@@ -67,7 +64,6 @@ export const JapaneseShirumono: React.FC<JapaneseProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合、フラグを立てる
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setJapaneseDishes(results); // 検索結果を設定

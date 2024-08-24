@@ -40,7 +40,6 @@ export const useFetchUserData = (): FetchUserDataHook => {
         // レスポンスが成功した場合、ユーザー情報をステートに設定
         const userData = response.data;
         setUser(userData);
-        console.log('userData', userData);
       } else {
         // レスポンスのステータスが200以外の場合のエラーログ
         console.error('サーバーレスポンスエラー:', response);

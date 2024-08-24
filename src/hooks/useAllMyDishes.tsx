@@ -22,7 +22,6 @@ export const useAllMyDishes = () => {
                 }
             });
             setDishes(response.data.dishes); // 取得した料理データをステートに保存
-            console.log("response", response); // デバッグ用にレスポンスをログ出力
         } catch (error) {
             showMessage({ title: "データ取得に失敗しました", status: "error" }); // エラーメッセージを表示
         } finally {

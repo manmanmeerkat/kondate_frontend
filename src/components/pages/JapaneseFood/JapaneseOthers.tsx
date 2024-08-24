@@ -66,7 +66,6 @@ export const JapaneseOthers: React.FC<JapaneseProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合、フラグを立てる
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results); // 検索結果を設定

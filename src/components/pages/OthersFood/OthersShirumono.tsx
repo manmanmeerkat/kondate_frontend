@@ -40,8 +40,7 @@ export const OthersShirumono: React.FC<OthersProps> = memo(() => {
   const { data } = useOthersShirumono(); // カスタムフックを使用してデータを取得
   const { onSelectDish, selectedDish } = useSelectDish(); // 選択された料理を管理
   const { user } = useFetchUserData(); // ユーザー情報を取得するカスタムフック
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("others-shirumono", user?.id); // 材料検索用のカスタムフック
-  const navigate = useNavigate(); // ルーティング用のフック
+  const { handleIngredientSearch } = useIngredientSearch("others-shirumono", user?.id); // 材料検索用のカスタムフック
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のIDを管理
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワードを管理
   const [Dishes, setDishes] = useState<Dish[]>([]); // 検索結果の料理リストを保持
@@ -63,7 +62,6 @@ export const OthersShirumono: React.FC<OthersProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword); // 材料で検索
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false); // 検索結果がある場合
       setDishes(results); // フィルタリングされた料理リストを更新

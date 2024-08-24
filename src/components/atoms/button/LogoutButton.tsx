@@ -30,7 +30,6 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ csrfToken, onLogoutSuccess 
       if (logoutResponse.data.message === 'Already Unauthenticated.') {
         // ログアウト成功
         navigate('/login');
-        console.log('ログアウトしました');
 
         // トースト表示
         toast({

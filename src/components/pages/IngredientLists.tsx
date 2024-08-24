@@ -5,7 +5,6 @@ import { ja } from 'date-fns/locale';
 import { registerLocale } from 'react-datepicker';
 import { Stack, Button, InputGroup, Box, Heading, List, ListItem, Text, Menu, useToast, Flex, Divider, Table, Thead, Tr, Th, Tbody, Td, Badge, Spinner } from '@chakra-ui/react';
 import { Header } from '../organisms/layout/Header';
-import config from './config/production';
 import useAuthToken from '../../hooks/useAuthToken';
 
 interface Menu {

@@ -39,9 +39,7 @@ export const useDishData = () => {
       api.get<DishDataResponse>(`/user/${userId}`)
         .then((response: AxiosResponse<DishDataResponse>) => {
           // レスポンスからレシピデータを抽出
-          console.log("response", response);
           const dishes: Dishes[] = response.data.dishes;
-          console.log("dishes", dishes);
           setDishData({ dishes });
         })
         .catch((error) => console.error("ユーザー情報の取得エラー:", error))

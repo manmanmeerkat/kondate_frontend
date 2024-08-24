@@ -48,7 +48,6 @@ export const LoginPage: React.FC = () => {
         const csrfToken = response.data.csrfToken;
         setCsrfToken(csrfToken); // 取得したCSRFトークンをステートに設定
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken; // axiosのデフォルトヘッダーにCSRFトークンを設定
-        console.log('CSRFトークンを取得しました', csrfToken);
       } catch (error) {
         console.error('CSRFトークンの取得に失敗しました', error);
       }
@@ -87,7 +86,6 @@ export const LoginPage: React.FC = () => {
 
       setCookie('authToken', token, 7); // クッキーにトークンを7日間保持
 
-      console.log(userId, token, role);
 
       // 成功メッセージをトーストで表示
       toast({

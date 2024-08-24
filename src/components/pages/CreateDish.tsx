@@ -159,7 +159,6 @@ export const CreateDish = () => {
     try {
 
       let imagePath = formData.image_path;
-        console.log('formData', formData);
       if (formData.image_file) {
         const imageFormData = new FormData();
         imageFormData.append('image_file', formData.image_file);
@@ -207,7 +206,6 @@ export const CreateDish = () => {
       );
 
       if (response.status === 201) {
-        console.log('フォームの登録が成功しました');
         toast({
           title: '登録が完了しました',
           status: 'success',
@@ -240,12 +238,12 @@ export const CreateDish = () => {
     }
   };
 
-  const getCookie = (name: string): string | undefined => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-    return undefined;
-  };
+  // const getCookie = (name: string): string | undefined => {
+  //   const value = `; ${document.cookie}`;
+  //   const parts = value.split(`; ${name}=`);
+  //   if (parts.length === 2) return parts.pop()?.split(';').shift();
+  //   return undefined;
+  // };
 
   return (
     <>

@@ -73,7 +73,6 @@ export const WesternSyusai: React.FC<WesternProps> = memo(() => {
     if (results.length === 0 && searchKeyword.trim() !== "") {
       // 結果がない場合
       setNoSearchResults(true);
-      console.log("該当するデータがありません");
     } else {
       // 結果がある場合
       setNoSearchResults(false);

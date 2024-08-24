@@ -65,7 +65,6 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合のフラグを設定
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results); // 検索結果を設定
@@ -77,7 +76,6 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
   const onClickDish = useCallback(
     (id: number) => {
       onSelectDish({ id, dishes, onOpen }); // 選択された料理を設定し、モーダルを開く
-      console.log("bbgfdg", id, dishes, onOpen);
       setSelectedDishId(id);
     },
     [dishes, onSelectDish, onOpen]

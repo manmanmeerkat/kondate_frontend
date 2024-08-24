@@ -40,8 +40,7 @@ export const OthersSyusai: React.FC<OthersProps> = memo(() => {
   const { data } = useOthersSyusai(); // 他のユーザーの主菜データを管理するフック
   const { onSelectDish, selectedDish } = useSelectDish(); // 料理を選択するロジックを管理するフック
   const { user } = useFetchUserData(); // ユーザー情報を取得するフック
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("others-syusai", user?.id); // 材料での検索機能を提供するフック
-  const navigate = useNavigate();
+  const { handleIngredientSearch } = useIngredientSearch("others-syusai", user?.id); // 材料での検索機能を提供するフック
   
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のIDを管理する状態
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワードを管理する状態
@@ -64,7 +63,6 @@ export const OthersSyusai: React.FC<OthersProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword); // 材料での検索を実行
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results); // 検索結果をセット

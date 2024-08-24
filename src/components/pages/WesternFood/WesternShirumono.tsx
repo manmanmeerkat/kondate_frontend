@@ -42,7 +42,6 @@ export const WesternShirumono: React.FC<WesternProps> = memo(() => {
   const { user } = useFetchUserData(); // ユーザー情報の取得
 
   const { handleIngredientSearch } = useIngredientSearch("western-shirumono", user?.id); // 材料検索機能
-  const navigate = useNavigate();
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のID
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワード
@@ -64,7 +63,6 @@ export const WesternShirumono: React.FC<WesternProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results);

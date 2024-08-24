@@ -44,7 +44,6 @@ export const Western: React.FC<WesternProps> = memo(() => {
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
   const { handleIngredientSearch } = useIngredientSearch("western-food", user?.id);
-  const navigate = useNavigate();
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -53,7 +52,6 @@ export const Western: React.FC<WesternProps> = memo(() => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8; // 1ページあたりに表示するアイテム数
 
-  // Westernデータの取得
   useEffect(() => {
     getWestern();
   }, []);
@@ -68,7 +66,6 @@ export const Western: React.FC<WesternProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合にフラグを立てる
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results);

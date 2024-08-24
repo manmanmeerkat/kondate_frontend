@@ -41,10 +41,8 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
   const { data } = useJapaneseSyusai(); // 日本料理の主菜データを取得
   const { onSelectDish, selectedDish } = useSelectDish(); // 選択された料理を管理
   const { user } = useFetchUserData(); // ユーザーデータを取得
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("japanese-syusai", user?.id); // 材料検索用のカスタムフック
-  const navigate = useNavigate(); // ルーティング用のフック
+  const { handleIngredientSearch } = useIngredientSearch("japanese-syusai", user?.id); // 材料検索用のカスタムフック
 
-  // ローカルステートの定義
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のIDを保持
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワードを保持
   const [Dishes, setDishes] = useState<Dish[]>([]); // フィルタリングされた料理リストを保持
@@ -67,7 +65,6 @@ export const JapaneseSyusai: React.FC<JapaneseProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword); // 材料で検索
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false); // 検索結果がある場合
       setDishes(results); // フィルタリングされた料理リストを更新

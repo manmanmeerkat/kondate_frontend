@@ -43,7 +43,6 @@ export const WesternFukusai: React.FC<WesternProps> = memo(() => {
   const { onSelectDish, selectedDish } = useSelectDish();
   const { user } = useFetchUserData();
   const { handleIngredientSearch } = useIngredientSearch("western-fukusai", user?.id);
-  const navigate = useNavigate();
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -66,7 +65,6 @@ export const WesternFukusai: React.FC<WesternProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合のフラグ設定
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results);

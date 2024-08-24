@@ -65,7 +65,6 @@ export const ChineseShirumono: React.FC<ChineseProps> = memo(() => {
     const results = await handleIngredientSearch(searchKeyword);
     if (results.length === 0 && searchKeyword.trim() !== "") {
       setNoSearchResults(true); // 検索結果がない場合のフラグを設定
-      console.log("該当するデータがありません");
     } else {
       setNoSearchResults(false);
       setDishes(results); // 検索結果を設定
