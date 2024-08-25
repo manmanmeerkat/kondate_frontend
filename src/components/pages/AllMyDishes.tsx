@@ -58,7 +58,7 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
   const [searchIngredient, setSearchIngredient] = useState<string>("");
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // 1ページあたりに表示する数
+  const itemsPerPage = 10; // 1ページあたりに表示する数
 
   // 料理がクリックされたときの処理
   const onClickDish = useCallback(
