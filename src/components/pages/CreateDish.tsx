@@ -268,6 +268,9 @@ export const CreateDish = () => {
                 size="xs" 
                 height="26px" 
               />
+              <Text color="red" mb={4}>
+                  *jpg, jpeg, png形式1.5MBまで
+              </Text>
             </FormControl>
 
             <FormControl isRequired mb={4}>
