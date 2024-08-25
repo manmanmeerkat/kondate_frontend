@@ -16,8 +16,8 @@ export const DishCard = memo((props: DishCardProps) => {
 
   return (
     <Box
-      w={{ base: "160px", md: "260px" }}  // レスポンシブデザインに基づく幅
-      h={{ base: "200px", md: "320px" }}  // レスポンシブデザインに基づく高さ
+      w={{ base: "160px", md: "240px" }}  // レスポンシブデザインに基づく幅
+      h={{ base: "200px", md: "280px" }}  // レスポンシブデザインに基づく高さ
       bg="white"  // 背景色を白に設定
       borderRadius="10px"  // 角を丸くする
       shadow="md"  // 中程度のシャドウを追加
