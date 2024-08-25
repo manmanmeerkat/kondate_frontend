@@ -186,18 +186,18 @@ export const IngredientsList: React.FC = () => {
                   {menus.map((menu) => (
                     <Box key={menu.menu_id} mb={4}>
                       <Badge colorScheme="teal" mb={2} fontSize="lg">{menu.dish_name}</Badge>
-                      <Table variant="simple" size="sm">
+                      <Table variant="simple" size="sm" width="100%"> {/* テーブル全体を100%幅に設定 */}
                         <Thead>
                           <Tr>
-                            <Th textAlign="left">材料</Th>
-                            <Th textAlign="left">数量</Th>
+                            <Th textAlign="left" width="70%">材料</Th> {/* 材料列の幅を調整 */}
+                            <Th textAlign="left" width="30%">数量</Th> {/* 数量列の幅を調整 */}
                           </Tr>
                         </Thead>
                         <Tbody>
                           {menu.ingredients.map((ingredient, index) => (
                             <Tr key={index}>
-                              <Td>{ingredient.name}</Td>
-                              <Td>{ingredient.quantity}</Td>
+                              <Td textAlign="left" width="70%">{ingredient.name}</Td> {/* 材料列の幅を材料名に合わせる */}
+                              <Td textAlign="left" width="30%">{ingredient.quantity}</Td> {/* 数量列の幅を統一 */}
                             </Tr>
                           ))}
                         </Tbody>
