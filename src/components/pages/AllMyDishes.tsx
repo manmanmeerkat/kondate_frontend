@@ -126,33 +126,39 @@ export const AllMyDishes: React.FC<AllMyDishesProps> = memo(() => {
           <Spinner />
         </Center>
       ) : (
-        <Wrap p={{ base: 4, md: 10 }} justify="flex-start">
-          {noSearchResults ? (
-            <Flex h="50vh" justify="center" align="center" w="100%">
-              <Text textAlign="center">該当するデータがありません。</Text>
-            </Flex>
-          ) : (
-            <>
-              {selectedDishes.length > 0 ? (
-                selectedDishes.map((dish) => (
-                  <WrapItem key={dish.id} mx="auto">
-                    <DishCard
-                      id={dish.id}
-                      imageUrl={dish.image_path}
-                      menuType="Japanese"
-                      dishName={dish.name}
-                      onClick={onClickDish}
-                    />
-                  </WrapItem>
-                ))
-              ) : (
-                <Flex h="50vh" justify="center" align="center" w="100%">
-                  <Text textAlign="center">登録している料理はありません。</Text>
-                </Flex>
-              )}
-            </>
-          )}
-        </Wrap>
+        <Wrap
+        p={{ base: 4, md: 10 }}
+        justify="flex-start"
+        maxWidth="1400px"        
+        mx="auto"                
+        width="100%"             
+      >
+        {noSearchResults ? (
+          <Flex h="50vh" justify="center" align="center" w="100%">
+            <Text textAlign="center">該当するデータがありません。</Text>
+          </Flex>
+        ) : (
+          <>
+            {selectedDishes.length > 0 ? (
+              selectedDishes.map((dish) => (
+                <WrapItem key={dish.id} mx="auto">
+                  <DishCard
+                    id={dish.id}
+                    imageUrl={dish.image_path}
+                    menuType="Japanese"
+                    dishName={dish.name}
+                    onClick={onClickDish}
+                  />
+                </WrapItem>
+              ))
+            ) : (
+              <Flex h="50vh" justify="center" align="center" w="100%">
+                <Text textAlign="center">登録している料理はありません。</Text>
+              </Flex>
+            )}
+          </>
+        )}
+      </Wrap>
       )}
       {!noSearchResults && (
         <>
