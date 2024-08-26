@@ -7,10 +7,9 @@ interface DishCardProps {
   imageUrl: string; // 料理の画像URL
   menuType: string; // メニュータイプ（例: 和食、洋食など）
   dishName: string; // 料理名
-  onClick: (id: number) => void; // クリック時に呼ばれる関数
+  onClick: (id: number) => void; 
 }
 
-// Memoized DishCard component
 export const DishCard = memo((props: DishCardProps) => {
   const { id, imageUrl, dishName, onClick } = props;
 
