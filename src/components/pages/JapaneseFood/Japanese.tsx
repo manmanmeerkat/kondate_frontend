@@ -81,10 +81,6 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
     [dishes, onSelectDish, onOpen]
   );
 
-  // メニューの表示/非表示を切り替える処理
-  const handleToggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible);
-  };
 
   // 次のページに進む処理
   const handleNextPage = () => {
