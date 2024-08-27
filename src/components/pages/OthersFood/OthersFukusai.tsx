@@ -46,7 +46,7 @@ export const OthersFukusai: React.FC<OthersProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]); // フィルタリングされた料理リストを保持
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページ番号を管理
-  const itemsPerPage = 8; // 1ページあたりに表示する料理の数
+  const itemsPerPage = 10; // 1ページあたりに表示する料理の数
 
   useEffect(() => {
     getOthersFukusai();

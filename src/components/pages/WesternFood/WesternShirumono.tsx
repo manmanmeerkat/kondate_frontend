@@ -48,7 +48,7 @@ export const WesternShirumono: React.FC<WesternProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]); // 検索結果の料理リスト
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がないかどうかのフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページ番号
-  const itemsPerPage = 8; // 1ページに表示するアイテムの数
+  const itemsPerPage = 10; // 1ページに表示するアイテムの数
 
   useEffect(() => {
     getWestern(); // Western カテゴリの料理を取得する

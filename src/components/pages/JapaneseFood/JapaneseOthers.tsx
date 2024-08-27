@@ -42,14 +42,13 @@ export const JapaneseOthers: React.FC<JapaneseProps> = memo(() => {
   const { onSelectDish, selectedDish } = useSelectDish(); // 料理選択のフック
   const { user } = useFetchUserData(); // ユーザーデータを取得
   const { handleIngredientSearch } = useIngredientSearch("japanese-others", user?.id); // 材料検索のフック
-  const navigate = useNavigate(); 
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のIDを管理
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワードを管理
   const [Dishes, setDishes] = useState<Dish[]>([]); // 検索結果を保存
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページ番号を管理
-  const itemsPerPage = 8; // 1ページあたりの表示アイテム数
+  const itemsPerPage = 10; // 1ページあたりの表示アイテム数
 
   // コンポーネントがマウントされたときに、日本のその他の料理データを取得
   useEffect(() => {

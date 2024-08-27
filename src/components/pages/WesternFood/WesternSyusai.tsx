@@ -54,7 +54,7 @@ export const WesternSyusai: React.FC<WesternProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]);
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   // コンポーネントが初回レンダリングされる際に西洋料理データを取得
   useEffect(() => {

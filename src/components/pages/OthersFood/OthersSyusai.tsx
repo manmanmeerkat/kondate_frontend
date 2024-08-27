@@ -47,7 +47,7 @@ export const OthersSyusai: React.FC<OthersProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]); // 検索結果の料理データを管理する状態
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページを管理する状態
-  const itemsPerPage = 8; // 1ページあたりの表示項目数
+  const itemsPerPage = 10; // 1ページあたりの表示項目数
 
   useEffect(() => {
     getOthersSyusai();

@@ -47,7 +47,7 @@ export const JapaneseShirumono: React.FC<JapaneseProps> = memo(() => {
   const [Dishes, setJapaneseDishes] = useState<Dish[]>([]); // 検索結果を保存
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページ番号を管理
-  const itemsPerPage = 8; // 1ページあたりの表示アイテム数
+  const itemsPerPage = 10; // 1ページあたりの表示アイテム数
 
   // コンポーネントがマウントされたときに、日本の汁物データを取得
   useEffect(() => {

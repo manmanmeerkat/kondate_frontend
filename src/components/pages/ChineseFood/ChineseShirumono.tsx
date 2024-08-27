@@ -40,15 +40,14 @@ export const ChineseShirumono: React.FC<ChineseProps> = memo(() => {
   const { data } = useChineseShirumono(); // 中華汁物のデータを取得
   const { onSelectDish, selectedDish } = useSelectDish(); // 料理を選択するフック
   const { user } = useFetchUserData(); // ユーザー情報を取得
-  const { searchedDishes, handleIngredientSearch } = useIngredientSearch("chinese-shirumono", user?.id); // 材料検索フック
-  const navigate = useNavigate(); // React Router のナビゲート
+  const { handleIngredientSearch } = useIngredientSearch("chinese-shirumono", user?.id); // 材料検索フック
 
   const [selectedDishId, setSelectedDishId] = useState<number | null>(null); // 選択された料理のID
   const [searchKeyword, setSearchKeyword] = useState<string>(""); // 検索キーワード
   const [Dishes, setDishes] = useState<Dish[]>([]); // 検索結果として表示する料理のリスト
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページ
-  const itemsPerPage = 8; // 1ページあたりのアイテム数
+  const itemsPerPage = 10; // 1ページあたりのアイテム数
 
   // コンポーネントがマウントされたときに中華汁物のデータを取得
   useEffect(() => {

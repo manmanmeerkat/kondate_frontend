@@ -46,7 +46,7 @@ export const Others: React.FC<OthersProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]); // フィルタリングされた料理リストを保持
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false); // 検索結果がない場合のフラグ
   const [currentPage, setCurrentPage] = useState(1); // 現在のページを保持
-  const itemsPerPage = 8; // 1ページあたりの表示アイテム数
+  const itemsPerPage = 10; // 1ページあたりの表示アイテム数
 
   // コンポーネントがマウントされた時に「その他の料理」データを取得
   useEffect(() => {

@@ -49,7 +49,7 @@ export const WesternOthers: React.FC<WesternProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]);
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // 1ページに表示する料理の数
+  const itemsPerPage = 10; // 1ページに表示する料理の数
 
   // WesternOthers データの取得を開始する
   useEffect(() => {

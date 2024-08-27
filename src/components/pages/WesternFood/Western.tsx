@@ -50,7 +50,7 @@ export const Western: React.FC<WesternProps> = memo(() => {
   const [Dishes, setDishes] = useState<Dish[]>([]);
   const [noSearchResults, setNoSearchResults] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // 1ページあたりに表示するアイテム数
+  const itemsPerPage = 10; // 1ページあたりに表示するアイテム数
 
   useEffect(() => {
     getWestern();

@@ -48,7 +48,7 @@ export const Japanese: React.FC<JapaneseProps> = memo(() => {
   const [currentPage, setCurrentPage] = useState(1); // 現在のページ
   const [isMenuVisible, setIsMenuVisible] = useState(false); // メニューの表示/非表示フラグ
 
-  const itemsPerPage = 8; // 1ページあたりのアイテム数
+  const itemsPerPage = 10; // 1ページあたりのアイテム数
 
   // コンポーネントがマウントされたときに日本料理のデータを取得
   useEffect(() => {
