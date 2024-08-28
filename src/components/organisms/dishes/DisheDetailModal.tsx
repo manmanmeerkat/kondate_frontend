@@ -224,47 +224,47 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
     <Modal isOpen={isOpen} onClose={onClose} autoFocus={false} motionPreset="slideInBottom">
   <ModalOverlay />
   <ModalContent pb={6} bg="white" borderRadius="md">
-    <ModalHeader bg="teal.500" color="white" borderBottomWidth="1px" borderBottomColor="teal.600">
+    <ModalHeader bg="green" color="white" borderBottomWidth="1px" borderBottomColor="green">
       詳細
     </ModalHeader>
     <ModalCloseButton />
     <ModalBody mx={4}>
       {loading ? (
         <Box display="flex" justifyContent="center" alignItems="center" height="200px">
-          <Spinner data-testid="spinner" size="lg" color="teal.500" />
+          <Spinner data-testid="spinner" size="lg" color="green" />
         </Box>
       ) : (
         <Stack spacing={4}>
           <form>
             <FormControl>
-              <FormLabel fontSize="lg" color="teal.600">料理名</FormLabel>
+              <FormLabel fontSize="lg" color="green">料理名</FormLabel>
               <Input value={name} readOnly />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="lg" color="teal.600">ジャンル</FormLabel>
+              <FormLabel fontSize="lg" color="green">ジャンル</FormLabel>
               <Input value={genre !== undefined ? convertGenreToString(genre) : ''} readOnly />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="lg" color="teal.600">カテゴリー</FormLabel>
+              <FormLabel fontSize="lg" color="green">カテゴリー</FormLabel>
               <Input value={convertCategoryToString(category)} readOnly />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="lg" color="teal.600">メモ</FormLabel>
+              <FormLabel fontSize="lg" color="green">メモ</FormLabel>
               <Textarea value={memo !== "null" ? memo : ""} readOnly />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="lg" color="teal.600">参考URL</FormLabel>
+              <FormLabel fontSize="lg" color="green">参考URL</FormLabel>
               <Input value={url !== "null" ? url : ""} readOnly />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="lg" color="teal.600">材料</FormLabel>
+              <FormLabel fontSize="lg" color="green">材料</FormLabel>
               {loading ? (
                 <Text>Loading...</Text>
               ) : (
                 <Box>
                   {ingredients.map((ingredient, index) => (
                     <Box key={ingredient.id} display="inline-block" mr={2} mb={2}>
-                      <Badge colorScheme="teal" fontSize="md" mb={1}>
+                      <Badge colorScheme="green" fontSize="md" mb={1}>
                         {ingredient.name}
                       </Badge>
                       <Text display="inline" fontSize="md">{`: ${ingredient.quantity}`}</Text>
@@ -274,10 +274,10 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
               )}
             </FormControl>
             <Stack direction="row" spacing={4} justify="space-between" align="center">
-              <Button leftIcon={<EditIcon />} colorScheme="teal" variant="outline" onClick={handleEdit}>
+              <Button leftIcon={<EditIcon />} colorScheme="green" variant="outline" onClick={handleEdit}>
                 編集
               </Button>
-              <Button rightIcon={<EditIcon />} colorScheme="teal" onClick={handleMenuRegistration} isDisabled={loading}>
+              <Button rightIcon={<EditIcon />} colorScheme="green" onClick={handleMenuRegistration} isDisabled={loading}>
                 こんだてに登録
               </Button>
             </Stack>
