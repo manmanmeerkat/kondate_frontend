@@ -106,7 +106,7 @@ export const OthersOthers: React.FC<OtheresProps> = memo(() => {
           onChange={(e) => setSearchKeyword(e.target.value)} // 検索キーワードの更新
         />
         <InputRightElement width="4.5rem">
-          <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
+          <Button colorScheme="yellow" onClick={handleSearchButtonClick} size="sm">
             <SearchIcon />
             検索
           </Button>

@@ -107,7 +107,7 @@ export const OthersSyusai: React.FC<OthersProps> = memo(() => {
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
         <InputRightElement width="4.5rem">
-          <Button colorScheme="teal" onClick={handleSearchButtonClick} size="sm">
+          <Button colorScheme="yellow" onClick={handleSearchButtonClick} size="sm">
             <SearchIcon />
             検索
           </Button>
