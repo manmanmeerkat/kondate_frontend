@@ -377,7 +377,7 @@ export const CreateDish = () => {
 
             <Button
               type="submit"
-              colorScheme="teal"
+              colorScheme="green"
               width="100%"
               fontSize="18px"
               letterSpacing="1px"
@@ -388,7 +388,7 @@ export const CreateDish = () => {
               {isLoading ? '作成中...' : '作成'}
             </Button>
             <Button
-              colorScheme="teal"
+              colorScheme="green"
               width="100%"
               fontSize="18px"
               letterSpacing="1px"
