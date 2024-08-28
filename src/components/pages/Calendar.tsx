@@ -89,8 +89,8 @@ export const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, 
           <Wrap spacing="1" mt={6} justify="space-between" flexWrap="wrap">
           <Wrap spacing="1" justify="flex-start" flexWrap="wrap" width="100%">
             {menu.map((item, index) => (
-              <Box key={index} p={5} position="relative" borderRadius="md" borderWidth="1px" width={{ base: "100%", sm: "calc(100% / 3 - 3px)", md: "calc(100% / 3 - 3px)", lg: "calc(100% / 3 - 3px)" }} bg="teal.500" marginBottom="1px">
-                <Box borderRadius="md" width="100%" bg="teal.500" textAlign="center" borderWidth={0}>
+              <Box key={index} p={5} position="relative" borderRadius="md" borderWidth="1px" width={{ base: "100%", sm: "calc(100% / 3 - 3px)", md: "calc(100% / 3 - 3px)", lg: "calc(100% / 3 - 3px)" }} bg="green" marginBottom="1px">
+                <Box borderRadius="md" width="100%" bg="green" textAlign="center" borderWidth={0}>
                   <Heading size="md" color="white" fontSize={16}>
                     {item.dish.name}
                   </Heading>

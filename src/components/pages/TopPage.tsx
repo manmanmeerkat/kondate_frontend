@@ -17,13 +17,13 @@ export const TopPage = memo(() => {
     <div style={{ position: 'relative' }}>
       <Box bg="white" h="100vh">
         <Center flexDirection="column" h="100%">
-          <Heading color="teal">こんだてずかん</Heading>
+          <Heading color="black">こんだてずかん</Heading>
           <Link to="/login">
             <Button
               bg="white"
-              color="teal"
+              color="black"
               borderWidth="1px"
-              borderColor="teal"
+              borderColor="black"
               _hover={{ bg: 'black', color: 'white' }}
               mt="4"
               onClick={onClickLogin}
@@ -34,11 +34,11 @@ export const TopPage = memo(() => {
           <Link to="/register">
             <Button
               bg="white"
-              color="teal
+              color="black
               "
               borderWidth="1px"
-              borderColor="teal"
-              _hover={{ bg: 'black', color: 'white' }}
+              borderColor="black"
+              _hover={{ bg: 'green', color: 'white' }}
               mt="4"
               onClick={onClickUserRegister}
             >
@@ -48,7 +48,7 @@ export const TopPage = memo(() => {
           <ChakraLink
             as={Link}
             to="/about"
-            color="teal"
+            color="black"
             mt="4"
             style={{ fontWeight: 'bold' }}
           >
@@ -61,7 +61,7 @@ export const TopPage = memo(() => {
         bottom="0"
         right="0"
         p="2"
-        color="teal"
+        color="black"
       >
         © 2024 こんだてずかん
       </Box>

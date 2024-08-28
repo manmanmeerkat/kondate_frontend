@@ -105,8 +105,8 @@ const MenuCalendar = () => {
 
     return (
         <div className="menu-calendar">
-            <HStack justify="space-between" mt={4}>
-                <Button onClick={() => window.history.back()} colorScheme="teal">
+            <HStack justify="space-between" mt={4} ml={2}>
+                <Button onClick={() => window.history.back()} colorScheme="green">
                     戻る
                 </Button>
             </HStack>
@@ -135,7 +135,7 @@ const MenuCalendar = () => {
                                 selectedEvents.map((event, index) => (
                                     <Box key={index} p={4} borderWidth="1px" borderRadius="lg" w="100%">
                                         <HStack>
-                                            <Icon as={MdRestaurantMenu} w={6} h={6} color="teal.500" />
+                                            <Icon as={MdRestaurantMenu} w={6} h={6} color="green.500" />
                                             <Text fontWeight="bold" fontSize="lg">{event.title}</Text>
                                         </HStack>
                                     </Box>
@@ -146,7 +146,7 @@ const MenuCalendar = () => {
                         </VStack>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme="teal" mr={3} onClick={onClose}>
+                        <Button colorScheme="green" mr={3} onClick={onClose}>
                             閉じる
                         </Button>
                     </ModalFooter>

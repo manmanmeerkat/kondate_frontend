@@ -97,7 +97,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
       </Stack>
       {isLoading && (
         <Flex justify="center">
-          <Spinner color="teal.500" thickness="4px" size="xl" mt={4} />
+          <Spinner color="green" thickness="4px" size="xl" mt={4} />
         </Flex>
       )}
     </>
@@ -212,7 +212,7 @@ export const IngredientsList: React.FC = () => {
               flex={{ base: 'auto', md: 0.7 }}
               pl={{ base: 0, md: 4 }}
               textAlign={{ base: 'left', md: 'left' }} 
-              bg="teal.50"
+              bg="green"
               p={4}
               borderRadius="md"
               width="100%" 
