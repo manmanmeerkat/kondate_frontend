@@ -7,7 +7,7 @@ interface FoodPhotographyProps {
   alt?: string;            // 画像のaltテキストのプロパティ
 }
 
-// フードフォトグラフィーコンポーネント
+
 export const FoodPhotography: React.FC<FoodPhotographyProps> = ({ imageFileName, defaultImage, alt }) => {
   const [imageUrl, setImageUrl] = useState<string>("");
 
@@ -32,7 +32,7 @@ export const FoodPhotography: React.FC<FoodPhotographyProps> = ({ imageFileName,
           alt={alt || "Uploaded Image"}  // 画像のaltテキスト、指定がなければ"Uploaded Image"を使用
           boxSize="100%"  // 画像をボックスサイズに合わせる
           objectFit="cover"  // 画像の表示方法を設定、切り抜きで全体を表示
-          borderRadius="10px"  // 画像の角を丸くする
+          borderRadius="10px" 
         />
       )}
     </Box>
