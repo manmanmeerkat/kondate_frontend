@@ -8,7 +8,7 @@
 
 https://www.kondate-zukan.com/
 
-※テストユーザーの方は　 email アドレス　test@test.com パスワード　 test1234 　でログインしてください。
+※テストユーザーの方は　 e メール　test@test.com　パスワード　 test1234 　でログインしてください。
 
 ## 開発に至るきっかけ
 
