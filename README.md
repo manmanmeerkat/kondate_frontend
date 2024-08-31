@@ -28,4 +28,4 @@
 
 ## ER 図
 
-![ER図](public/こんだてずかんER図.png.png)
+![ER図](public/こんだてずかんER図.png)
