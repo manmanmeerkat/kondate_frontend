@@ -1,4 +1,7 @@
-# こんだてずかん
+<div style="display: flex; align-items: center;">
+  <img src="public/logo512.png" alt="ファビコン" style="width: 24px; height: 24px; margin-right: 8px;">
+  <span>こんだてずかん</span>
+</div>
 
 バックエンドのリポジトリはこちら　https://github.com/manmanmeerkat/kondatezukan-backend
 
