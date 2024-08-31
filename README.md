@@ -14,13 +14,18 @@
 
 ## 使用技術
 
-- **フロントエンド**: React 18.2.0,Typescript 4.9.5,Chakra UI,redux,fullcalendar,react-datepicker
-- **バックエンド**: Laravel
+- **フロントエンド**: React 18.2.0,Typescript 4.9.5,
+- **バックエンド**: Laravel 10.10
 - **データベース**: MySQL
-- **API 通信**:
-- **日付管理**: react-datepicker
-- **ルーティング**:
+- **インフラ**: AWS(EC2,RDS,S3,Amplify,ALB,ACM,Route53)
+- **その他使用技術**: Chakra UI,react-redux,react-calendar,react-datepicker,react-router-dom,laravel/sanctum
 
 ## インフラ構成図
 
 ![インフラ構成図](public/こんだてずかんインフラ構成図.png)
+
+こんだてずかん ER 図.png
+
+## ER 図
+
+![ER図](public/こんだてずかんER図.png.png)
