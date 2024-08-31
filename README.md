@@ -12,11 +12,11 @@
 
 <div style="display: flex; justify-content: flex-start; align-items: flex-start;">
   <div style="text-align: center; margin-right: 10px;">
-    <div>作成する献立表</div>
+    <div style="margin-bottom: 5px;">作成する献立表</div>
     <img src="public/献立表.png" alt="献立表" style="width: 100%; height: auto;" />
   </div>
   <div style="text-align: center;">
-    <div>買い出し材料リスト</div>
+    <div style="margin-bottom: 5px;">買い出し材料リスト</div>
     <img src="public/材料リスト.png" alt="材料リスト" style="width: 100%; height: auto;" />
   </div>
 </div>
