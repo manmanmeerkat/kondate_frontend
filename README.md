@@ -6,7 +6,7 @@
 
 <div style="display: flex; justify-content: space-around; align-items: center;">
   <img src="public/献立表.png" alt="献立表" style="width: 60%; height: auto;"/>
-  <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: auto;"/>
+  <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: 80%;"/>
 </div>
 
 ## 主な機能
