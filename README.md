@@ -1,4 +1,4 @@
-<img src="public/logo512.png" alt="ファビコン" style="width: 100px; height: 100px;>
+ <img src="path/to/favicon.png" alt="ファビコン" style="width: 24px; height: 24px; margin-right: 8px;">
 
 # こんだてずかん
 
