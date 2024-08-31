@@ -14,7 +14,7 @@
 
 ## 使用技術
 
-- **フロントエンド**: React,Typescript,Chakra UI
+- **フロントエンド**: React 18.2.0,Typescript 4.9.5,Chakra UI,redux,fullcalendar,react-datepicker
 - **バックエンド**: Laravel
 - **データベース**: MySQL
 - **API 通信**:
