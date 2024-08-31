@@ -12,9 +12,7 @@
 
 <div style="display: flex; justify-content: flex-start; align-items: flex-start;">
   <img src="public/献立表.png" alt="献立表" style="width: 60%; height: auto; margin-right: 10px;" />
-  作成する献立表
   <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: auto;" />
-  買い出し材料リスト
 </div>
 
 ### アプリの特徴
