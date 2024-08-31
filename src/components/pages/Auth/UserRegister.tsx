@@ -218,7 +218,7 @@ export const UserRegister: React.FC = () => {
           </FormControl>
           <Button
             mt="6"
-            colorScheme="teal"
+            colorScheme="green"
             type="submit"
             width="100%"
             fontSize="18px"
@@ -231,7 +231,7 @@ export const UserRegister: React.FC = () => {
           <Button
             mt="4"
             variant="outline"
-            colorScheme="teal"
+            colorScheme="green"
             width="100%"
             fontSize="18px"
             letterSpacing="1px"
