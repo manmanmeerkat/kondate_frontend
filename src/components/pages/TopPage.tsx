@@ -24,7 +24,7 @@ export const TopPage = memo(() => {
               color="black"
               borderWidth="1px"
               borderColor="black"
-              _hover={{ bg: 'black', color: 'white' }}
+              _hover={{ bg: 'green', color: 'white' }}
               mt="4"
               onClick={onClickLogin}
             >
