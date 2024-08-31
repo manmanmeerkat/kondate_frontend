@@ -1,4 +1,4 @@
- <img src="public/logo512.png" alt="ファビコン" style="width: 200px; height: 200px; ">
+ <img src="public/logo512.png" alt="ファビコン" style="width: 100px; height: 100px; ">
 
 # こんだてずかん
 
