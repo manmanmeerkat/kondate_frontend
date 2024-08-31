@@ -11,14 +11,10 @@
 過去の自分たちが築きあげてきた料理たちを記録に残し振り返りつつ、思い出す時間を短縮し、毎週の献立、材料リスト作成を効率化したい、また、自分が作った料理が図鑑のように作成、管理できれば、料理や新メニュー導入へのモチベーションも上げていくことができるのではないかと思い、このアプリを開発しました。
 
 <div style="display: flex; justify-content: flex-start; align-items: flex-start;">
-  <div style="text-align: center; margin-right: 10px;">
-    <div style="margin-bottom: 5px;">作成する献立表</div>
-    <img src="public/献立表.png" alt="献立表" style="width: 100%; height: auto;" />
-  </div>
-  <div style="text-align: center;">
-    <div style="margin-bottom: 5px;">買い出し材料リスト</div>
-    <img src="public/材料リスト.png" alt="材料リスト" style="width: 100%; height: auto;" />
-  </div>
+  <img src="public/献立表.png" alt="献立表" style="width: 60%; height: auto; margin-right: 10px;" />
+  作成する献立表
+  <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: auto;" />
+  買い出し材料リスト
 </div>
 
 ### アプリの特徴
