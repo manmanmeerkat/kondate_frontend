@@ -51,8 +51,6 @@ https://www.kondate-zukan.com/
 
 ![インフラ構成図](public/こんだてずかんインフラ構成図.png)
 
-こんだてずかん ER 図.png
-
 ## ER 図
 
 ![ER図](public/こんだてずかんER図.png)

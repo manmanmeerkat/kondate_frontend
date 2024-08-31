@@ -84,7 +84,7 @@ const SearchForm: React.FC<{ onSearch: (startDate: string, endDate: string) => v
             />
           </InputGroup>
           <Button
-            colorScheme="teal"
+            colorScheme="green"
             flex={{ base: '1', md: 'auto' }}
             mt={{ base: 0, md: 0 }}
             ml={{ base: 0, md: 2 }}
@@ -185,7 +185,7 @@ export const IngredientsList: React.FC = () => {
                   </Heading>
                   {menus.map((menu) => (
                     <Box key={menu.menu_id} mb={4}>
-                      <Badge colorScheme="teal" mb={2} fontSize="lg">{menu.dish_name}</Badge>
+                      <Badge colorScheme="green.100" mb={2} fontSize="lg">{menu.dish_name}</Badge>
                       <Table variant="simple" size="sm" width="100%"> {/* テーブル全体を100%幅に設定 */}
                         <Thead>
                           <Tr>
@@ -212,7 +212,7 @@ export const IngredientsList: React.FC = () => {
               flex={{ base: 'auto', md: 0.7 }}
               pl={{ base: 0, md: 4 }}
               textAlign={{ base: 'left', md: 'left' }} 
-              bg="green"
+              bg="green.200"
               p={4}
               borderRadius="md"
               width="100%" 
