@@ -4,9 +4,9 @@
 
 「こんだてずかん」は、日々の食事管理を効率化するための献立管理アプリです。ユーザーが簡単に料理を登録し、材料を管理し、過去の献立を検索できる機能を提供します。健康的な食生活のサポートを目的に開発され、個人の食事計画を一元管理できます。
 
-<div style="display: flex; justify-content: space-around; align-items: center;">
+<div style="display: flex; justify-content: space-around; align-items: flex-start;">
   <img src="public/献立表.png" alt="献立表" style="width: 60%; height: auto;"/>
-  <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: 80%;"/>
+  <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: 50%;"/>
 </div>
 
 ## 主な機能
