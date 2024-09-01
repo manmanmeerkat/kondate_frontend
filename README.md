@@ -29,14 +29,6 @@ https://www.kondate-zukan.com/
 
 こんだてずかんは自分の料理レパートリーを図鑑のように管理できるアプリです。
 
-<div style="text-align: center; max-width: 600px; margin: 0 auto;">
-  <div style="position: relative;">
-    <img src="カレンダーモーダル.png" alt="GIFサンプル1" style="border-radius: 8px;" />
-    <img src="すべての料理.png" alt="GIFサンプル2" style="border-radius: 8px;" />
-    <img src="Videotogif (3).gif" alt="GIFサンプル3" style="border-radius: 8px;" />
-  </div>
-</div>
-
 ## こんだてずかんでできること
 
 https://www.kondate-zukan.com/about
@@ -88,3 +80,11 @@ https://www.kondate-zukan.com/about
 ## ER 図
 
 ![ER図](public/こんだてずかんER図.png)
+
+## 今後の展望
+
+- GitHub Actions で CI/CD 環境の構築
+- インフラ面でのスケーリングなどの最適化とアプリ全体のパフォーマンス向上
+- よりシンプルな使いやすさを追求した UI・UX、複雑になり過ぎない機能追加
+- フロント面のデザイン・表示の仕方などユーザーが自分でカスタマイズできるような機能を充実させ、料理することが楽しくなるような自分独自の図鑑を作成できるというイメージを大切にしていきたい
+- ユーザーからのフィードバックを積極的に取り入れ幅広い層のユーザーが使いやすいと思えるプロダクトにしていきたい
