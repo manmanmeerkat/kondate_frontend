@@ -137,6 +137,25 @@ export const About = memo(() => {
           </Stack>
         </Box>
       </SimpleGrid>
+
+      <Heading as="h2" size="md" mt={20} mb={4} textAlign="center">
+        スマートフォンからもご利用可能
+      </Heading>
+
+      <SimpleGrid columns={[4]} spacing={4} mb={6}>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="スマホ料理一覧.png" alt="スマホ用画像1" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="ドロワー.png" alt="スマホ用画像2" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="スマホカレンダー.png" alt="スマホ用画像3" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="スマホ材料リスト.png" alt="スマホ用画像4" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+      </SimpleGrid>
     </Box>
   );
 });
