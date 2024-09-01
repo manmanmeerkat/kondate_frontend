@@ -22,7 +22,7 @@ https://www.kondate-zukan.com/
 
 <div style="display: flex; justify-content: flex-start; align-items: flex-start;">
   <img src="public/献立表.png" alt="献立表" style="width: 60%; height: auto; margin-right: 10px;" />
-  <img src="public/材料リスト.png" alt="材料リスト" style="width: 35%; height: auto;" />
+  <img src="public/買い出し材料リスト.png" alt="材料リスト" style="width: 35%; height: auto;" />
 </div>
 
 ## こんだてずかんとは
@@ -87,4 +87,4 @@ https://www.kondate-zukan.com/about
 - インフラ面でのスケーリングなどの最適化とアプリ全体のパフォーマンス向上
 - よりシンプルな使いやすさを追求した UI・UX、複雑になり過ぎない機能追加
 - フロント面のデザイン・表示の仕方などユーザーが自分でカスタマイズできるような機能を充実させ、料理することが楽しくなるような自分独自の図鑑を作成できるというイメージを大切にしていきたい
-- ユーザーからのフィードバックを積極的に取り入れ幅広い層のユーザーが使いやすいと思えるプロダクトにしていきたい
+- ユーザーからのフィードバックを積極的に取り入れ、幅広い層のユーザーが使いやすいと思えるプロダクトにしていきたい
