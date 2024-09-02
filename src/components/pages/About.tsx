@@ -33,17 +33,20 @@ export const About = memo(() => {
 
       <Box mb={8} textAlign="center" maxWidth="600px" mx="auto">
         <Slider {...settings}>
-          <Box>
-            <Image src="カレンダーモーダル.png" alt="GIFサンプル1" borderRadius="md" />
-          </Box>
-          <Box>
-            <Image src="すべての料理.png" alt="GIFサンプル2" borderRadius="md" />
-          </Box>
-          <Box>
-            <Image src="Videotogif (3).gif" alt="GIFサンプル3" borderRadius="md" />
-          </Box>
-        </Slider>
-      </Box>
+            <Box>
+              <Image src="スライド1.gif" alt="GIFサンプル1" borderRadius="md" />
+            </Box>
+            <Box>
+              <Image src="スライド2.gif" alt="GIFサンプル2" borderRadius="md" />
+            </Box>
+            <Box>
+              <Image src="スライド3.gif" alt="GIFサンプル3" borderRadius="md" />
+            </Box>
+            <Box>
+              <Image src="スライド4.gif" alt="GIFサンプル4" borderRadius="md" />
+            </Box>
+          </Slider>
+        </Box>
       <Heading as="h2" size="md" mt={20} mb={4} textAlign="center">
         こんだてずかんでできること
       </Heading>
