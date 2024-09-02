@@ -204,14 +204,14 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = memo((props) => {
         }
       );
 
-      showMessage({ title: 'メニューを登録しました。', status: 'success' }); // 成功メッセージを表示
+      showMessage({ title: 'こんだてに登録しました。', status: 'success' }); // 成功メッセージを表示
       onClose(); // モーダルを閉じる
 
       // メニューの登録が成功したら即座に画面を更新
       const updatedMenu = await getMenuForDate(new Date(formattedDate || new Date()));
       dispatch(setMenu(updatedMenu)); // Reduxストアのメニューを更新
     } catch (error) {
-      console.error('メニューの登録に失敗しました。', error);
+      console.error('こんだての登録に失敗しました。', error);
       showMessage({ title: 'こんだて作成モードにしてください。', status: 'error' }); // エラーメッセージを表示
     } finally {
       setLoading(false); // ローディングを終了
