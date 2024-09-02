@@ -15,7 +15,7 @@ export const About = memo(() => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 39000,
+    autoplaySpeed: 20000,
   };
 
   const boxBg = useColorModeValue("white", "gray.700");
