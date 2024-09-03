@@ -25,10 +25,6 @@ https://www.kondate-zukan.com/
   <img src="public/買い出し材料リスト.png" alt="材料リスト" style="width: 35%; height: auto;" />
 </div>
 
-## こんだてずかんとは
-
-こんだてずかんは自分の料理レパートリーを図鑑のように管理できるアプリです。
-
 ## こんだてずかんでできること
 
 https://www.kondate-zukan.com/about
