@@ -28,7 +28,7 @@ export const About = memo(() => {
         こんだてずかんとは
       </Heading>
       <Text fontSize="lg" mb={6} textAlign="center">
-        こんだてずかんは自分の料理レパートリーを図鑑のように管理できるアプリです。
+        こんだてずかんはあなたの料理レパートリーを図鑑のように管理できるアプリです。
       </Text>
 
       <Box mb={8} textAlign="center" maxWidth="600px" mx="auto">
