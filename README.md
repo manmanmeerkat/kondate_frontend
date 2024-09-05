@@ -81,10 +81,10 @@ https://www.kondate-zukan.com/about
 
 ![ER図](public/こんだてずかんER図.png)
 
-## 今後の展望
+## 今後の課題
 
 - GitHub Actions で CI/CD 環境の構築
-- Controller の記述を Servise に切り出すなどしてリファクタリング
+- Controller の記述を Servise クラス に切り出すなどしてリファクタリング
 - 管理者機能の作成
 - インフラ面でのスケーリングなどの最適化とアプリ全体のパフォーマンス向上
 - よりシンプルな使いやすさを追求した UI・UX、複雑になり過ぎない機能追加
