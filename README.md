@@ -55,7 +55,7 @@ https://www.kondate-zukan.com/about
 
 ### 材料リスト作成
 
-- 必要な材料のリストを期間指定で作成
+- 期間を指定して材料リストを作成
 
 ### レスポンシブ対応済
 
@@ -70,7 +70,7 @@ https://www.kondate-zukan.com/about
 - **フロントエンド**: React 18.2.0,Typescript 4.9.5,
 - **バックエンド**: Laravel 10.10
 - **データベース**: MySQL
-- **インフラ**: AWS(EC2,RDS,S3,Amplify,ALB,ACM,Route53)
+- **インフラ**: AWS(EC2,RDS,S3,Amplify,ALB,ACM,Route53),Nginx
 - **その他使用技術**: Chakra UI,react-redux,react-calendar,react-datepicker,react-router-dom,laravel/sanctum
 
 ## インフラ構成図
