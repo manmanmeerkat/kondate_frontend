@@ -72,7 +72,7 @@ https://www.kondate-zukan.com/about
 - **データベース**: MySQL
 - **インフラ**: AWS(EC2,RDS,S3,Amplify,ALB,ACM,Route53),Nginx
 - **テスト**:PHPUnit
-- **その他使用技術**: Chakra UI,react-redux,react-calendar,react-datepicker,react-router-dom,laravel/sanctum
+- **その他使用技術**: Chakra UI,react-redux,react-calendar,react-datepicker,react-router-dom,laravel/sanctum,Thunder Client
 
 ## インフラ構成図
 
