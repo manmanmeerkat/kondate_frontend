@@ -71,6 +71,7 @@ https://www.kondate-zukan.com/about
 - **バックエンド**: Laravel 10.10
 - **データベース**: MySQL
 - **インフラ**: AWS(EC2,RDS,S3,Amplify,ALB,ACM,Route53),Nginx
+- **テスト**:PHPUnit
 - **その他使用技術**: Chakra UI,react-redux,react-calendar,react-datepicker,react-router-dom,laravel/sanctum
 
 ## インフラ構成図
