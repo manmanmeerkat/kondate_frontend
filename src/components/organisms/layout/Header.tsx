@@ -129,11 +129,11 @@ export const Header: React.FC<HeaderProps> = () => {
         <Box position="relative" display={{ base: 'inline-block', md: 'flex' }} paddingRight={{ base: 1, md: 8 }}>
           <Select
             value={selectedOption}
-            colorScheme="teal"
+            colorScheme="green"
             onChange={(e) => handleSettingsChange(e.target.value)}
             width="15px"
             variant="unstyled" // 外枠の色を削除する
-            iconColor="teal"
+            iconColor="green"
             cursor="pointer"
             userSelect="none" // テキスト選択を無効にする
             position="absolute" 
