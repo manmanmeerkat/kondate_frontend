@@ -31,13 +31,12 @@ export const About = memo(() => {
 
   return (
     
-    <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
-  {/* トップページに戻るボタン (左上に固定) */}
-  <Box position="absolute" top="10px" left="10px">
-    <Button colorScheme="teal" onClick={handleBackToHome}>
-      トップページに戻る
-    </Button>
-  </Box>
+  <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
+    <Box position="absolute" top="10px" left="10px">
+      <Button colorScheme="green" onClick={handleBackToHome}>
+        トップページに戻る
+      </Button>
+    </Box>
 
   <Heading as="h1" size="lg" mb={6} textAlign="center">
     こんだてずかんとは
