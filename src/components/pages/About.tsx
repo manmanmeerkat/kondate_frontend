@@ -1,10 +1,11 @@
 import { memo } from "react";
-import { Box, Heading, Text, Image, SimpleGrid, Icon, Badge, Stack, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, Text, Image, SimpleGrid, Icon, Badge, Stack, useColorModeValue, Button } from "@chakra-ui/react";
 import Slider from "react-slick";
 import { FaUtensils, FaCalendarAlt, FaListAlt } from "react-icons/fa";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router-dom";
 
 export const About = memo(() => {
   // スライドショーの設定
@@ -21,8 +22,15 @@ export const About = memo(() => {
   const boxBg = useColorModeValue("white", "gray.700");
   const boxBgAlt = useColorModeValue("gray.50", "gray.600");
 
+  const navigate = useNavigate();
+
+  // トップページに戻る関数
+  const handleBackToHome = () => {
+    navigate("/");
+  };
 
   return (
+    
     <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto">
       <Heading as="h1" size="lg" mb={6} textAlign="center">
         こんだてずかんとは
@@ -47,6 +55,14 @@ export const About = memo(() => {
             </Box>
           </Slider>
         </Box>
+
+      {/* トップページに戻るボタン */}
+      <Box textAlign="center" mb={8}>
+        <Button colorScheme="teal" onClick={handleBackToHome}>
+          トップページに戻る
+        </Button>
+      </Box>
+
       <Heading as="h2" size="md" mt={20} mb={4} textAlign="center">
         こんだてずかんでできること
       </Heading>
