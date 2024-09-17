@@ -31,37 +31,37 @@ export const About = memo(() => {
 
   return (
     
-    <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto">
-      <Heading as="h1" size="lg" mb={6} textAlign="center">
-        こんだてずかんとは
-      </Heading>
-      <Text fontSize="lg" mb={6} textAlign="center">
-        こんだてずかんはあなたの料理レパートリーを図鑑のように管理できるアプリです。
-      </Text>
+    <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
+  {/* トップページに戻るボタン (左上に固定) */}
+  <Box position="absolute" top="10px" left="10px">
+    <Button colorScheme="teal" onClick={handleBackToHome}>
+      トップページに戻る
+    </Button>
+  </Box>
 
-      <Box mb={8} textAlign="center" maxWidth="600px" mx="auto">
-        <Slider {...settings}>
-            <Box>
-              <Image src="スライド1.gif" alt="GIFサンプル1" borderRadius="md" />
-            </Box>
-            <Box>
-              <Image src="スライド2.gif" alt="GIFサンプル2" borderRadius="md" />
-            </Box>
-            <Box>
-              <Image src="スライド3.gif" alt="GIFサンプル3" borderRadius="md" />
-            </Box>
-            <Box>
-              <Image src="スライド4.gif" alt="GIFサンプル4" borderRadius="md" />
-            </Box>
-          </Slider>
-        </Box>
+  <Heading as="h1" size="lg" mb={6} textAlign="center">
+    こんだてずかんとは
+  </Heading>
+  <Text fontSize="lg" mb={6} textAlign="center">
+    こんだてずかんはあなたの料理レパートリーを図鑑のように管理できるアプリです。
+  </Text>
 
-      {/* トップページに戻るボタン */}
-      <Box textAlign="center" mb={8}>
-        <Button colorScheme="teal" onClick={handleBackToHome}>
-          トップページに戻る
-        </Button>
+  <Box mb={8} textAlign="center" maxWidth="600px" mx="auto">
+    <Slider {...settings}>
+      <Box>
+        <Image src="スライド1.gif" alt="GIFサンプル1" borderRadius="md" />
       </Box>
+      <Box>
+        <Image src="スライド2.gif" alt="GIFサンプル2" borderRadius="md" />
+      </Box>
+      <Box>
+        <Image src="スライド3.gif" alt="GIFサンプル3" borderRadius="md" />
+      </Box>
+      <Box>
+        <Image src="スライド4.gif" alt="GIFサンプル4" borderRadius="md" />
+      </Box>
+    </Slider>
+  </Box>
 
       <Heading as="h2" size="md" mt={20} mb={4} textAlign="center">
         こんだてずかんでできること
