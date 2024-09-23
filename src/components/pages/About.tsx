@@ -28,19 +28,20 @@ export const About = memo(() => {
   const handleBackToHome = () => {
     navigate("/");
   };
-
-  const isButtonVisible = useBreakpointValue({ base: false, md: true });
+  
+  const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
+  const buttonPosition = useBreakpointValue({
+    base: { top: "10px", left: "10px" }, // スマホサイズでは左上
+    md: { top: "10px", left: "10px" },   // デスクトップでも同じ位置（他の調整も可能）
+  });
 
   return (
-    
     <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
-    {isButtonVisible && (
-      <Box position="absolute" top="10px" left="10px">
-        <Button colorScheme="green" size="sm" onClick={handleBackToHome}>
+      <Box position="absolute" {...buttonPosition}>
+        <Button colorScheme="green" size={buttonSize} onClick={handleBackToHome}>
           トップページに戻る
         </Button>
       </Box>
-    )}
   
     <Heading as="h1" size="lg" mb={6} textAlign="center">
       こんだてずかんとは
