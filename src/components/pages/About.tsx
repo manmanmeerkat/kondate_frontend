@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Box, Heading, Text, Image, SimpleGrid, Icon, Badge, Stack, useColorModeValue, Button, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Heading, Text, Image, SimpleGrid, Icon, Badge, Stack, useColorModeValue, Button } from "@chakra-ui/react";
 import Slider from "react-slick";
 import { FaUtensils, FaCalendarAlt, FaListAlt } from "react-icons/fa";
 
@@ -29,42 +29,38 @@ export const About = memo(() => {
     navigate("/");
   };
 
-  // ボタンの位置をレスポンシブに設定
-  const topPosition = useBreakpointValue({ base: "20px", md: "10px" });
-  const leftPosition = useBreakpointValue({ base: "50%", md: "10px" });
-  const transformValue = useBreakpointValue({ base: "translateX(-50%)", md: "none" });
-
   return (
+    
     <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
-      <Box position="absolute" top={topPosition} left={leftPosition} transform={transformValue}>
-        <Button colorScheme="green" onClick={handleBackToHome}>
-          トップページに戻る
-        </Button>
-      </Box>
+    <Box position="absolute" top="10px" left="10px">
+      <Button colorScheme="green" size="sm" onClick={handleBackToHome}>
+        トップページに戻る
+      </Button>
+    </Box>
+  
+    <Heading as="h1" size="lg" mb={6} textAlign="center">
+      こんだてずかんとは
+    </Heading>
+  <Text fontSize="lg" mb={6} textAlign="center">
+    こんだてずかんはあなたの料理レパートリーを図鑑のように管理できるアプリです。
+  </Text>
 
-      <Heading as="h1" size="lg" mb={6} textAlign="center">
-        こんだてずかんとは
-      </Heading>
-      <Text fontSize="lg" mb={6} textAlign="center">
-        こんだてずかんはあなたの料理レパートリーを図鑑のように管理できるアプリです。
-      </Text>
-
-      <Box mb={8} textAlign="center" maxWidth="600px" mx="auto">
-        <Slider {...settings}>
-          <Box>
-            <Image src="スライド1.gif" alt="GIFサンプル1" borderRadius="md" />
-          </Box>
-          <Box>
-            <Image src="スライド2.gif" alt="GIFサンプル2" borderRadius="md" />
-          </Box>
-          <Box>
-            <Image src="スライド3.gif" alt="GIFサンプル3" borderRadius="md" />
-          </Box>
-          <Box>
-            <Image src="スライド4.gif" alt="GIFサンプル4" borderRadius="md" />
-          </Box>
-        </Slider>
+  <Box mb={8} textAlign="center" maxWidth="600px" mx="auto">
+    <Slider {...settings}>
+      <Box>
+        <Image src="スライド1.gif" alt="GIFサンプル1" borderRadius="md" />
       </Box>
+      <Box>
+        <Image src="スライド2.gif" alt="GIFサンプル2" borderRadius="md" />
+      </Box>
+      <Box>
+        <Image src="スライド3.gif" alt="GIFサンプル3" borderRadius="md" />
+      </Box>
+      <Box>
+        <Image src="スライド4.gif" alt="GIFサンプル4" borderRadius="md" />
+      </Box>
+    </Slider>
+  </Box>
 
       <Heading as="h2" size="md" mt={20} mb={4} textAlign="center">
         こんだてずかんでできること
@@ -165,10 +161,18 @@ export const About = memo(() => {
       </Heading>
 
       <SimpleGrid columns={[4]} spacing={4} mb={6}>
-        <Image src="スマホ画面1.png" alt="スマホ画面1" borderRadius="md" />
-        <Image src="スマホ画面2.png" alt="スマホ画面2" borderRadius="md" />
-        <Image src="スマホ画面3.png" alt="スマホ画面3" borderRadius="md" />
-        <Image src="スマホ画面4.png" alt="スマホ画面4" borderRadius="md" />
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="スマホ料理一覧.png" alt="スマホ用画像1" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="ドロワー.png" alt="スマホ用画像2" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="スマホカレンダー.png" alt="スマホ用画像3" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
+        <Box borderRadius="md" boxShadow="md" bg={boxBg} p={2} width="auto">
+          <Image src="スマホ材料リスト.png" alt="スマホ用画像4" borderRadius="md" maxW="100%" height="auto" />
+        </Box>
       </SimpleGrid>
     </Box>
   );
