@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Box, Heading, Text, Image, SimpleGrid, Icon, Badge, Stack, useColorModeValue, Button } from "@chakra-ui/react";
+import { Box, Heading, Text, Image, SimpleGrid, Icon, Badge, Stack, useColorModeValue, Button, useBreakpointValue } from "@chakra-ui/react";
 import Slider from "react-slick";
 import { FaUtensils, FaCalendarAlt, FaListAlt } from "react-icons/fa";
 
@@ -29,14 +29,18 @@ export const About = memo(() => {
     navigate("/");
   };
 
+  const isButtonVisible = useBreakpointValue({ base: false, md: true });
+
   return (
     
     <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
-    <Box position="absolute" top="10px" left="10px">
-      <Button colorScheme="green" size="sm" onClick={handleBackToHome}>
-        トップページに戻る
-      </Button>
-    </Box>
+    {isButtonVisible && (
+      <Box position="absolute" top="10px" left="10px">
+        <Button colorScheme="green" size="sm" onClick={handleBackToHome}>
+          トップページに戻る
+        </Button>
+      </Box>
+    )}
   
     <Heading as="h1" size="lg" mb={6} textAlign="center">
       こんだてずかんとは
