@@ -28,24 +28,29 @@ export const About = memo(() => {
   const handleBackToHome = () => {
     navigate("/");
   };
-  
-  const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
+
+   const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
   const buttonPosition = useBreakpointValue({
-    base: { top: "10px", left: "10px" }, // スマホサイズでは左上
-    md: { top: "10px", left: "10px" },   // デスクトップでも同じ位置（他の調整も可能）
+    base: { top: "10px", left: "10px" },  // スマホサイズで左上に固定
+    md: { top: "10px", left: "10px" },    // デスクトップでも同じ位置
   });
+
+  // スマホサイズでは見出しに余白を追加
+  const headingMarginTop = useBreakpointValue({ base: "50px", md: "0px" });
 
   return (
     <Box p={6} shadow="md" borderWidth="1px" borderRadius="md" maxWidth="1200px" mx="auto" position="relative">
+      {/* トップページに戻るボタン */}
       <Box position="absolute" {...buttonPosition}>
         <Button colorScheme="green" size={buttonSize} onClick={handleBackToHome}>
           トップページに戻る
         </Button>
       </Box>
-  
-    <Heading as="h1" size="lg" mb={6} textAlign="center">
-      こんだてずかんとは
-    </Heading>
+
+      {/* 見出しと説明文 */}
+      <Heading as="h1" size="lg" mb={6} mt={headingMarginTop} textAlign="center">
+        こんだてずかんとは
+      </Heading>
   <Text fontSize="lg" mb={6} textAlign="center">
     こんだてずかんはあなたの料理レパートリーを図鑑のように管理できるアプリです。
   </Text>
